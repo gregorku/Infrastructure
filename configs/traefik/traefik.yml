@@ -6,7 +6,7 @@
 #   configs/traefik/traefik.yml
 #
 # Description:
-#   Static Traefik configuration.
+#   Static Traefik configuration
 #
 ###############################################################################
 
@@ -16,22 +16,22 @@ global:
 
 api:
   dashboard: true
-  insecure: false
+
+ping: {}
 
 log:
   level: INFO
-  format: common
 
 accessLog:
   filePath: /var/log/traefik/access.log
-  format: json
+  bufferingSize: 100
 
 providers:
 
   docker:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
-    network: ${NETWORK_TRAEFIK}
+    network: bridge-moje
 
   file:
     directory: /etc/traefik/dynamic
@@ -45,29 +45,35 @@ entryPoints:
   websecure:
     address: ":443"
 
-  wgsecure:
-    address: ":8888"
+  traefik:
+    address: ":8080"
+
+  prometheus:
+    address: ":9090"
+
+  alertmanager:
+    address: ":9093"
 
 certificatesResolvers:
 
   letsencrypt:
+
     acme:
 
-      email: ${TRAEFIK_ACME_EMAIL}
+      email: your@email.cz
 
       storage: /etc/traefik/acme/acme.json
 
       httpChallenge:
+
         entryPoint: web
 
 metrics:
 
   prometheus:
+
     addEntryPointsLabels: true
+
     addRoutersLabels: true
+
     addServicesLabels: true
-
-ping: {}
-
-serversTransport:
-  insecureSkipVerify: false

@@ -32,33 +32,45 @@ services:
         ipv4_address: ${IP_TRAEFIK}
 
       traefik-moje:
+        ipv4_address: ${IP_TRAEFIK_PUBLIC}
 
     ports:
 
       - "80:80"
       - "443:443"
 
+      # Administration
+      - "8080:8080"   # Dashboard
+      - "8081:8081"   # Grafana
+      - "8082:8082"   # Prometheus
+      - "8083:8083"   # Alertmanager
+      - "8084:8084"   # CrowdSec
+      - "8085:8085"   # Loki
+      - "8086:8086"   # Metabase
+
     volumes:
+
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
       - ./configs/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
 
       - ./configs/traefik/dynamic:/etc/traefik/dynamic:ro
 
-      - ${DATA_ROOT}/traefik/acme:/etc/traefik/acme
+      - ${INFRASTRUCTURE_DATA}/traefik/acme:/etc/traefik/acme
 
-      - ${DATA_ROOT}/traefik/logs:/var/log/traefik
+      - ${INFRASTRUCTURE_DATA}/traefik/logs:/var/log/traefik
 
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+    security_opt:
+
+      - no-new-privileges:true
 
     healthcheck:
 
       test:
-        [
-          "CMD",
-          "traefik",
-          "healthcheck",
-          "--ping"
-        ]
+        - CMD
+        - traefik
+        - healthcheck
+        - --ping
 
       interval: 30s
 
@@ -81,23 +93,3 @@ services:
     labels:
 
       - traefik.enable=true
-
-      #
-      # Dashboard
-      #
-
-      - traefik.http.routers.traefik.rule=Host(`${TRAEFIK_DOMAIN}`)
-
-      - traefik.http.routers.traefik.entrypoints=websecure
-
-      - traefik.http.routers.traefik.tls.certresolver=letsencrypt
-
-      - traefik.http.routers.traefik.service=api@internal
-
-      - traefik.http.routers.traefik.middlewares=auth-basic@file,compress@file
-
-      #
-      # Docker Network
-      #
-
-      - traefik.docker.network=traefik-moje
