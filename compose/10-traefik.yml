@@ -1,0 +1,103 @@
+###############################################################################
+#
+# Infrastructure Project
+#
+# File:
+#   compose/10-traefik.yml
+#
+# Description:
+#   Traefik v3 Reverse Proxy
+#
+###############################################################################
+
+services:
+
+  traefik:
+
+    image: traefik:${TRAEFIK_VERSION}
+
+    hostname: traefik
+
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    command:
+      - --configFile=/etc/traefik/traefik.yml
+
+    networks:
+
+      bridge-moje:
+        ipv4_address: ${IP_TRAEFIK}
+
+      traefik-moje:
+
+    ports:
+
+      - "80:80"
+      - "443:443"
+
+    volumes:
+
+      - ./configs/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+
+      - ./configs/traefik/dynamic:/etc/traefik/dynamic:ro
+
+      - ${DATA_ROOT}/traefik/acme:/etc/traefik/acme
+
+      - ${DATA_ROOT}/traefik/logs:/var/log/traefik
+
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    healthcheck:
+
+      test:
+        [
+          "CMD",
+          "traefik",
+          "healthcheck",
+          "--ping"
+        ]
+
+      interval: 30s
+
+      timeout: 5s
+
+      retries: 3
+
+      start_period: 10s
+
+    logging:
+
+      driver: json-file
+
+      options:
+
+        max-size: ${LOG_MAX_SIZE}
+
+        max-file: "${LOG_MAX_FILES}"
+
+    labels:
+
+      - traefik.enable=true
+
+      #
+      # Dashboard
+      #
+
+      - traefik.http.routers.traefik.rule=Host(`${TRAEFIK_DOMAIN}`)
+
+      - traefik.http.routers.traefik.entrypoints=websecure
+
+      - traefik.http.routers.traefik.tls.certresolver=letsencrypt
+
+      - traefik.http.routers.traefik.service=api@internal
+
+      - traefik.http.routers.traefik.middlewares=auth-basic@file,compress@file
+
+      #
+      # Docker Network
+      #
+
+      - traefik.docker.network=traefik-moje

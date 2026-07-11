@@ -1,0 +1,73 @@
+###############################################################################
+#
+# Infrastructure Project
+#
+# File:
+#   configs/traefik/traefik.yml
+#
+# Description:
+#   Static Traefik configuration.
+#
+###############################################################################
+
+global:
+  checkNewVersion: true
+  sendAnonymousUsage: false
+
+api:
+  dashboard: true
+  insecure: false
+
+log:
+  level: INFO
+  format: common
+
+accessLog:
+  filePath: /var/log/traefik/access.log
+  format: json
+
+providers:
+
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    network: ${NETWORK_TRAEFIK}
+
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
+
+entryPoints:
+
+  web:
+    address: ":80"
+
+  websecure:
+    address: ":443"
+
+  wgsecure:
+    address: ":8888"
+
+certificatesResolvers:
+
+  letsencrypt:
+    acme:
+
+      email: ${TRAEFIK_ACME_EMAIL}
+
+      storage: /etc/traefik/acme/acme.json
+
+      httpChallenge:
+        entryPoint: web
+
+metrics:
+
+  prometheus:
+    addEntryPointsLabels: true
+    addRoutersLabels: true
+    addServicesLabels: true
+
+ping: {}
+
+serversTransport:
+  insecureSkipVerify: false

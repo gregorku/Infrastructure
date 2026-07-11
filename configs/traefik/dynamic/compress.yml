@@ -1,0 +1,16 @@
+###############################################################################
+#
+# Infrastructure Project
+#
+# File:
+#   configs/traefik/dynamic/compress.yml
+#
+###############################################################################
+
+http:
+
+  middlewares:
+
+    compress:
+
+      compress: {}

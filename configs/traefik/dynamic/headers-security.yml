@@ -1,0 +1,32 @@
+###############################################################################
+#
+# Infrastructure Project
+#
+# File:
+#   configs/traefik/dynamic/headers-security.yml
+#
+###############################################################################
+
+http:
+
+  middlewares:
+
+    headers-security:
+
+      headers:
+
+        stsSeconds: 31536000
+
+        stsIncludeSubdomains: true
+
+        stsPreload: true
+
+        forceSTSHeader: true
+
+        customResponseHeaders:
+
+          X-Frame-Options: "DENY"
+
+          X-Content-Type-Options: "nosniff"
+
+          X-XSS-Protection: "1; mode=block"
