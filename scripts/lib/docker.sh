@@ -10,9 +10,14 @@
 
 docker_compose_config() {
 
+    require_docker
+
+    [[ -f "${COMPOSE_FILE}" ]] \
+        || die "Compose file not found: ${COMPOSE_FILE}"
+
     (
         cd "${STACK_DIR}"
-        ${DOCKER_COMPOSE} config >/dev/null
+        docker compose config >/dev/null
     )
 
     log_success "Compose configuration is valid."
@@ -20,24 +25,30 @@ docker_compose_config() {
 
 docker_compose_ps() {
 
+    require_docker
+
     (
         cd "${STACK_DIR}"
-        ${DOCKER_COMPOSE} ps
+        docker compose ps
     )
 }
 
 docker_compose_pull() {
 
+    require_docker
+
     (
         cd "${STACK_DIR}"
-        ${DOCKER_COMPOSE} pull
+        docker compose pull
     )
 }
 
 docker_compose_up() {
 
+    require_docker
+
     (
         cd "${STACK_DIR}"
-        ${DOCKER_COMPOSE} up -d
+        docker compose up -d
     )
 }

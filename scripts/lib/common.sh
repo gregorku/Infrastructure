@@ -13,20 +13,43 @@ die() {
     exit 1
 }
 
+separator() {
+    printf '%80s\n' '' | tr ' ' '-'
+}
+
 require_root() {
-    [[ "${EUID}" -eq 0 ]] || die "Run this script as root."
+
+    [[ "${EUID}" -eq 0 ]] \
+        || die "Run this script as root."
 }
 
 require_command() {
+
     command -v "$1" >/dev/null 2>&1 \
         || die "Required command not found: $1"
 }
 
-separator() {
-    printf '%*s\n' "${COLUMNS:-80}" '' | tr ' ' '-'
+require_git() {
+
+    require_command git
+}
+
+require_rsync() {
+
+    require_command rsync
+}
+
+require_docker() {
+
+    require_command docker
+
+    docker compose version >/dev/null 2>&1 \
+        || die "Docker Compose plugin is not available."
 }
 
 confirm() {
+
+    local reply
 
     read -r -p "$1 [y/N]: " reply
 

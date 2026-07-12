@@ -7,12 +7,11 @@
 #   scripts/config.sh
 #
 # Description:
-#   Common configuration shared by all scripts.
+#   Common configuration shared by all Infrastructure scripts.
 #
 ###############################################################################
 
 set -Eeuo pipefail
-
 IFS=$'\n\t'
 
 ###############################################################################
@@ -28,7 +27,7 @@ readonly PROJECT_NAME="Infrastructure"
 readonly GIT_DIR="/incus-dir/git/${PROJECT_NAME}"
 
 ###############################################################################
-# Dockge
+# Dockge stack
 ###############################################################################
 
 readonly STACK_DIR="/zfs-data/stacks/${PROJECT_NAME}"
@@ -40,12 +39,10 @@ readonly STACK_DIR="/zfs-data/stacks/${PROJECT_NAME}"
 readonly DATA_DIR="/zfs-data/infrastructure-data"
 
 ###############################################################################
-# Docker
+# Compose
 ###############################################################################
 
 readonly COMPOSE_FILE="${STACK_DIR}/compose.yaml"
-
-readonly DOCKER_COMPOSE="docker compose"
 
 ###############################################################################
 # Colors
