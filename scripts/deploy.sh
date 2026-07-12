@@ -27,10 +27,12 @@ source "${SCRIPT_DIR}/lib/docker-compose.sh"
 # Main
 ###############################################################################
 
-print_header "Infrastructure deployment"
+print_section "Infrastructure deployment"
 
 check_environment
 
+###############################################################################
+# Synchronizing stack
 ###############################################################################
 
 print_section "Synchronizing stack"
