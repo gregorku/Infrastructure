@@ -16,8 +16,11 @@ docker_compose_config() {
         || die "Compose file not found: ${COMPOSE_FILE}"
 
     (
-        cd "${STACK_DIR}"
-        docker compose config >/dev/null
+    cd "${STACK_DIR}"
+
+    docker compose \
+        --env-file .env \
+        config >/dev/null
     )
 
     log_success "Compose configuration is valid."
