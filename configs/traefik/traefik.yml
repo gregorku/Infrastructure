@@ -10,70 +10,119 @@
 #
 ###############################################################################
 
+###############################################################################
+# Global
+###############################################################################
+
 global:
-  checkNewVersion: true
+
+  #
+  # Disable version check
+  #
+
+  checkNewVersion: false
+
+  #
+  # Disable anonymous telemetry
+  #
+
   sendAnonymousUsage: false
 
+###############################################################################
+# API / Dashboard
+###############################################################################
+
 api:
+
+  #
+  # Enable dashboard
+  #
+
   dashboard: true
+
+  #
+  # First startup only.
+  #
+  # Later:
+  #
+  # api:
+  #   insecure: false
+  #
+  # Dashboard will be published through
+  # a dedicated router protected
+  # by BasicAuth.
+  #
+
+  insecure: true
+
+###############################################################################
+# Ping
+###############################################################################
 
 ping: {}
 
-log:
-  level: INFO
-
-accessLog:
-  filePath: /var/log/traefik/access.log
-  bufferingSize: 100
-
-providers:
-
-  docker:
-    endpoint: "unix:///var/run/docker.sock"
-    exposedByDefault: false
-    network: bridge-moje
-
-  file:
-    directory: /etc/traefik/dynamic
-    watch: true
+###############################################################################
+# EntryPoints
+###############################################################################
 
 entryPoints:
 
+  ###########################################################################
+  # HTTP
+  ###########################################################################
+
   web:
+
     address: ":80"
 
+  ###########################################################################
+  # HTTPS
+  ###########################################################################
+
   websecure:
+
     address: ":443"
 
-  traefik:
-    address: ":8080"
+###############################################################################
+# Providers
+###############################################################################
 
-  prometheus:
-    address: ":9090"
+providers:
 
-  alertmanager:
-    address: ":9093"
+  ###########################################################################
+  # Docker Provider
+  ###########################################################################
 
-certificatesResolvers:
+  docker:
 
-  letsencrypt:
+    endpoint: "unix:///var/run/docker.sock"
 
-    acme:
+    exposedByDefault: false
 
-      email: your@email.cz
+  ###########################################################################
+  # File Provider
+  ###########################################################################
 
-      storage: /etc/traefik/acme/acme.json
+  file:
 
-      httpChallenge:
+    directory: /etc/traefik/dynamic
 
-        entryPoint: web
+    watch: true
 
-metrics:
+###############################################################################
+# Logging
+###############################################################################
 
-  prometheus:
+log:
 
-    addEntryPointsLabels: true
+  level: INFO
 
-    addRoutersLabels: true
+  filePath: /var/log/traefik/traefik.log
 
-    addServicesLabels: true
+###############################################################################
+# Access Log
+###############################################################################
+
+accessLog:
+
+  filePath: /var/log/traefik/access.log

@@ -14,59 +14,114 @@ services:
 
   traefik:
 
+    ###########################################################################
+    # Image
+    ###########################################################################
+
     image: traefik:${TRAEFIK_VERSION}
+
+    container_name: traefik
 
     hostname: traefik
 
     restart: unless-stopped
 
-    command:
-      - --configFile=/etc/traefik/traefik.yml
-
-    networks:
-
-      bridge-moje:
-        ipv4_address: ${IP_TRAEFIK}
-
-      traefik-moje:
-        ipv4_address: ${IP_TRAEFIK_PUBLIC}
-
-    ports:
-
-      - "80:80"
-      - "443:443"
-
-      # Administration
-      - "8080:8080"   # Dashboard
-      - "8081:8081"   # Grafana
-      - "8082:8082"   # Prometheus
-      - "8083:8083"   # Alertmanager
-      - "8084:8084"   # CrowdSec
-      - "8085:8085"   # Loki
-      - "8086:8086"   # Metabase
-
-    volumes:
-
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-
-      - ./configs/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
-
-      - ./configs/traefik/dynamic:/etc/traefik/dynamic:ro
-
-      - ${INFRASTRUCTURE_DATA}/traefik/acme:/etc/traefik/acme
-
-      - ${INFRASTRUCTURE_DATA}/traefik/logs:/var/log/traefik
+    ###########################################################################
+    # Security
+    ###########################################################################
 
     security_opt:
 
       - no-new-privileges:true
 
+    ###########################################################################
+    # Configuration
+    ###########################################################################
+
+    command:
+
+      - --configFile=/etc/traefik/traefik.yml
+
+    ###########################################################################
+    # Networks
+    ###########################################################################
+
+    networks:
+
+      bridge-moje:
+
+        ipv4_address: ${IP_TRAEFIK}
+
+      traefik-moje:
+
+        ipv4_address: ${IP_TRAEFIK_PUBLIC}
+
+    ###########################################################################
+    # Published Ports
+    ###########################################################################
+
+    ports:
+
+      #
+      # Internet
+      #
+
+      - "80:80"
+
+      - "443:443"
+
+      #
+      # WireGuard Administration
+      #
+
+      - "8080:8080"
+
+    ###########################################################################
+    # Volumes
+    ###########################################################################
+
+    volumes:
+
+      #
+      # Docker socket
+      #
+
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+      #
+      # Static configuration
+      #
+
+      - ./configs/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+
+      #
+      # Dynamic configuration
+      #
+
+      - ./configs/traefik/dynamic:/etc/traefik/dynamic:ro
+
+      #
+      # Persistent data
+      #
+
+      - ${INFRASTRUCTURE_DATA}/traefik/acme:/etc/traefik/acme
+
+      - ${INFRASTRUCTURE_DATA}/traefik/logs:/var/log/traefik
+
+    ###########################################################################
+    # Healthcheck
+    ###########################################################################
+
     healthcheck:
 
       test:
+
         - CMD
+
         - traefik
+
         - healthcheck
+
         - --ping
 
       interval: 30s
@@ -75,7 +130,9 @@ services:
 
       retries: 3
 
-      start_period: 10s
+    ###########################################################################
+    # Logging
+    ###########################################################################
 
     logging:
 
@@ -86,7 +143,3 @@ services:
         max-size: ${LOG_MAX_SIZE}
 
         max-file: "${LOG_MAX_FILES}"
-
-    labels:
-
-      - traefik.enable=true
