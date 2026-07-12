@@ -9,6 +9,8 @@ source "${SCRIPT_DIR}/config.sh"
 source "${SCRIPT_DIR}/lib/logging.sh"
 source "${SCRIPT_DIR}/lib/common.sh"
 
+source "${SCRIPT_DIR}/lib/filesystem.sh"
+
 separator
 
 log_info "Testing Infrastructure library"
@@ -19,3 +21,9 @@ require_command docker
 log_success "Everything is OK."
 
 separator
+
+ensure_directory "/tmp/infrastructure-test"
+
+ensure_file "/tmp/infrastructure-test/test.txt"
+
+log_success "Filesystem library OK."
