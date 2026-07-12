@@ -13,8 +13,8 @@ docker run -d \
   -p 5001:5001 \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /zfs-data/dockge:/app/data \
-  -v /zfs-data/stacks:/data/stacks \
-  -e DOCKGE_STACKS_DIR=/data/stacks \
+  -v /zfs-data/stacks:/zfs-data/stacks \
+  -e DOCKGE_STACKS_DIR=/zfs-data/stacks \
   louislam/dockge:latest
 
 echo

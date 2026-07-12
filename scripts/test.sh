@@ -44,3 +44,23 @@ fi
 log_step "Finished"
 
 log_success "All tests finished successfully."
+
+check_dockge_paths() {
+
+    if docker ps --format '{{.Names}}' | grep -qx dockge; then
+
+        local path
+
+        path=$(docker exec dockge printenv DOCKGE_STACKS_DIR)
+
+        if [[ "$path" != "/zfs-data/stacks" ]]; then
+
+            fail "Dockge uses wrong stack path: $path"
+
+        fi
+
+        ok "Dockge stack path OK."
+
+    fi
+
+}
