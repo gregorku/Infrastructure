@@ -1,42 +1,73 @@
 #!/usr/bin/env bash
+
 ###############################################################################
 #
 # Infrastructure Project
 #
 # File:
-#   scripts/deploy.sh
+#   deploy.sh
+#
+# Description:
+#   Synchronize Git repository into Docker stack directory.
 #
 ###############################################################################
 
+set -euo pipefail
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "${SCRIPT_DIR}/bootstrap.sh"
+source "${SCRIPT_DIR}/config.sh"
+source "${SCRIPT_DIR}/lib/logging.sh"
+source "${SCRIPT_DIR}/lib/common.sh"
+source "${SCRIPT_DIR}/lib/filesystem.sh"
+source "${SCRIPT_DIR}/lib/sync.sh"
+source "${SCRIPT_DIR}/lib/docker-compose.sh"
 
-log_step "Infrastructure deployment"
+###############################################################################
+# Main
+###############################################################################
 
-require_root
-require_git
-require_rsync
-require_docker
+print_header "Infrastructure deployment"
 
-log_success "Environment OK."
+check_environment
 
-log_step "Synchronizing stack"
+###############################################################################
+
+print_section "Synchronizing stack"
 
 ensure_directory "${STACK_DIR}"
 
-for item in "${DEPLOY_ITEMS[@]}"; do
-    sync_item "${item}"
-done
+sync_item compose.yml
+sync_item compose
+sync_item configs
+sync_item .env.example
 
-copy_env_if_missing
+###############################################################################
+# .env
+###############################################################################
 
-log_step "Compose validation"
+if [[ ! -f "${STACK_DIR}/.env" ]]; then
+    cp "${STACK_DIR}/.env.example" "${STACK_DIR}/.env"
+    ok ".env created from .env.example"
+else
+    info ".env already exists"
+fi
+
+###############################################################################
+# Validate compose
+###############################################################################
+
+print_section "Compose validation"
 
 validate_compose
 
-log_step "Deployment completed"
+###############################################################################
+# Finished
+###############################################################################
 
-log_success "Stack synchronized."
+print_section "Deployment completed"
 
-log_info "Open Dockge and click Redeploy."
+ok "Stack synchronized."
+
+info "Stack directory : ${STACK_DIR}"
+info "Open Dockge and click Redeploy."
