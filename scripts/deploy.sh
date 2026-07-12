@@ -8,46 +8,35 @@
 #
 ###############################################################################
 
-set -euo pipefail
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "${SCRIPT_DIR}/config.sh"
+source "${SCRIPT_DIR}/bootstrap.sh"
 
-echo
-echo "Deploying ${PROJECT_NAME}"
-echo
+log_step "Infrastructure deployment"
 
-mkdir -p "${STACK_DIR}"
+require_root
+require_git
+require_rsync
+require_docker
 
-echo "Synchronizing stack..."
+log_success "Environment OK."
 
-rsync -av --delete \
-    --exclude ".git" \
-    --exclude ".github" \
-    --exclude "docs" \
-    --exclude "examples" \
-    --exclude "scripts" \
-    --exclude ".env" \
-    "${GIT_DIR}/" \
-    "${STACK_DIR}/"
+log_step "Synchronizing stack"
 
-if [[ ! -f "${STACK_DIR}/.env" ]]; then
-    echo "Creating .env from .env.example"
-    cp "${STACK_DIR}/.env.example" "${STACK_DIR}/.env"
-fi
+ensure_directory "${STACK_DIR}"
 
-echo
-echo "Validating compose..."
+for item in "${DEPLOY_ITEMS[@]}"; do
+    sync_item "${item}"
+done
 
-cd "${STACK_DIR}"
+copy_env_if_missing
 
-${DOCKER_COMPOSE} config
+log_step "Compose validation"
 
-echo
-echo "Deployment finished."
-echo
-echo "Open Dockge and click:"
-echo
-echo "   Redeploy"
-echo
+validate_compose
+
+log_step "Deployment completed"
+
+log_success "Stack synchronized."
+
+log_info "Open Dockge and click Redeploy."

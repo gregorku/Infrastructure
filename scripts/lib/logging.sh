@@ -32,7 +32,7 @@ log_step() {
 
     separator
 
-    log_info "$*"
+    printf "%s\n" "$*"
 
     separator
 }

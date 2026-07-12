@@ -53,3 +53,14 @@ readonly COLOR_GREEN="\033[0;32m"
 readonly COLOR_YELLOW="\033[1;33m"
 readonly COLOR_BLUE="\033[0;34m"
 readonly COLOR_RESET="\033[0m"
+
+###############################################################################
+# Deploy
+###############################################################################
+
+readonly DEPLOY_ITEMS=(
+    "compose.yaml"
+    "compose"
+    "configs"
+    ".env.example"
+)
