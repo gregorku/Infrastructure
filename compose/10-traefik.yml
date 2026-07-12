@@ -20,9 +20,6 @@ services:
 
     restart: unless-stopped
 
-    env_file:
-      - .env
-
     command:
       - --configFile=/etc/traefik/traefik.yml
 
