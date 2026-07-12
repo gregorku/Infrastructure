@@ -42,7 +42,7 @@ readonly DATA_DIR="/zfs-data/infrastructure-data"
 # Compose
 ###############################################################################
 
-readonly COMPOSE_FILE="${STACK_DIR}/compose.yaml"
+readonly COMPOSE_FILE="${STACK_DIR}/compose.yml"
 
 ###############################################################################
 # Colors
@@ -59,7 +59,7 @@ readonly COLOR_RESET="\033[0m"
 ###############################################################################
 
 readonly DEPLOY_ITEMS=(
-    "compose.yaml"
+    "compose.yml"
     "compose"
     "configs"
     ".env.example"
