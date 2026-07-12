@@ -1,18 +1,54 @@
 #!/usr/bin/env bash
+###############################################################################
+#
+# Infrastructure Project
+#
+# File:
+#   scripts/init.sh
+#
+###############################################################################
 
-set -euo pipefail
+set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 source "${SCRIPT_DIR}/config.sh"
 
-mkdir -p "${DATA_DIR}"
+source "${SCRIPT_DIR}/lib/logging.sh"
+source "${SCRIPT_DIR}/lib/common.sh"
+source "${SCRIPT_DIR}/lib/filesystem.sh"
 
-mkdir -p "${DATA_DIR}/traefik/acme"
-mkdir -p "${DATA_DIR}/traefik/logs"
+separator
 
-touch "${DATA_DIR}/traefik/acme/acme.json"
+log_info "Infrastructure initialization"
 
-chmod 600 "${DATA_DIR}/traefik/acme/acme.json"
+separator
 
-echo "Infrastructure initialized."
+require_root
+require_git
+require_docker
+require_rsync
+
+log_success "Environment OK."
+
+separator
+
+ensure_directory "${STACK_DIR}"
+
+ensure_directory "${DATA_DIR}"
+
+log_success "Project directories ready."
+
+separator
+
+create_traefik_layout
+
+create_crowdsec_layout
+
+create_watchtower_layout
+
+separator
+
+log_success "Initialization completed."
+
+separator

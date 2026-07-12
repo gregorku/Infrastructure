@@ -38,3 +38,61 @@ copy_if_missing() {
         log_info "Created ${dst}"
     fi
 }
+
+###############################################################################
+# Permissions
+###############################################################################
+
+ensure_permissions() {
+
+    local mode="$1"
+    local path="$2"
+
+    chmod "${mode}" "${path}"
+}
+
+###############################################################################
+# Traefik
+###############################################################################
+
+create_traefik_layout() {
+
+    ensure_directory "${DATA_DIR}/traefik"
+    ensure_directory "${DATA_DIR}/traefik/acme"
+    ensure_directory "${DATA_DIR}/traefik/logs"
+
+    ensure_file "${DATA_DIR}/traefik/acme/acme.json"
+
+    ensure_permissions 600 \
+        "${DATA_DIR}/traefik/acme/acme.json"
+
+    log_success "Traefik layout ready."
+}
+
+###############################################################################
+# CrowdSec
+###############################################################################
+
+create_crowdsec_layout() {
+
+    ensure_directory "${DATA_DIR}/crowdsec"
+
+    ensure_directory "${DATA_DIR}/crowdsec/config"
+
+    ensure_directory "${DATA_DIR}/crowdsec/data"
+
+    ensure_directory "${DATA_DIR}/crowdsec/db"
+
+    log_success "CrowdSec layout ready."
+}
+
+###############################################################################
+# Watchtower
+###############################################################################
+
+create_watchtower_layout() {
+
+    ensure_directory "${DATA_DIR}/watchtower"
+
+    log_success "Watchtower layout ready."
+}
