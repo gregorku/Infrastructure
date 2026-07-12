@@ -7,44 +7,52 @@
 #   scripts/config.sh
 #
 # Description:
-#   Common configuration for all Infrastructure scripts.
+#   Common configuration shared by all scripts.
 #
 ###############################################################################
 
-set -euo pipefail
+set -Eeuo pipefail
+
+IFS=$'\n\t'
 
 ###############################################################################
 # Project
 ###############################################################################
 
-PROJECT_NAME="Infrastructure"
+readonly PROJECT_NAME="Infrastructure"
 
 ###############################################################################
 # Repository
 ###############################################################################
 
-GIT_DIR="/incus-dir/git/${PROJECT_NAME}"
+readonly GIT_DIR="/incus-dir/git/${PROJECT_NAME}"
 
 ###############################################################################
 # Dockge
 ###############################################################################
 
-STACK_DIR="/zfs-data/stacks/${PROJECT_NAME}"
+readonly STACK_DIR="/zfs-data/stacks/${PROJECT_NAME}"
 
 ###############################################################################
 # Persistent data
 ###############################################################################
 
-DATA_DIR="/zfs-data/infrastructure-data"
-
-###############################################################################
-# Compose
-###############################################################################
-
-COMPOSE_FILE="${STACK_DIR}/compose.yaml"
+readonly DATA_DIR="/zfs-data/infrastructure-data"
 
 ###############################################################################
 # Docker
 ###############################################################################
 
-DOCKER_COMPOSE="docker compose"
+readonly COMPOSE_FILE="${STACK_DIR}/compose.yaml"
+
+readonly DOCKER_COMPOSE="docker compose"
+
+###############################################################################
+# Colors
+###############################################################################
+
+readonly COLOR_RED="\033[0;31m"
+readonly COLOR_GREEN="\033[0;32m"
+readonly COLOR_YELLOW="\033[1;33m"
+readonly COLOR_BLUE="\033[0;34m"
+readonly COLOR_RESET="\033[0m"
