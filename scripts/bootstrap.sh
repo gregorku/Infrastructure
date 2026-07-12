@@ -71,3 +71,7 @@ echo
 
 info "Next step:"
 info "Open Dockge and click Redeploy."
+
+--------------------------------------------------------------------------------
+Infrastructure bootstrap completed successfully.
+--------------------------------------------------------------------------------
