@@ -1,0 +1,43 @@
+###############################################################################
+#
+# Infrastructure Project
+#
+# File:
+#   configs/traefik/dynamic/internal-services.yml
+#
+# Description:
+#   Internal Traefik services and routers.
+#
+###############################################################################
+
+http:
+
+  routers:
+
+    #
+    # Traefik Dashboard
+    #
+    traefik-dashboard:
+
+      entryPoints:
+
+        - traefik
+
+      rule: >
+        PathPrefix(`/api`)
+        || PathPrefix(`/dashboard`)
+
+      service: api@internal
+
+      middlewares:
+
+        - default-chain
+
+        #
+        # Enable after creating credentials.
+        #
+        # - auth-basic
+
+      priority: 100
+
+  services: {}

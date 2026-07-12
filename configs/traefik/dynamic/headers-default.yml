@@ -26,3 +26,9 @@ http:
         customResponseHeaders:
 
           X-Robots-Tag: "noindex,nofollow"
+
+        permissionsPolicy: "interest-cohort=()"
+
+        customResponseHeaders:
+
+          Server: ""          
