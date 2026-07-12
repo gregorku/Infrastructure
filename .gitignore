@@ -1,1 +1,5 @@
-configs/traefik/dynamic/auth-basic.yml
+###############################################################################
+# Traefik credentials
+###############################################################################
+
+configs/traefik/users/dashboard.htpasswd
