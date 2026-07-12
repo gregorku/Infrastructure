@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 ###############################################################################
 #
 # Infrastructure Project
@@ -6,41 +7,90 @@
 # File:
 #   scripts/init.sh
 #
+# Description:
+#   Initialize Infrastructure directory structure.
+#
 ###############################################################################
+
+set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "${SCRIPT_DIR}/bootstrap.sh"
+###############################################################################
+# Configuration
+###############################################################################
 
-log_step "Infrastructure initialization"
+source "${SCRIPT_DIR}/config.sh"
 
-require_root
-require_git
-require_docker
-require_rsync
+###############################################################################
+# Libraries
+###############################################################################
 
-log_success "Environment OK."
+source "${SCRIPT_DIR}/lib/logging.sh"
+source "${SCRIPT_DIR}/lib/common.sh"
+source "${SCRIPT_DIR}/lib/filesystem.sh"
 
-log_step "Project directories"
+###############################################################################
+# Main
+###############################################################################
+
+print_section "Infrastructure initialization"
+
+check_environment
+
+###############################################################################
+# Project directories
+###############################################################################
+
+print_section "Project directories"
 
 ensure_directory "${STACK_DIR}"
 ensure_directory "${DATA_DIR}"
 
-log_info "Stack directory : ${STACK_DIR}"
-log_info "Data directory  : ${DATA_DIR}"
+info "Stack directory : ${STACK_DIR}"
+info "Data directory  : ${DATA_DIR}"
 
-log_step "Traefik"
+###############################################################################
+# Traefik
+###############################################################################
 
-create_traefik_layout
+print_section "Traefik"
 
-log_step "CrowdSec"
+ensure_directory "${TRAEFIK_DIR}"
+ensure_directory "${TRAEFIK_DIR}/acme"
+ensure_directory "${TRAEFIK_DIR}/logs"
 
-create_crowdsec_layout
+ensure_file_mode "${TRAEFIK_DIR}/acme/acme.json" 600
 
-log_step "Watchtower"
+ok "Traefik layout ready."
 
-create_watchtower_layout
+###############################################################################
+# CrowdSec
+###############################################################################
 
-log_step "Finished"
+print_section "CrowdSec"
 
-log_success "Initialization completed."
+ensure_directory "${CROWDSEC_DIR}"
+ensure_directory "${CROWDSEC_DIR}/config"
+ensure_directory "${CROWDSEC_DIR}/data"
+ensure_directory "${CROWDSEC_DIR}/db"
+
+ok "CrowdSec layout ready."
+
+###############################################################################
+# Watchtower
+###############################################################################
+
+print_section "Watchtower"
+
+ensure_directory "${WATCHTOWER_DIR}"
+
+ok "Watchtower layout ready."
+
+###############################################################################
+# Finished
+###############################################################################
+
+print_section "Finished"
+
+ok "Initialization completed."

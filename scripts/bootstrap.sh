@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 ###############################################################################
 #
 # Infrastructure Project
@@ -7,7 +8,7 @@
 #   scripts/bootstrap.sh
 #
 # Description:
-#   Bootstrap loader for Infrastructure scripts.
+#   Bootstrap Infrastructure on a new server.
 #
 ###############################################################################
 
@@ -16,7 +17,7 @@ set -Eeuo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 ###############################################################################
-# Core configuration
+# Configuration
 ###############################################################################
 
 source "${SCRIPT_DIR}/config.sh"
@@ -26,8 +27,47 @@ source "${SCRIPT_DIR}/config.sh"
 ###############################################################################
 
 source "${SCRIPT_DIR}/lib/logging.sh"
-source "${SCRIPT_DIR}/lib/common.sh"
-source "${SCRIPT_DIR}/lib/filesystem.sh"
-source "${SCRIPT_DIR}/lib/docker-compose.sh"
-source "${SCRIPT_DIR}/lib/git.sh"
-source "${SCRIPT_DIR}/lib/sync.sh"
+
+###############################################################################
+# Run one bootstrap step
+#
+# Usage:
+#   run_step init.sh
+#
+###############################################################################
+
+run_step() {
+
+    local script="$1"
+
+    print_section "Running ${script}"
+
+    "${SCRIPT_DIR}/${script}"
+
+    ok "${script} completed."
+}
+
+###############################################################################
+# Main
+###############################################################################
+
+print_section "Infrastructure bootstrap"
+
+run_step init.sh
+
+run_step deploy.sh
+
+run_step test.sh
+
+###############################################################################
+# Finished
+###############################################################################
+
+print_section "Bootstrap completed"
+
+ok "Infrastructure is ready."
+
+echo
+
+info "Next step:"
+info "Open Dockge and click Redeploy."

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 ###############################################################################
 #
 # Infrastructure Project
@@ -6,61 +7,138 @@
 # File:
 #   scripts/test.sh
 #
+# Description:
+#   Verify Infrastructure installation.
+#
 ###############################################################################
+
+set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "${SCRIPT_DIR}/bootstrap.sh"
+###############################################################################
+# Configuration
+###############################################################################
 
-log_step "Testing Infrastructure library"
+source "${SCRIPT_DIR}/config.sh"
 
-require_git
-require_docker
+###############################################################################
+# Libraries
+###############################################################################
 
-log_success "Environment OK."
+source "${SCRIPT_DIR}/lib/logging.sh"
+source "${SCRIPT_DIR}/lib/common.sh"
+source "${SCRIPT_DIR}/lib/filesystem.sh"
+source "${SCRIPT_DIR}/lib/sync.sh"
+source "${SCRIPT_DIR}/lib/docker.sh"
+source "${SCRIPT_DIR}/lib/docker-compose.sh"
 
-log_step "Filesystem"
+###############################################################################
+# Main
+###############################################################################
 
-ensure_directory "/tmp/infrastructure-test"
-ensure_file "/tmp/infrastructure-test/test.txt"
+print_section "Infrastructure test"
 
-log_success "Filesystem library OK."
+check_docker_environment
 
-log_step "Git"
+###############################################################################
+# Project
+###############################################################################
 
-log_info "Git branch   : $(git_current_branch)"
-log_info "Git revision : $(git_current_revision)"
+print_section "Project"
 
-log_step "Docker"
+verify_project
 
-if [[ -f "${COMPOSE_FILE}" ]]; then
-    docker_compose_config
-    log_success "Docker library OK."
-else
-    log_warn "Compose file not found yet."
-    log_info "Expected: ${COMPOSE_FILE}"
-fi
+###############################################################################
+# Stack
+###############################################################################
 
-log_step "Finished"
+print_section "Stack"
 
-log_success "All tests finished successfully."
+require_directory "${STACK_DIR}"
 
-check_dockge_paths() {
+require_file "${STACK_DIR}/compose.yml"
 
-    if docker ps --format '{{.Names}}' | grep -qx dockge; then
+require_directory "${STACK_DIR}/compose"
 
-        local path
+require_directory "${STACK_DIR}/configs"
 
-        path=$(docker exec dockge printenv DOCKGE_STACKS_DIR)
+ok "Stack directory OK."
 
-        if [[ "$path" != "/zfs-data/stacks" ]]; then
+###############################################################################
+# Environment
+###############################################################################
 
-            fail "Dockge uses wrong stack path: $path"
+print_section ".env"
 
-        fi
+require_file "${STACK_DIR}/.env"
+
+ok ".env OK."
+
+###############################################################################
+# Docker Compose
+###############################################################################
+
+print_section "Docker Compose"
+
+validate_compose
+
+###############################################################################
+# Docker daemon
+###############################################################################
+
+print_section "Docker"
+
+ok "Docker daemon OK."
+
+###############################################################################
+# Dockge
+###############################################################################
+
+print_section "Dockge"
+
+if docker_container_running "${DOCKGE_CONTAINER}"; then
+
+    DOCKGE_PATH="$(
+        docker_exec \
+            "${DOCKGE_CONTAINER}" \
+            printenv DOCKGE_STACKS_DIR
+    )"
+
+    if [[ "${DOCKGE_PATH}" == "/zfs-data/stacks" ]]; then
 
         ok "Dockge stack path OK."
 
+    else
+
+        fail "Dockge stack path is '${DOCKGE_PATH}'."
+
     fi
 
-}
+else
+
+    warn "Dockge container is not running."
+
+fi
+
+###############################################################################
+# Docker networks
+###############################################################################
+
+print_section "Docker networks"
+
+docker_network_exists "${NETWORK_INTERNAL}" \
+    || fail "Missing Docker network: ${NETWORK_INTERNAL}"
+
+docker_network_exists "${NETWORK_TRAEFIK}" \
+    || fail "Missing Docker network: ${NETWORK_TRAEFIK}"
+
+ok "Docker networks OK."
+
+###############################################################################
+# Finished
+###############################################################################
+
+print_section "Finished"
+
+ok "Infrastructure framework OK."

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 ###############################################################################
 #
 # Infrastructure Project
@@ -20,6 +21,12 @@ IFS=$'\n\t'
 
 readonly PROJECT_NAME="Infrastructure"
 
+#
+# Docker Compose / Dockge stack name
+# (always lowercase)
+#
+readonly STACK_NAME="infrastructure"
+
 ###############################################################################
 # Repository
 ###############################################################################
@@ -27,10 +34,10 @@ readonly PROJECT_NAME="Infrastructure"
 readonly GIT_DIR="/incus-dir/git/${PROJECT_NAME}"
 
 ###############################################################################
-# Dockge stack
+# Docker stack
 ###############################################################################
 
-readonly STACK_DIR="/zfs-data/stacks/${PROJECT_NAME}"
+readonly STACK_DIR="/zfs-data/stacks/${STACK_NAME}"
 
 ###############################################################################
 # Persistent data
@@ -39,7 +46,47 @@ readonly STACK_DIR="/zfs-data/stacks/${PROJECT_NAME}"
 readonly DATA_DIR="/zfs-data/infrastructure-data"
 
 ###############################################################################
-# Compose
+# Service directories
+###############################################################################
+
+readonly TRAEFIK_DIR="${DATA_DIR}/traefik"
+readonly CROWDSEC_DIR="${DATA_DIR}/crowdsec"
+readonly WATCHTOWER_DIR="${DATA_DIR}/watchtower"
+
+###############################################################################
+# Deployment
+###############################################################################
+
+readonly DEPLOY_ITEMS=(
+    compose.yml
+    compose
+    configs
+    .env.example
+)
+
+###############################################################################
+# Containers
+###############################################################################
+
+readonly DOCKGE_CONTAINER="dockge"
+
+###############################################################################
+# Compose services
+###############################################################################
+
+readonly TRAEFIK_SERVICE="traefik"
+readonly CROWDSEC_SERVICE="crowdsec"
+readonly WATCHTOWER_SERVICE="watchtower"
+
+###############################################################################
+# Docker networks
+###############################################################################
+
+readonly NETWORK_INTERNAL="bridge-moje"
+readonly NETWORK_TRAEFIK="traefik-moje"
+
+###############################################################################
+# Docker Compose
 ###############################################################################
 
 readonly COMPOSE_FILE="${STACK_DIR}/compose.yml"
@@ -53,14 +100,3 @@ readonly COLOR_GREEN="\033[0;32m"
 readonly COLOR_YELLOW="\033[1;33m"
 readonly COLOR_BLUE="\033[0;34m"
 readonly COLOR_RESET="\033[0m"
-
-###############################################################################
-# Deploy
-###############################################################################
-
-readonly DEPLOY_ITEMS=(
-    "compose.yml"
-    "compose"
-    "configs"
-    ".env.example"
-)

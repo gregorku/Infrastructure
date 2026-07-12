@@ -8,27 +8,31 @@
 #   scripts/lib/logging.sh
 #
 # Description:
-#   Logging helpers used by all Infrastructure scripts.
+#   Common logging functions used by all Infrastructure scripts.
 #
 ###############################################################################
 
 ###############################################################################
-# Log messages
+# Internal logging functions
 ###############################################################################
 
 log_info() {
+
     printf "${COLOR_BLUE}[INFO]${COLOR_RESET} %s\n" "$*"
 }
 
 log_success() {
+
     printf "${COLOR_GREEN}[ OK ]${COLOR_RESET} %s\n" "$*"
 }
 
 log_warn() {
+
     printf "${COLOR_YELLOW}[WARN]${COLOR_RESET} %s\n" "$*"
 }
 
 log_error() {
+
     printf "${COLOR_RED}[FAIL]${COLOR_RESET} %s\n" "$*" >&2
 }
 
@@ -46,30 +50,45 @@ log_step() {
 }
 
 ###############################################################################
-# Backward compatibility
+# Public API
 ###############################################################################
 
 info() {
+
     log_info "$@"
 }
 
 ok() {
+
     log_success "$@"
 }
 
 warn() {
+
     log_warn "$@"
 }
 
 fail() {
+
     log_error "$@"
+
     exit 1
 }
 
+###############################################################################
+# Headers
+###############################################################################
+
 print_section() {
+
     log_step "$@"
 }
 
+#
+# Backward compatibility
+#
+
 print_header() {
-    log_step "$@"
+
+    print_section "$@"
 }

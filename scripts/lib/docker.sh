@@ -5,155 +5,158 @@
 # Infrastructure Project
 #
 # File:
-#   scripts/lib/docker-compose.sh
+#   scripts/lib/docker.sh
 #
 # Description:
-#   Docker Compose helper functions.
+#   Docker Engine helper functions.
 #
 ###############################################################################
 
 ###############################################################################
-# Verify Docker Compose
-###############################################################################
-
-require_compose() {
-
-    docker compose version >/dev/null 2>&1 \
-        || fail "Docker Compose plugin not found."
-}
-
-###############################################################################
-# Execute Docker Compose command
+# Docker daemon
 #
 # Usage:
-#   compose_cmd ps
-#   compose_cmd logs
-#   compose_cmd logs traefik
+#   require_docker_daemon
 #
 ###############################################################################
 
-compose_cmd() {
+require_docker_daemon() {
 
-    require_compose
+    require_docker
 
-    (
-        cd "${STACK_DIR}"
-
-        docker compose \
-            --env-file .env \
-            "$@"
-    )
+    docker info >/dev/null 2>&1 \
+        || fail "Docker daemon is not running."
 }
 
 ###############################################################################
-# Validate compose.yml
-###############################################################################
-
-validate_compose() {
-
-    compose_cmd config >/dev/null
-
-    ok "Compose configuration is valid."
-}
-
-###############################################################################
-# Pull images
+# Container exists
 #
 # Usage:
-#   compose_pull
-#   compose_pull "${TRAEFIK_SERVICE}"
+#   docker_container_exists traefik
 #
 ###############################################################################
 
-compose_pull() {
+docker_container_exists() {
 
-    compose_cmd pull "$@"
+    local container="$1"
 
-    ok "Images updated."
+    docker container inspect "${container}" >/dev/null 2>&1
 }
 
 ###############################################################################
-# Start stack or service
+# Container running
 #
 # Usage:
-#   compose_up
-#   compose_up "${TRAEFIK_SERVICE}"
+#   docker_container_running traefik
 #
 ###############################################################################
 
-compose_up() {
+docker_container_running() {
 
-    compose_cmd up -d "$@"
+    local container="$1"
 
-    ok "Started."
+    docker ps \
+        --format '{{.Names}}' \
+        | grep -Fxq "${container}"
 }
 
 ###############################################################################
-# Stop stack or service
+# Execute command
 #
 # Usage:
-#   compose_down
-#   compose_down "${TRAEFIK_SERVICE}"
+#   docker_exec traefik ls /
 #
 ###############################################################################
 
-compose_down() {
+docker_exec() {
 
-    if [[ $# -eq 0 ]]; then
-        compose_cmd down
-    else
-        compose_cmd stop "$@"
-    fi
+    local container="$1"
 
-    ok "Stopped."
+    shift
+
+    docker exec "${container}" "$@"
 }
 
 ###############################################################################
-# Restart service
+# Logs
 #
 # Usage:
-#   compose_restart "${TRAEFIK_SERVICE}"
+#   docker_logs traefik
 #
 ###############################################################################
 
-compose_restart() {
+docker_logs() {
 
-    [[ $# -gt 0 ]] \
-        || fail "compose_restart requires a service name."
-
-    compose_cmd restart "$@"
-
-    ok "Restarted: $*"
+    docker logs "$@"
 }
 
 ###############################################################################
-# Running services
-###############################################################################
-
-compose_ps() {
-
-    compose_cmd ps
-}
-
-###############################################################################
-# Show logs
+# Restart container
 #
 # Usage:
-#   compose_logs
-#   compose_logs "${TRAEFIK_SERVICE}"
+#   docker_restart traefik
 #
 ###############################################################################
 
-compose_logs() {
+docker_restart() {
 
-    compose_cmd logs -f "$@"
+    docker restart "$1" >/dev/null
+
+    ok "Restarted $1."
 }
 
 ###############################################################################
-# Show compose configuration
+# Stop container
+#
+# Usage:
+#   docker_stop traefik
+#
 ###############################################################################
 
-compose_config() {
+docker_stop() {
 
-    compose_cmd config
+    docker stop "$1" >/dev/null
+
+    ok "Stopped $1."
+}
+
+###############################################################################
+# Start container
+#
+# Usage:
+#   docker_start traefik
+#
+###############################################################################
+
+docker_start() {
+
+    docker start "$1" >/dev/null
+
+    ok "Started $1."
+}
+
+###############################################################################
+# Network exists
+#
+# Usage:
+#   docker_network_exists bridge-moje
+#
+###############################################################################
+
+docker_network_exists() {
+
+    docker network inspect "$1" >/dev/null 2>&1
+}
+
+###############################################################################
+# Volume exists
+#
+# Usage:
+#   docker_volume_exists volume-name
+#
+###############################################################################
+
+docker_volume_exists() {
+
+    docker volume inspect "$1" >/dev/null 2>&1
 }

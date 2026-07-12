@@ -28,9 +28,44 @@ sync_item() {
 
     require_file_or_directory "${GIT_DIR}/${item}"
 
-    rsync -a --delete \
+    rsync \
+        -a \
+        --delete \
         "${GIT_DIR}/${item}" \
         "${STACK_DIR}/"
 
     ok "Synced ${item}"
+}
+
+###############################################################################
+# Synchronize complete stack
+#
+# Usage:
+#   sync_stack
+#
+###############################################################################
+
+sync_stack() {
+
+    for item in "${DEPLOY_ITEMS[@]}"; do
+        sync_item "${item}"
+    done
+}
+
+###############################################################################
+# Verify Git project
+#
+# Verify that all files and directories defined in DEPLOY_ITEMS exist.
+#
+###############################################################################
+
+verify_project() {
+
+    local item
+
+    for item in "${DEPLOY_ITEMS[@]}"; do
+        require_file_or_directory "${GIT_DIR}/${item}"
+    done
+
+    ok "Project structure OK."
 }

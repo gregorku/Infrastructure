@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 ###############################################################################
 #
 # Infrastructure Project
@@ -6,17 +7,35 @@
 # File:
 #   scripts/lib/filesystem.sh
 #
+# Description:
+#   Filesystem helper functions.
+#
+###############################################################################
+
+###############################################################################
+# Create directory
+#
+# Usage:
+#   ensure_directory /path/to/directory
+#
 ###############################################################################
 
 ensure_directory() {
 
-    local dir="$1"
+    local directory="$1"
 
-    if [[ ! -d "${dir}" ]]; then
-        mkdir -p "${dir}"
-        log_info "Created directory: ${dir}"
-    fi
+    mkdir -p "${directory}"
+
+    ok "Directory ready: ${directory}"
 }
+
+###############################################################################
+# Create file
+#
+# Usage:
+#   ensure_file /path/to/file
+#
+###############################################################################
 
 ensure_file() {
 
@@ -24,75 +43,63 @@ ensure_file() {
 
     if [[ ! -f "${file}" ]]; then
         touch "${file}"
-        log_info "Created file: ${file}"
+    fi
+
+    ok "File ready: ${file}"
+}
+
+###############################################################################
+# Create file with permissions
+#
+# Usage:
+#   ensure_file_mode /path/to/file 600
+#
+###############################################################################
+
+ensure_file_mode() {
+
+    local file="$1"
+    local mode="$2"
+
+    ensure_file "${file}"
+
+    chmod "${mode}" "${file}"
+
+    ok "Permissions ${mode}: ${file}"
+}
+
+###############################################################################
+# Remove file
+#
+# Usage:
+#   remove_file /path/to/file
+#
+###############################################################################
+
+remove_file() {
+
+    local file="$1"
+
+    if [[ -f "${file}" ]]; then
+        rm -f "${file}"
+        ok "Removed file: ${file}"
     fi
 }
 
-copy_if_missing() {
+###############################################################################
+# Remove directory
+#
+# Usage:
+#   remove_directory /path/to/directory
+#
+###############################################################################
 
-    local src="$1"
-    local dst="$2"
+remove_directory() {
 
-    if [[ ! -f "${dst}" ]]; then
-        cp "${src}" "${dst}"
-        log_info "Created ${dst}"
+    local directory="$1"
+
+    if [[ -d "${directory}" ]]; then
+        rm -rf "${directory}"
+        ok "Removed directory: ${directory}"
     fi
-}
-
-###############################################################################
-# Permissions
-###############################################################################
-
-ensure_permissions() {
-
-    local mode="$1"
-    local path="$2"
-
-    chmod "${mode}" "${path}"
-}
-
-###############################################################################
-# Traefik
-###############################################################################
-
-create_traefik_layout() {
-
-    ensure_directory "${DATA_DIR}/traefik"
-    ensure_directory "${DATA_DIR}/traefik/acme"
-    ensure_directory "${DATA_DIR}/traefik/logs"
-
-    ensure_file "${DATA_DIR}/traefik/acme/acme.json"
-
-    ensure_permissions 600 \
-        "${DATA_DIR}/traefik/acme/acme.json"
-
-    log_success "Traefik layout ready."
-}
-
-###############################################################################
-# CrowdSec
-###############################################################################
-
-create_crowdsec_layout() {
-
-    ensure_directory "${DATA_DIR}/crowdsec"
-
-    ensure_directory "${DATA_DIR}/crowdsec/config"
-
-    ensure_directory "${DATA_DIR}/crowdsec/data"
-
-    ensure_directory "${DATA_DIR}/crowdsec/db"
-
-    log_success "CrowdSec layout ready."
-}
-
-###############################################################################
-# Watchtower
-###############################################################################
-
-create_watchtower_layout() {
-
-    ensure_directory "${DATA_DIR}/watchtower"
-
-    log_success "Watchtower layout ready."
 }

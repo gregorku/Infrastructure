@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 ###############################################################################
 #
 # Infrastructure Project
@@ -6,28 +7,45 @@
 # File:
 #   scripts/lib/common.sh
 #
+# Description:
+#   Common helper functions used by all Infrastructure scripts.
+#
 ###############################################################################
 
-die() {
-    log_error "$*"
-    exit 1
-}
+###############################################################################
+# Separator
+###############################################################################
 
 separator() {
-    printf '%80s\n' '' | tr ' ' '-'
+
+    printf '%*s\n' 80 '' | tr ' ' '-'
 }
+
+###############################################################################
+# Root
+###############################################################################
 
 require_root() {
 
     [[ "${EUID}" -eq 0 ]] \
-        || die "Run this script as root."
+        || fail "This script must be run as root."
 }
+
+###############################################################################
+# Commands
+###############################################################################
 
 require_command() {
 
-    command -v "$1" >/dev/null 2>&1 \
-        || die "Required command not found: $1"
+    local command="$1"
+
+    command -v "${command}" >/dev/null 2>&1 \
+        || fail "Required command not found: ${command}"
 }
+
+###############################################################################
+# Required commands
+###############################################################################
 
 require_git() {
 
@@ -42,23 +60,89 @@ require_rsync() {
 require_docker() {
 
     require_command docker
-
-    docker compose version >/dev/null 2>&1 \
-        || die "Docker Compose plugin is not available."
 }
 
-confirm() {
+###############################################################################
+# Files
+###############################################################################
 
-    local reply
+require_file() {
 
-    read -r -p "$1 [y/N]: " reply
+    local file="$1"
 
-    case "${reply}" in
-        [Yy]|[Yy][Ee][Ss])
-            return 0
-            ;;
-        *)
-            return 1
-            ;;
-    esac
+    [[ -f "${file}" ]] \
+        || fail "Missing file: ${file}"
+}
+
+###############################################################################
+# Directories
+###############################################################################
+
+require_directory() {
+
+    local directory="$1"
+
+    [[ -d "${directory}" ]] \
+        || fail "Missing directory: ${directory}"
+}
+
+###############################################################################
+# Files or directories
+###############################################################################
+
+require_file_or_directory() {
+
+    local path="$1"
+
+    [[ -e "${path}" ]] \
+        || fail "Missing: ${path}"
+}
+
+###############################################################################
+# Environment
+#
+# Generic environment required by all Infrastructure scripts.
+###############################################################################
+
+check_environment() {
+
+    require_root
+
+    require_git
+
+    require_rsync
+
+    ok "Environment OK."
+}
+
+###############################################################################
+# Docker environment
+#
+# Environment required by scripts working with Docker.
+###############################################################################
+
+check_docker_environment() {
+
+    check_environment
+
+    require_docker
+
+    require_docker_daemon
+
+    ok "Docker environment OK."
+}
+
+###############################################################################
+# Run script
+###############################################################################
+
+run_step() {
+
+    local script="$1"
+
+    print_section "Running ${script}"
+
+    "${SCRIPT_DIR}/${script}"
+
+    ok "${script} completed."
 }
