@@ -8,21 +8,11 @@
 #
 ###############################################################################
 
-set -Eeuo pipefail
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "${SCRIPT_DIR}/config.sh"
+source "${SCRIPT_DIR}/bootstrap.sh"
 
-source "${SCRIPT_DIR}/lib/logging.sh"
-source "${SCRIPT_DIR}/lib/common.sh"
-source "${SCRIPT_DIR}/lib/filesystem.sh"
-
-separator
-
-log_info "Infrastructure initialization"
-
-separator
+log_step "Infrastructure initialization"
 
 require_root
 require_git
@@ -31,24 +21,26 @@ require_rsync
 
 log_success "Environment OK."
 
-separator
+log_step "Project directories"
 
 ensure_directory "${STACK_DIR}"
-
 ensure_directory "${DATA_DIR}"
 
-log_success "Project directories ready."
+log_info "Stack directory : ${STACK_DIR}"
+log_info "Data directory  : ${DATA_DIR}"
 
-separator
+log_step "Traefik"
 
 create_traefik_layout
 
+log_step "CrowdSec"
+
 create_crowdsec_layout
+
+log_step "Watchtower"
 
 create_watchtower_layout
 
-separator
+log_step "Finished"
 
 log_success "Initialization completed."
-
-separator

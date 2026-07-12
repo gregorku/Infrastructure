@@ -8,40 +8,30 @@
 #
 ###############################################################################
 
-set -Eeuo pipefail
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "${SCRIPT_DIR}/config.sh"
+source "${SCRIPT_DIR}/bootstrap.sh"
 
-source "${SCRIPT_DIR}/lib/logging.sh"
-source "${SCRIPT_DIR}/lib/common.sh"
-source "${SCRIPT_DIR}/lib/filesystem.sh"
-source "${SCRIPT_DIR}/lib/docker.sh"
-source "${SCRIPT_DIR}/lib/git.sh"
-
-separator
-
-log_info "Testing Infrastructure library"
+log_step "Testing Infrastructure library"
 
 require_git
 require_docker
 
 log_success "Environment OK."
 
-separator
+log_step "Filesystem"
 
 ensure_directory "/tmp/infrastructure-test"
 ensure_file "/tmp/infrastructure-test/test.txt"
 
 log_success "Filesystem library OK."
 
-separator
+log_step "Git"
 
 log_info "Git branch   : $(git_current_branch)"
 log_info "Git revision : $(git_current_revision)"
 
-separator
+log_step "Docker"
 
 if [[ -f "${COMPOSE_FILE}" ]]; then
     docker_compose_config
@@ -51,6 +41,6 @@ else
     log_info "Expected: ${COMPOSE_FILE}"
 fi
 
-separator
+log_step "Finished"
 
 log_success "All tests finished successfully."
