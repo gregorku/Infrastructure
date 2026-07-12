@@ -100,3 +100,11 @@ readonly COLOR_GREEN="\033[0;32m"
 readonly COLOR_YELLOW="\033[1;33m"
 readonly COLOR_BLUE="\033[0;34m"
 readonly COLOR_RESET="\033[0m"
+
+###############################################################################
+# Traefik
+###############################################################################
+
+readonly TRAEFIK_CONFIG_DIR="${GIT_DIR}/configs/traefik"
+
+readonly TRAEFIK_USERS_DIR="${TRAEFIK_CONFIG_DIR}/users"

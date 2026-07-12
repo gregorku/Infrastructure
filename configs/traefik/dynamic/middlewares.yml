@@ -48,7 +48,7 @@ http:
           #
           # Enable after creating credentials.
           #
-          # - auth-basic
+          - auth-basic
 
     #
     # Public middleware chain
