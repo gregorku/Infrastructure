@@ -136,6 +136,15 @@ docker_network_exists "${NETWORK_TRAEFIK}" \
 ok "Docker networks OK."
 
 ###############################################################################
+# Dashboard authentication
+###############################################################################
+print_section "Dashboard authentication"
+
+require_file "${TRAEFIK_USERS_DIR}/dashboard.htpasswd"
+
+ok "Dashboard credentials OK."
+
+###############################################################################
 # Finished
 ###############################################################################
 

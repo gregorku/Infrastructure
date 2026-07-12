@@ -102,9 +102,10 @@ readonly COLOR_BLUE="\033[0;34m"
 readonly COLOR_RESET="\033[0m"
 
 ###############################################################################
-# Traefik
+# Traefik configuration
 ###############################################################################
 
 readonly TRAEFIK_CONFIG_DIR="${GIT_DIR}/configs/traefik"
-
+readonly TRAEFIK_DYNAMIC_DIR="${TRAEFIK_CONFIG_DIR}/dynamic"
 readonly TRAEFIK_USERS_DIR="${TRAEFIK_CONFIG_DIR}/users"
+readonly TRAEFIK_HTPASSWD_FILE="${TRAEFIK_USERS_DIR}/dashboard.htpasswd"
