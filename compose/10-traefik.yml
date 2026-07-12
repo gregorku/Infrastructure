@@ -71,7 +71,7 @@ services:
       - "443:443"
 
       #
-      # WireGuard Administration
+      # Administration (WireGuard only)
       #
 
       - "8080:8080"
@@ -89,16 +89,25 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
       #
-      # Static configuration
+      # Static Traefik configuration
+      #
+      # NOTE:
+      # This compose file is located in:
+      #
+      #   compose/
+      #
+      # therefore the path must be:
+      #
+      #   ../configs/...
       #
 
-      - ./configs/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ../configs/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
 
       #
       # Dynamic configuration
       #
 
-      - ./configs/traefik/dynamic:/etc/traefik/dynamic:ro
+      - ../configs/traefik/dynamic:/etc/traefik/dynamic:ro
 
       #
       # Persistent data
