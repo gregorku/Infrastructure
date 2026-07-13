@@ -116,23 +116,6 @@ check_environment() {
 }
 
 ###############################################################################
-# Docker environment
-#
-# Environment required by scripts working with Docker.
-###############################################################################
-
-check_docker_environment() {
-
-    check_environment
-
-    require_docker
-
-    require_docker_daemon
-
-    ok "Docker environment OK."
-}
-
-###############################################################################
 # Run script
 ###############################################################################
 
