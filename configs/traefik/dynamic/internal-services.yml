@@ -39,5 +39,3 @@ http:
         # - auth-basic
 
       priority: 100
-
-  services: {}
