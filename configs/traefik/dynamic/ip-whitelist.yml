@@ -8,7 +8,7 @@ http:
 
   middlewares:
 
-    wireguard-only:
+    ip-whitelist:
 
       ipAllowList:
 
