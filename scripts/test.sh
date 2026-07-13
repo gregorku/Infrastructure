@@ -42,6 +42,10 @@ source "${SCRIPT_DIR}/lib/tests/stack.sh"
 source "${SCRIPT_DIR}/lib/tests/environment.sh"
 source "${SCRIPT_DIR}/lib/tests/compose.sh"
 source "${SCRIPT_DIR}/lib/tests/traefik.sh"
+source "${SCRIPT_DIR}/lib/tests/docker.sh"
+source "${SCRIPT_DIR}/lib/tests/dockge.sh"
+source "${SCRIPT_DIR}/lib/tests/networks.sh"
+source "${SCRIPT_DIR}/lib/tests/dashboard.sh"
 
 ###############################################################################
 # Main
@@ -51,97 +55,15 @@ print_section "Infrastructure test"
 
 check_docker_environment
 
-###############################################################################
-# Project
-###############################################################################
-
 test_project
-
-###############################################################################
-# Stack
-###############################################################################
-
 test_stack
-
-###############################################################################
-# Environment
-###############################################################################
-
 test_environment
-
-###############################################################################
-# Docker Compose
-###############################################################################
-
 test_compose
-
-###############################################################################
-# Docker daemon
-###############################################################################
-
-print_section "Docker"
-
-ok "Docker daemon OK."
-
-###############################################################################
-# Dockge
-###############################################################################
-
-print_section "Dockge"
-
-if docker_container_running "${DOCKGE_CONTAINER}"; then
-
-    DOCKGE_PATH="$(
-        docker_exec \
-            "${DOCKGE_CONTAINER}" \
-            printenv DOCKGE_STACKS_DIR
-    )"
-
-    if [[ "${DOCKGE_PATH}" == "/zfs-data/stacks" ]]; then
-        ok "Dockge stack path OK."
-    else
-        fail "Dockge stack path is '${DOCKGE_PATH}'."
-    fi
-
-else
-
-    warn "Dockge container is not running."
-
-fi
-
-###############################################################################
-# Docker networks
-###############################################################################
-
-print_section "Docker networks"
-
-docker_network_exists "${NETWORK_INTERNAL}" \
-    || fail "Missing Docker network: ${NETWORK_INTERNAL}"
-
-docker_network_exists "${NETWORK_TRAEFIK}" \
-    || fail "Missing Docker network: ${NETWORK_TRAEFIK}"
-
-ok "Docker networks OK."
-
-###############################################################################
-# Dashboard authentication
-###############################################################################
-
-print_section "Dashboard authentication"
-
-require_file "${TRAEFIK_USERS_DIR}/dashboard.htpasswd"
-
-ok "Dashboard credentials OK."
-
-###############################################################################
-# Traefik
-###############################################################################
-
+test_docker
+test_dockge
+test_networks
+test_dashboard
 test_traefik
-
-###############################################################################
-# Finished
-###############################################################################
 
 print_section "Finished"
 
