@@ -21,17 +21,27 @@ set -Eeuo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 ###############################################################################
+# Configuration
+###############################################################################
+
+source "${SCRIPT_DIR}/config.sh"
+
+###############################################################################
 # Core libraries
 ###############################################################################
 
-source "${SCRIPT_DIR}/lib/config.sh"
-
+#
+# Common helper functions.
+#
 source "${SCRIPT_DIR}/lib/common.sh"
 
+#
+# Logging functions.
+#
 source "${SCRIPT_DIR}/lib/logging.sh"
 
 ###############################################################################
-# Required helpers
+# Checks library
 ###############################################################################
 
 #
@@ -69,7 +79,7 @@ source "${SCRIPT_DIR}/lib/deploy/sync.sh"
 source "${SCRIPT_DIR}/lib/deploy/compose.sh"
 
 #
-# Deployment summary.
+# Print deployment summary.
 #
 source "${SCRIPT_DIR}/lib/deploy/summary.sh"
 
@@ -85,12 +95,12 @@ print_header "Infrastructure deployment"
 check_environment
 
 #
-# Verify Docker.
+# Verify Docker environment.
 #
 check_docker_environment
 
 #
-# Verify project.
+# Verify project structure.
 #
 deploy_verify_project
 
@@ -100,11 +110,11 @@ deploy_verify_project
 deploy_sync_stack
 
 #
-# Validate Compose.
+# Validate Docker Compose configuration.
 #
 deploy_validate_compose
 
 #
-# Print summary.
+# Print deployment summary.
 #
 deploy_summary
