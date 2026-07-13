@@ -91,16 +91,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
       #
-      # Static Traefik configuration
-      #
-      # NOTE:
-      # This compose file is located in:
-      #
-      #   compose/
-      #
-      # therefore the path must be:
-      #
-      #   ../configs/...
+      # Static configuration
       #
 
       - ../configs/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
@@ -110,6 +101,12 @@ services:
       #
 
       - ../configs/traefik/dynamic:/etc/traefik/dynamic:ro
+
+      #
+      # Dashboard BasicAuth users
+      #
+
+      - ../configs/traefik/users:/etc/traefik/users:ro
 
       #
       # Persistent data
