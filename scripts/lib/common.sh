@@ -57,10 +57,6 @@ require_rsync() {
     require_command rsync
 }
 
-require_docker() {
-
-    require_command docker
-}
 
 ###############################################################################
 # Files
