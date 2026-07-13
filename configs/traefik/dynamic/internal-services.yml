@@ -23,6 +23,10 @@ http:
 
         - admin
 
+    tls:
+
+      options: default
+
       rule: >
         PathPrefix(`/api`)
         || PathPrefix(`/dashboard`)
