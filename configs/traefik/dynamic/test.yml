@@ -1,7 +1,0 @@
-http:
-
-  middlewares:
-
-    test:
-
-      compress: {}
