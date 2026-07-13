@@ -23,9 +23,9 @@ http:
 
         - admin
 
-    tls:
+      tls:
 
-      options: default
+        options: default
 
       rule: >
         PathPrefix(`/api`)
@@ -37,9 +37,6 @@ http:
 
         - default-chain
 
-        #
-        # Enable after creating credentials.
-        #
-        # - auth-basic
-
       priority: 100
+
+  services: {}
