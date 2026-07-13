@@ -56,11 +56,8 @@ verify_project
 print_section "Stack"
 
 require_directory "${STACK_DIR}"
-
 require_file "${STACK_DIR}/compose.yml"
-
 require_directory "${STACK_DIR}/compose"
-
 require_directory "${STACK_DIR}/configs"
 
 ok "Stack directory OK."
@@ -106,13 +103,9 @@ if docker_container_running "${DOCKGE_CONTAINER}"; then
     )"
 
     if [[ "${DOCKGE_PATH}" == "/zfs-data/stacks" ]]; then
-
         ok "Dockge stack path OK."
-
     else
-
         fail "Dockge stack path is '${DOCKGE_PATH}'."
-
     fi
 
 else
@@ -138,11 +131,40 @@ ok "Docker networks OK."
 ###############################################################################
 # Dashboard authentication
 ###############################################################################
+
 print_section "Dashboard authentication"
 
 require_file "${TRAEFIK_USERS_DIR}/dashboard.htpasswd"
 
 ok "Dashboard credentials OK."
+
+###############################################################################
+# Traefik File Provider
+###############################################################################
+
+print_section "Traefik"
+
+docker_container_running "${TRAEFIK_SERVICE}" \
+    || fail "Traefik container is not running."
+
+RAWDATA="$(
+    docker_exec "${TRAEFIK_SERVICE}" \
+        wget -qO- http://127.0.0.1:8080/api/rawdata
+)"
+
+grep -q '"default-chain@file"' <<<"${RAWDATA}" \
+    || fail "Missing middleware: default-chain@file"
+
+grep -q '"auth-basic@file"' <<<"${RAWDATA}" \
+    || fail "Missing middleware: auth-basic@file"
+
+grep -q '"ip-whitelist@file"' <<<"${RAWDATA}" \
+    || fail "Missing middleware: ip-whitelist@file"
+
+grep -q '"traefik-dashboard@file"' <<<"${RAWDATA}" \
+    || fail "Missing router: traefik-dashboard@file"
+
+ok "Traefik File Provider OK."
 
 ###############################################################################
 # Finished
