@@ -122,7 +122,7 @@ providers:
 
 log:
 
-  level: DEBUG
+  level: INFO
 
   filePath: /var/log/traefik/traefik.log
 
