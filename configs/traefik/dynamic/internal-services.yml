@@ -21,7 +21,7 @@ http:
 
       entryPoints:
 
-        - traefik
+        - admin
 
       rule: >
         PathPrefix(`/api`)
