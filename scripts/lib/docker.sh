@@ -160,3 +160,8 @@ docker_volume_exists() {
 
     docker volume inspect "$1" >/dev/null 2>&1
 }
+
+traefik_api() {
+    docker_exec "${TRAEFIK_SERVICE}" \
+        wget -qO- "http://127.0.0.1:8080/$1"
+}
