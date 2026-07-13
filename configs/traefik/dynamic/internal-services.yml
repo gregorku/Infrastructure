@@ -23,10 +23,6 @@ http:
 
         - admin
 
-      tls:
-
-        options: default
-
       rule: >
         PathPrefix(`/api`)
         || PathPrefix(`/dashboard`)
@@ -36,6 +32,10 @@ http:
       middlewares:
 
         - default-chain
+
+      tls:
+
+        options: default
 
       priority: 100
 
