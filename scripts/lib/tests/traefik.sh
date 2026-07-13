@@ -25,19 +25,15 @@ test_traefik()
     #
     # Dashboard must be protected.
     #
-    local output
+    local headers
 
-    output="$(
-        docker_exec "${TRAEFIK_SERVICE}" \
-            wget \
-                --no-check-certificate \
-                -S \
-                -O /dev/null \
-                https://127.0.0.1:8443/dashboard/ \
-                2>&1 || true
+    headers="$(
+        docker_http_headers \
+            "${TRAEFIK_SERVICE}" \
+            "https://127.0.0.1:8443/dashboard/"
     )"
 
-    echo "${output}" \
+    echo "${headers}" \
         | grep -Eq "HTTP/1\.[01] (401|403)" \
         || fail "Dashboard protection is not enabled."
 

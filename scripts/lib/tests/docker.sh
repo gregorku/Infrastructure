@@ -1,21 +1,22 @@
 ###############################################################################
 #
-# Infrastructure Project
+# Get HTTP response headers from inside a container.
 #
-# File:
-#   scripts/lib/tests/docker.sh
-#
-# Description:
-#   Docker validation tests.
+# Usage:
+#   docker_http_headers <container> <url>
 #
 ###############################################################################
 
-test_docker()
+docker_http_headers()
 {
-    print_section "Docker"
+    local container="$1"
+    local url="$2"
 
-    docker info >/dev/null 2>&1 \
-        || fail "Docker daemon is not available."
-
-    ok "Docker daemon OK."
+    docker_exec "${container}" \
+        wget \
+            --no-check-certificate \
+            -S \
+            -O /dev/null \
+            "${url}" \
+            2>&1 || true
 }
