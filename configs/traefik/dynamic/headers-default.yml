@@ -23,12 +23,10 @@ http:
 
         referrerPolicy: "strict-origin-when-cross-origin"
 
-        customResponseHeaders:
-
-          X-Robots-Tag: "noindex,nofollow"
-
         permissionsPolicy: "interest-cohort=()"
 
         customResponseHeaders:
 
-          Server: ""          
+          X-Robots-Tag: "noindex,nofollow"
+
+          Server: ""
