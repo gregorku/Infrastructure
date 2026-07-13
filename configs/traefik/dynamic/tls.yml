@@ -56,4 +56,4 @@ tls:
       # SNI
       #
 
-      sniStrict: true
+      sniStrict: false
