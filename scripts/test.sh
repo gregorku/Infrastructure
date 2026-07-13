@@ -62,7 +62,7 @@ test_compose
 test_docker
 test_dockge
 test_networks
-test_dashboard-security
+test_dashboard
 test_traefik
 
 print_section "Finished"

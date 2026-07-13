@@ -23,17 +23,23 @@ test_traefik()
     ok "Traefik container OK."
 
     #
-    # Dashboard must be protected by BasicAuth.
+    # Dashboard must be protected.
     #
-docker_exec "${TRAEFIK_SERVICE}" \
-    wget \
-        --no-check-certificate \
-        -S \
-        -O /dev/null \
-        https://127.0.0.1:8443/dashboard/ \
-        2>&1 \
-    | grep -Eq "401|403" \
-    || fail "Dashboard protection is not enabled."
+    local output
 
-ok "Dashboard protection OK."
+    output="$(
+        docker_exec "${TRAEFIK_SERVICE}" \
+            wget \
+                --no-check-certificate \
+                -S \
+                -O /dev/null \
+                https://127.0.0.1:8443/dashboard/ \
+                2>&1 || true
+    )"
+
+    echo "${output}" \
+        | grep -Eq "HTTP/1\.[01] (401|403)" \
+        || fail "Dashboard protection is not enabled."
+
+    ok "Dashboard protection OK."
 }
