@@ -14,6 +14,10 @@
 
 set -Eeuo pipefail
 
+###############################################################################
+# Directories
+###############################################################################
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 ###############################################################################
@@ -23,74 +27,60 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/config.sh"
 
 ###############################################################################
-# Libraries
+# Core libraries
 ###############################################################################
 
-source "${SCRIPT_DIR}/lib/logging.sh"
 source "${SCRIPT_DIR}/lib/common.sh"
-source "${SCRIPT_DIR}/lib/filesystem.sh"
+source "${SCRIPT_DIR}/lib/logging.sh"
+
+###############################################################################
+# Checks library
+###############################################################################
+
+source "${SCRIPT_DIR}/lib/checks/load.sh"
+
+###############################################################################
+# Initialization modules
+###############################################################################
+
+source "${SCRIPT_DIR}/lib/init/directories.sh"
+source "${SCRIPT_DIR}/lib/init/traefik.sh"
+source "${SCRIPT_DIR}/lib/init/crowdsec.sh"
+source "${SCRIPT_DIR}/lib/init/watchtower.sh"
+source "${SCRIPT_DIR}/lib/init/summary.sh"
 
 ###############################################################################
 # Main
 ###############################################################################
 
-print_section "Infrastructure initialization"
+print_header "Infrastructure initialization"
 
+#
+# Verify environment.
+#
 check_environment
 
-###############################################################################
-# Project directories
-###############################################################################
+#
+# Create project directories.
+#
+init_directories
 
-print_section "Project directories"
+#
+# Initialize Traefik.
+#
+init_traefik
 
-ensure_directory "${STACK_DIR}"
-ensure_directory "${DATA_DIR}"
+#
+# Initialize CrowdSec.
+#
+init_crowdsec
 
-info "Stack directory : ${STACK_DIR}"
-info "Data directory  : ${DATA_DIR}"
+#
+# Initialize Watchtower.
+#
+init_watchtower
 
-###############################################################################
-# Traefik
-###############################################################################
-
-print_section "Traefik"
-
-ensure_directory "${TRAEFIK_DIR}"
-ensure_directory "${TRAEFIK_DIR}/acme"
-ensure_directory "${TRAEFIK_DIR}/logs"
-
-ensure_file_mode "${TRAEFIK_DIR}/acme/acme.json" 600
-
-ok "Traefik layout ready."
-
-###############################################################################
-# CrowdSec
-###############################################################################
-
-print_section "CrowdSec"
-
-ensure_directory "${CROWDSEC_DIR}"
-ensure_directory "${CROWDSEC_DIR}/config"
-ensure_directory "${CROWDSEC_DIR}/data"
-ensure_directory "${CROWDSEC_DIR}/db"
-
-ok "CrowdSec layout ready."
-
-###############################################################################
-# Watchtower
-###############################################################################
-
-print_section "Watchtower"
-
-ensure_directory "${WATCHTOWER_DIR}"
-
-ok "Watchtower layout ready."
-
-###############################################################################
-# Finished
-###############################################################################
-
-print_section "Finished"
-
-ok "Initialization completed."
+#
+# Print initialization summary.
+#
+init_summary
