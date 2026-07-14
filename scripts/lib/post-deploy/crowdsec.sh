@@ -28,8 +28,11 @@ post_deploy_crowdsec()
     # Paths
     ###########################################################################
 
-    local key_dir="${DATA_DIR}/traefik/crowdsec"
-    local key_file="${key_dir}/BOUNCER_KEY_traefik"
+    local key_dir
+    local key_file
+
+    key_dir="${DATA_DIR}/traefik/crowdsec"
+    key_file="${CROWDSEC_BOUNCER_KEY_FILE}"
 
     ensure_directory "${key_dir}"
 
@@ -52,10 +55,10 @@ post_deploy_crowdsec()
     if docker exec "${CROWDSEC_SERVICE}" \
         cscli bouncers list \
         | awk '{print $1}' \
-        | grep -qx "traefik"
+        | grep -qx "${CROWDSEC_BOUNCER_NAME}"
     then
 
-        fail "Traefik bouncer already exists but key file is missing."
+        fail "Bouncer '${CROWDSEC_BOUNCER_NAME}' exists but key file is missing."
 
     fi
 
@@ -63,20 +66,28 @@ post_deploy_crowdsec()
     # Create bouncer
     ###########################################################################
 
-    info "Creating Traefik bouncer..."
+    info "Creating CrowdSec bouncer..."
 
     local output
     local api_key
 
     output="$(
         docker exec "${CROWDSEC_SERVICE}" \
-            cscli bouncers add traefik
+            cscli bouncers add "${CROWDSEC_BOUNCER_NAME}"
     )"
 
     api_key="$(
         printf '%s\n' "${output}" \
-        | grep -E '^[[:space:]]*[A-Za-z0-9]{20,}[[:space:]]*$' \
-        | tr -d '[:space:]'
+        | awk '
+            NF {
+                count++
+                if (count == 2) {
+                    gsub(/[[:space:]]/, "")
+                    print
+                    exit
+                }
+            }
+        '
     )"
 
     [[ -n "${api_key}" ]] \
@@ -86,7 +97,7 @@ post_deploy_crowdsec()
 
     chmod 600 "${key_file}"
 
-    ok "Traefik bouncer created."
+    ok "CrowdSec bouncer created."
 
     ok "Bouncer key saved."
 
