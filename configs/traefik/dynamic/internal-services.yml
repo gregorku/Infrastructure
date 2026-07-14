@@ -24,8 +24,9 @@ http:
         - admin
 
       rule: >
-        PathPrefix(`/api`)
-        || PathPrefix(`/dashboard`)
+        PathPrefix(`/api`) ||
+        PathPrefix(`/dashboard`) ||
+        PathPrefix(`/dashboard/`)
 
       service: api@internal
 
