@@ -33,12 +33,8 @@ test_post_deploy()
         | awk '{print $1}' \
         | grep -qx "${CROWDSEC_BOUNCER_NAME}"
     then
-
-        ok "CrowdSec bouncer OK."
-
+        ok "CrowdSec bouncer exists."
     else
-
         fail "CrowdSec bouncer missing."
-
     fi
 }

@@ -89,3 +89,36 @@ ensure_file_mode()
 
     ok "Permissions ${mode}: ${file}"
 }
+
+###############################################################################
+# Verify file exists
+###############################################################################
+
+file_exists()
+{
+    local file="$1"
+
+    [[ -f "${file}" ]] \
+        || fail "File not found: ${file}"
+
+    ok "File exists: ${file}"
+}
+
+###############################################################################
+# Verify file permissions
+###############################################################################
+
+permissions_are()
+{
+    local expected="$1"
+    local file="$2"
+
+    local current
+
+    current="$(stat -c '%a' "${file}")"
+
+    [[ "${current}" == "${expected}" ]] \
+        || fail "Permissions ${current}, expected ${expected}: ${file}"
+
+    ok "Permissions ${expected}: ${file}"
+}
