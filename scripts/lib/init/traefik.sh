@@ -25,6 +25,8 @@ init_traefik()
     ensure_file_mode \
         "${TRAEFIK_DIR}/acme/acme.json" \
         600
+    
+    ensure_directory "${DATA_DIR}/traefik/crowdsec"
 
     ok "Traefik layout ready."
 }

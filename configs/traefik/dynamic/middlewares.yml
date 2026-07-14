@@ -77,11 +77,16 @@ http:
           - headers-security
 
           #
-          # Enable response compression.
+          # CrowdSec protection.
           #
-          - compress
+          - crowdsec
 
           #
           # Enable request rate limiting.
           #
           - rate-limit
+
+          #
+          # Enable response compression.
+          #
+          - compress
