@@ -14,6 +14,7 @@
 #     - Creates a timestamped backup.
 #     - Adds missing variables from .env.example.
 #     - Never overwrites existing values.
+#     - Never removes obsolete variables.
 #
 ###############################################################################
 
@@ -23,13 +24,17 @@
 
 deploy_update_env()
 {
-    print_section "Updating .env"
+    [[ -d "${STACK_DIR}" ]] \
+        || die "Stack directory not found."
+
+    [[ -f "${STACK_DIR}/.env.example" ]] \
+        || die ".env.example not found."
 
     deploy_create_env
 
     deploy_backup_env
 
-    deploy_add_missing_env_variables
+    deploy_sync_env
 }
 
 ###############################################################################
@@ -58,6 +63,8 @@ deploy_backup_env()
 {
     local backup
 
+    [[ -f "${STACK_DIR}/.env" ]] || return
+
     backup="${STACK_DIR}/.env.bak-$(date +%Y%m%d-%H%M%S)"
 
     cp \
@@ -68,10 +75,10 @@ deploy_backup_env()
 }
 
 ###############################################################################
-# Add missing variables
+# Synchronize .env
 ###############################################################################
 
-deploy_add_missing_env_variables()
+deploy_sync_env()
 {
     local added=0
     local line
@@ -89,7 +96,7 @@ deploy_add_missing_env_variables()
         # Skip empty lines
         #
 
-        [[ -z "${line// }" ]] && continue
+        [[ -z "${line}" ]] && continue
 
         #
         # Skip invalid lines
@@ -103,12 +110,12 @@ deploy_add_missing_env_variables()
         # Variable already exists
         #
 
-        if grep -qE "^${key}[[:space:]]*=" "${STACK_DIR}/.env"; then
+        if grep -q "^${key}=" "${STACK_DIR}/.env"; then
             continue
         fi
 
         #
-        # Append missing variable
+        # Create automatic section
         #
 
         if (( added == 0 )); then
@@ -122,6 +129,10 @@ deploy_add_missing_env_variables()
             } >> "${STACK_DIR}/.env"
 
         fi
+
+        #
+        # Add variable
+        #
 
         echo "${line}" >> "${STACK_DIR}/.env"
 
