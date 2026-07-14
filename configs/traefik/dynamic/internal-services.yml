@@ -11,13 +11,25 @@
 ###############################################################################
 
 http:
+
   routers:
+
     traefik-dashboard:
+
       entryPoints:
         - admin
 
-      rule: PathPrefix(`/`)
+      rule: >
+        PathPrefix(`/api`) ||
+        PathPrefix(`/dashboard`) ||
+        PathPrefix(`/dashboard/`)
 
       service: api@internal
 
-      tls: {}
+      middlewares:
+        - default-chain
+
+      tls:
+        options: default
+
+      priority: 100
