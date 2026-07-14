@@ -1,10 +1,24 @@
+#!/usr/bin/env bash
+
+###############################################################################
+#
+# Infrastructure Project
+#
+# File:
+#   scripts/lib/deploy/summary.sh
+#
+# Description:
+#   Deployment summary.
+#
+###############################################################################
+
 deploy_summary()
 {
     print_section "Deployment completed"
 
     ok "Stack synchronized."
 
-    info "Repository : ${PROJECT_DIR}"
+    info "Repository : ${GIT_DIR}"
     info "Stack      : ${STACK_DIR}"
 
     echo
