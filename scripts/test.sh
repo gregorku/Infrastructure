@@ -51,6 +51,11 @@ source "${SCRIPT_DIR}/lib/tests/docker.sh"
 source "${SCRIPT_DIR}/lib/tests/dockge.sh"
 source "${SCRIPT_DIR}/lib/tests/networks.sh"
 source "${SCRIPT_DIR}/lib/tests/dashboard-security.sh"
+
+###############################################################################
+# Services
+###############################################################################
+
 source "${SCRIPT_DIR}/lib/tests/traefik.sh"
 source "${SCRIPT_DIR}/lib/tests/crowdsec.sh"
 
@@ -71,6 +76,11 @@ test_docker
 test_dockge
 test_networks
 test_dashboard_security
+
+###############################################################################
+# Services
+###############################################################################
+
 test_traefik
 test_crowdsec
 
