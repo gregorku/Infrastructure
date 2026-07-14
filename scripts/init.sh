@@ -46,6 +46,7 @@ source "${SCRIPT_DIR}/lib/checks/load.sh"
 source "${SCRIPT_DIR}/lib/init/directories.sh"
 source "${SCRIPT_DIR}/lib/init/traefik.sh"
 source "${SCRIPT_DIR}/lib/init/crowdsec.sh"
+source "${SCRIPT_DIR}/lib/init/crowdsec-hub.sh"
 source "${SCRIPT_DIR}/lib/init/watchtower.sh"
 source "${SCRIPT_DIR}/lib/init/summary.sh"
 
@@ -74,6 +75,11 @@ init_traefik
 # Initialize CrowdSec.
 #
 init_crowdsec
+
+#
+# Initialize CrowdSec Hub.
+#
+init_crowdsec_hub
 
 #
 # Initialize Watchtower.
