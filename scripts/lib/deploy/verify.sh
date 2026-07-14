@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 ###############################################################################
 #
 # Infrastructure Project
@@ -6,7 +8,7 @@
 #   scripts/lib/deploy/verify.sh
 #
 # Description:
-#   Deployment project verification.
+#   Verify Infrastructure project before deployment.
 #
 ###############################################################################
 
@@ -14,13 +16,11 @@ deploy_verify_project()
 {
     print_section "Verifying project"
 
-    require_directory "${PROJECT_DIR}"
+    local item
 
-    require_file "${PROJECT_DIR}/compose.yml"
-
-    require_directory "${PROJECT_DIR}/compose"
-
-    require_directory "${PROJECT_DIR}/configs"
+    for item in "${DEPLOY_ITEMS[@]}"; do
+        require_file_or_directory "${GIT_DIR}/${item}"
+    done
 
     ok "Project structure OK."
 }
