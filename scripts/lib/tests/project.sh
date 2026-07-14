@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 ###############################################################################
 #
 # Infrastructure Project
@@ -14,5 +16,11 @@ test_project()
 {
     print_section "Project"
 
-    verify_project
+    local item
+
+    for item in "${DEPLOY_ITEMS[@]}"; do
+        require_file_or_directory "${GIT_DIR}/${item}"
+    done
+
+    ok "Project structure OK."
 }
