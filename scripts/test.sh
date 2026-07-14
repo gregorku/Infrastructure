@@ -61,6 +61,7 @@ source "${SCRIPT_DIR}/lib/tests/crowdsec.sh"
 source "${SCRIPT_DIR}/lib/tests/metabase.sh"
 source "${SCRIPT_DIR}/lib/tests/post-deploy.sh"
 source "${SCRIPT_DIR}/lib/tests/watchtower.sh"
+source "${SCRIPT_DIR}/lib/tests/summary.sh"
 
 ###############################################################################
 # Main
@@ -84,6 +85,9 @@ test_dashboard_security
 # Services
 ###############################################################################
 
+#
+# Traefik
+#
 test_traefik
 #
 # CrowdSec
@@ -105,6 +109,4 @@ test_watchtower
 #
 test_post_deploy
 
-print_section "Finished"
-
-ok "Infrastructure framework OK."
+test_summary
