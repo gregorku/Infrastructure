@@ -1,8 +1,24 @@
+###############################################################################
+#
+# Infrastructure Project
+#
+# File:
+#   compose/20-crowdsec.yml
+#
+# Description:
+#   CrowdSec Security Engine
+#
+###############################################################################
+
 services:
+
+  ###########################################################################
+  # CrowdSec
+  ###########################################################################
 
   crowdsec:
 
-    image: crowdsecurity/crowdsec:latest
+    image: crowdsecurity/crowdsec:${CROWDSEC_VERSION}
 
     container_name: crowdsec
 
@@ -10,17 +26,43 @@ services:
 
     networks:
 
-      - infrastructure
+      infrastructure:
+
+        ipv4_address: ${IP_CROWDSEC}
+
+    environment:
+
+      TZ: ${TZ}
 
     volumes:
 
-      - ${DATA_DIR}/crowdsec/config:/etc/crowdsec
+      #
+      # Configuration
+      #
 
-      - ${DATA_DIR}/crowdsec/data:/var/lib/crowdsec/data
+      - ${CROWDSEC_DIR}/config:/etc/crowdsec
 
-      - ${DATA_DIR}/crowdsec/db:/var/lib/crowdsec/db
+      #
+      # Database
+      #
 
-      - ${DATA_DIR}/traefik/logs:/logs:ro
+      - ${CROWDSEC_DIR}/db:/var/lib/crowdsec/db
+
+      #
+      # Runtime data
+      #
+
+      - ${CROWDSEC_DIR}/data:/var/lib/crowdsec/data
+
+      #
+      # Traefik logs
+      #
+
+      - ${TRAEFIK_DIR}/logs:/logs:ro
+
+      #
+      # Docker socket
+      #
 
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
@@ -39,3 +81,11 @@ services:
       timeout: 10s
 
       retries: 5
+
+    security_opt:
+
+      - no-new-privileges:true
+
+    labels:
+
+      - "com.centurylinklabs.watchtower.enable=true"
