@@ -1,16 +1,18 @@
+#!/usr/bin/env bash
+
 ###############################################################################
 #
 # Infrastructure Project
 #
 # File:
-#   scripts/lib/tests/dashboard.sh
+#   scripts/lib/tests/dashboard-security.sh
 #
 # Description:
-#   Dashboard authentication validation.
+#   Dashboard security validation.
 #
 ###############################################################################
 
-test_dashboard()
+test_dashboard_security()
 {
     print_section "Dashboard authentication"
 
