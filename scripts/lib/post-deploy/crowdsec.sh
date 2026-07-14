@@ -48,17 +48,29 @@ post_deploy_crowdsec()
 
     fi
 
-    ###########################################################################
-    # Existing bouncer
-    ###########################################################################
+        ###############################################################################
+        # Existing key
+        ###############################################################################
 
-    if docker exec "${CROWDSEC_SERVICE}" \
-        cscli bouncers list \
-        | awk '{print $1}' \
-        | grep -qx "${CROWDSEC_BOUNCER_NAME}"
-    then
+        if [[ -f "${key_file}" ]]; then
 
-        fail "Bouncer '${CROWDSEC_BOUNCER_NAME}' exists but key file is missing."
+        ###########################################################################
+        # Verify bouncer
+        ###########################################################################
+
+        if docker exec "${CROWDSEC_SERVICE}" \
+            cscli bouncers list \
+            | awk '{print $1}' \
+            | grep -qx "${CROWDSEC_BOUNCER_NAME}"
+        then
+
+            ok "Bouncer key already exists."
+
+            return
+
+        fi
+
+        fail "Bouncer key exists but CrowdSec bouncer '${CROWDSEC_BOUNCER_NAME}' is missing."
 
     fi
 
