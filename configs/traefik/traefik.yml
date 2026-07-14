@@ -41,14 +41,7 @@ api:
   dashboard: true
 
   #
-  # First startup only.
-  #
-  # Later:
-  #
-  # api:
-  #   insecure: false
-  #
-  # Dashboard will be published through
+  # Dashboard is published through
   # a dedicated router protected
   # by BasicAuth.
   #
@@ -88,6 +81,7 @@ entryPoints:
   ###########################################################################
 
   admin:
+
     address: ":8443"
 
 ###############################################################################
@@ -97,7 +91,7 @@ entryPoints:
 providers:
 
   ###########################################################################
-  # Docker Provider
+  # Docker
   ###########################################################################
 
   docker:
@@ -107,7 +101,7 @@ providers:
     exposedByDefault: false
 
   ###########################################################################
-  # File Provider
+  # Dynamic configuration
   ###########################################################################
 
   file:
@@ -115,6 +109,17 @@ providers:
     directory: /etc/traefik/dynamic
 
     watch: true
+
+###############################################################################
+# Experimental
+###############################################################################
+
+#
+# Reserved for future plugins
+# (CrowdSec, etc.)
+#
+
+experimental: {}
 
 ###############################################################################
 # Logging
