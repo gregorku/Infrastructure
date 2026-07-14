@@ -45,6 +45,7 @@ source "${SCRIPT_DIR}/lib/checks/load.sh"
 
 source "${SCRIPT_DIR}/lib/post-deploy/crowdsec.sh"
 source "${SCRIPT_DIR}/lib/post-deploy/metabase.sh"
+source "${SCRIPT_DIR}/lib/post-deploy/watchtower.sh"
 source "${SCRIPT_DIR}/lib/post-deploy/summary.sh"
 
 ###############################################################################
@@ -56,11 +57,19 @@ print_header "Infrastructure post deployment"
 check_environment
 check_docker_environment
 
+#
+# CrowdSec
+#
 post_deploy_crowdsec
 
 #
 # Metabase
 #
 post_deploy_metabase
+
+#
+# Watchtower
+#
+post_deploy_watchtower
 
 post_deploy_summary

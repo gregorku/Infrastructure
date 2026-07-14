@@ -58,7 +58,9 @@ source "${SCRIPT_DIR}/lib/tests/dashboard-security.sh"
 
 source "${SCRIPT_DIR}/lib/tests/traefik.sh"
 source "${SCRIPT_DIR}/lib/tests/crowdsec.sh"
+source "${SCRIPT_DIR}/lib/tests/metabase.sh"
 source "${SCRIPT_DIR}/lib/tests/post-deploy.sh"
+source "${SCRIPT_DIR}/lib/tests/watchtower.sh"
 
 ###############################################################################
 # Main
@@ -83,7 +85,24 @@ test_dashboard_security
 ###############################################################################
 
 test_traefik
+#
+# CrowdSec
+#
 test_crowdsec
+
+#
+# Metabase
+#
+test_metabase
+
+#
+# Watchtower
+#
+test_watchtower
+
+#
+# Post deployment
+#
 test_post_deploy
 
 print_section "Finished"
