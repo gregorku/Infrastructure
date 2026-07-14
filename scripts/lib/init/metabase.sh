@@ -10,7 +10,7 @@
 #
 ###############################################################################
 
-post_init_metabase() {
+init_metabase() {
 
     print_section "Metabase"
 
