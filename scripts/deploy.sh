@@ -1,3 +1,25 @@
+#!/usr/bin/env bash
+
+###############################################################################
+#
+# Infrastructure Project
+#
+# File:
+#   scripts/deploy.sh
+#
+# Description:
+#   Synchronize the Infrastructure repository to the Docker stack directory.
+#
+###############################################################################
+
+set -Eeuo pipefail
+
+###############################################################################
+# Directories
+###############################################################################
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 ###############################################################################
 # Configuration
 ###############################################################################
@@ -25,3 +47,39 @@ source "${SCRIPT_DIR}/lib/deploy/verify.sh"
 source "${SCRIPT_DIR}/lib/deploy/sync.sh"
 source "${SCRIPT_DIR}/lib/deploy/compose.sh"
 source "${SCRIPT_DIR}/lib/deploy/summary.sh"
+
+###############################################################################
+# Main
+###############################################################################
+
+print_header "Infrastructure deployment"
+
+#
+# Verify environment.
+#
+check_environment
+
+#
+# Verify Docker environment.
+#
+check_docker_environment
+
+#
+# Verify project structure.
+#
+deploy_verify_project
+
+#
+# Synchronize stack.
+#
+deploy_sync_stack
+
+#
+# Validate Docker Compose configuration.
+#
+deploy_validate_compose
+
+#
+# Print deployment summary.
+#
+deploy_summary

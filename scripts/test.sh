@@ -8,11 +8,15 @@
 #   scripts/test.sh
 #
 # Description:
-#   Verify Infrastructure installation.
+#   Run Infrastructure framework tests.
 #
 ###############################################################################
 
 set -Eeuo pipefail
+
+###############################################################################
+# Directories
+###############################################################################
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -23,15 +27,17 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/config.sh"
 
 ###############################################################################
-# Libraries
+# Core libraries
 ###############################################################################
 
-source "${SCRIPT_DIR}/lib/logging.sh"
 source "${SCRIPT_DIR}/lib/common.sh"
-source "${SCRIPT_DIR}/lib/filesystem.sh"
-source "${SCRIPT_DIR}/lib/sync.sh"
-source "${SCRIPT_DIR}/lib/docker.sh"
-source "${SCRIPT_DIR}/lib/docker-compose.sh"
+source "${SCRIPT_DIR}/lib/logging.sh"
+
+###############################################################################
+# Checks library
+###############################################################################
+
+source "${SCRIPT_DIR}/lib/checks/load.sh"
 
 ###############################################################################
 # Test modules
@@ -41,18 +47,19 @@ source "${SCRIPT_DIR}/lib/tests/project.sh"
 source "${SCRIPT_DIR}/lib/tests/stack.sh"
 source "${SCRIPT_DIR}/lib/tests/environment.sh"
 source "${SCRIPT_DIR}/lib/tests/compose.sh"
-source "${SCRIPT_DIR}/lib/tests/traefik.sh"
 source "${SCRIPT_DIR}/lib/tests/docker.sh"
 source "${SCRIPT_DIR}/lib/tests/dockge.sh"
 source "${SCRIPT_DIR}/lib/tests/networks.sh"
 source "${SCRIPT_DIR}/lib/tests/dashboard-security.sh"
+source "${SCRIPT_DIR}/lib/tests/traefik.sh"
 
 ###############################################################################
 # Main
 ###############################################################################
 
-print_section "Infrastructure test"
+print_header "Infrastructure test"
 
+check_environment
 check_docker_environment
 
 test_project
@@ -62,9 +69,9 @@ test_compose
 test_docker
 test_dockge
 test_networks
-test_dashboard
+test_dashboard_security
 test_traefik
 
-print_section "Finished"
+print_footer
 
 ok "Infrastructure framework OK."
