@@ -72,6 +72,6 @@ test_networks
 test_dashboard_security
 test_traefik
 
-print_footer
+print_section "Finished"
 
 ok "Infrastructure framework OK."
