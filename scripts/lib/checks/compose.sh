@@ -19,8 +19,8 @@
 validate_compose()
 {
     docker compose \
-        --env-file "${GIT_DIR}/.env" \
-        -f "${GIT_DIR}/compose.yml" \
+        --env-file "${STACK_DIR}/.env" \
+        -f "${STACK_DIR}/compose.yml" \
         config >/dev/null \
         || fail "Compose configuration is invalid."
 
