@@ -83,10 +83,12 @@ post_deploy_crowdsec()
     local output
     local api_key
 
-    output="$(
+    if ! output="$(
         docker exec "${CROWDSEC_SERVICE}" \
             cscli bouncers add "${CROWDSEC_BOUNCER_NAME}"
-    )"
+    )"; then
+        fail "Unable to create CrowdSec bouncer."
+    fi
 
     api_key="$(
         printf '%s\n' "${output}" \
