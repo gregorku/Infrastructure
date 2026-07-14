@@ -1,0 +1,41 @@
+services:
+
+  crowdsec:
+
+    image: crowdsecurity/crowdsec:latest
+
+    container_name: crowdsec
+
+    restart: unless-stopped
+
+    networks:
+
+      - infrastructure
+
+    volumes:
+
+      - ${DATA_DIR}/crowdsec/config:/etc/crowdsec
+
+      - ${DATA_DIR}/crowdsec/data:/var/lib/crowdsec/data
+
+      - ${DATA_DIR}/crowdsec/db:/var/lib/crowdsec/db
+
+      - ${DATA_DIR}/traefik/logs:/logs:ro
+
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    healthcheck:
+
+      test:
+
+        - CMD
+
+        - cscli
+
+        - version
+
+      interval: 30s
+
+      timeout: 10s
+
+      retries: 5
