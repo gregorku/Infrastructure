@@ -1,0 +1,130 @@
+###############################################################################
+#
+# Infrastructure Project
+#
+# File:
+#   compose/30-metabase.yml
+#
+# Description:
+#   Metabase analytics platform.
+#
+###############################################################################
+
+services:
+
+###############################################################################
+# PostgreSQL
+###############################################################################
+
+  postgres-metabase:
+
+    image: postgres:${POSTGRES_VERSION}
+
+    container_name: postgres-metabase
+
+    restart: unless-stopped
+
+    security_opt:
+
+      - no-new-privileges:true
+
+    environment:
+
+      POSTGRES_DB: ${METABASE_DB_NAME}
+
+      POSTGRES_USER: ${METABASE_DB_USER}
+
+      POSTGRES_PASSWORD: ${METABASE_DB_PASSWORD}
+
+      TZ: ${TZ}
+
+    volumes:
+
+      - ${DATA_DIR}/metabase/postgres/data:/var/lib/postgresql/data
+
+    healthcheck:
+
+      test:
+
+        - CMD-SHELL
+        - pg_isready -U ${METABASE_DB_USER} -d ${METABASE_DB_NAME}
+
+      interval: 10s
+
+      timeout: 5s
+
+      retries: 10
+
+    networks:
+
+      - traefik
+
+###############################################################################
+# Metabase
+###############################################################################
+
+  metabase:
+
+    image: metabase/metabase:${METABASE_VERSION}
+
+    container_name: metabase
+
+    restart: unless-stopped
+
+    depends_on:
+
+      postgres-metabase:
+
+        condition: service_healthy
+
+    security_opt:
+
+      - no-new-privileges:true
+
+    environment:
+
+      MB_DB_TYPE: postgres
+
+      MB_DB_DBNAME: ${METABASE_DB_NAME}
+
+      MB_DB_HOST: postgres-metabase
+
+      MB_DB_PORT: 5432
+
+      MB_DB_USER: ${METABASE_DB_USER}
+
+      MB_DB_PASS: ${METABASE_DB_PASSWORD}
+
+      MB_SITE_URL: ${PUBLIC_ADMIN_URL}/metabase/
+
+      MB_JETTY_CONTEXT_PATH: /metabase
+
+      TZ: ${TZ}
+
+    volumes:
+
+      - ${DATA_DIR}/metabase/metabase/plugins:/plugins
+
+      - ${DATA_DIR}/metabase/metabase/logs:/logs
+
+      - ${DATA_DIR}/metabase/metabase/data:/metabase-data
+
+    healthcheck:
+
+      test:
+
+        - CMD
+        - wget
+        - -q
+        - --spider
+        - http://localhost:3000/api/health
+
+      interval: 20s
+
+      timeout: 5s
+
+      retries: 15
+
+    networks:
+
+      - traefik
