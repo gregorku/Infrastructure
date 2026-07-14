@@ -116,6 +116,8 @@ services:
 
       - ${DATA_DIR}/traefik/logs:/var/log/traefik
 
+      - ${DATA_DIR}/traefik/crowdsec:/etc/traefik/crowdsec:ro
+
     ###########################################################################
     # Healthcheck
     ###########################################################################

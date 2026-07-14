@@ -36,7 +36,7 @@ http:
 
           crowdsecLapiHost: crowdsec:8080
 
-          crowdsecLapiKey: ${CROWDSEC_BOUNCER_KEY}
+          crowdsecLapiKeyFile: /etc/traefik/crowdsec/BOUNCER_KEY_traefik
 
           forwardedHeadersTrustedIPs:
 
