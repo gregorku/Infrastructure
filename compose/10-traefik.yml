@@ -112,9 +112,9 @@ services:
       # Persistent data
       #
 
-      - ${INFRASTRUCTURE_DATA}/traefik/acme:/etc/traefik/acme
+      - ${DATA_DIR}/traefik/acme:/etc/traefik/acme
 
-      - ${INFRASTRUCTURE_DATA}/traefik/logs:/var/log/traefik
+      - ${DATA_DIR}/traefik/logs:/var/log/traefik
 
     ###########################################################################
     # Healthcheck

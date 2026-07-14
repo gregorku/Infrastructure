@@ -36,31 +36,35 @@ services:
 
       TZ: ${TZ}
 
+    ###########################################################################
+    # Volumes
+    ###########################################################################
+
     volumes:
 
       #
       # Configuration
       #
 
-      - ${CROWDSEC_DIR}/config:/etc/crowdsec
+      - ${DATA_DIR}/crowdsec/config:/etc/crowdsec
 
       #
       # Database
       #
 
-      - ${CROWDSEC_DIR}/db:/var/lib/crowdsec/db
+      - ${DATA_DIR}/crowdsec/db:/var/lib/crowdsec/db
 
       #
       # Runtime data
       #
 
-      - ${CROWDSEC_DIR}/data:/var/lib/crowdsec/data
+      - ${DATA_DIR}/crowdsec/data:/var/lib/crowdsec/data
 
       #
-      # Traefik logs
+      # Traefik access logs
       #
 
-      - ${TRAEFIK_DIR}/logs:/logs:ro
+      - ${DATA_DIR}/traefik/logs:/logs:ro
 
       #
       # Docker socket
