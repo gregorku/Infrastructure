@@ -46,6 +46,7 @@ source "${SCRIPT_DIR}/lib/checks/load.sh"
 source "${SCRIPT_DIR}/lib/init/directories.sh"
 source "${SCRIPT_DIR}/lib/init/traefik.sh"
 source "${SCRIPT_DIR}/lib/init/crowdsec.sh"
+source "${SCRIPT_DIR}/lib/init/metabase.sh"
 source "${SCRIPT_DIR}/lib/init/watchtower.sh"
 source "${SCRIPT_DIR}/lib/init/summary.sh"
 
@@ -74,6 +75,35 @@ init_traefik
 # Initialize CrowdSec.
 #
 init_crowdsec
+
+init_metabase() {
+
+    print_section "Metabase"
+
+    #
+    # PostgreSQL
+    #
+
+    ensure_directory "${DATA_DIR}/metabase/postgres"
+
+    ensure_directory "${DATA_DIR}/metabase/postgres/data"
+
+    #
+    # Metabase
+    #
+
+    ensure_directory "${DATA_DIR}/metabase/metabase"
+
+    ensure_directory "${DATA_DIR}/metabase/metabase/data"
+
+    ensure_directory "${DATA_DIR}/metabase/metabase/plugins"
+
+    ensure_directory "${DATA_DIR}/metabase/metabase/logs"
+
+    ensure_directory "${DATA_DIR}/metabase/metabase/backups"
+
+    success "Metabase directories ready."
+}
 
 #
 # Initialize Watchtower.

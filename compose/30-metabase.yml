@@ -99,6 +99,10 @@ services:
 
       MB_JETTY_CONTEXT_PATH: /metabase
 
+      MB_PLUGINS_DIR: /plugins
+
+      JAVA_OPTS: "-Xms256m -Xmx512m"
+
       TZ: ${TZ}
 
     volumes:
