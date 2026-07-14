@@ -110,5 +110,12 @@ readonly TRAEFIK_DYNAMIC_DIR="${TRAEFIK_CONFIG_DIR}/dynamic"
 readonly TRAEFIK_USERS_DIR="${TRAEFIK_CONFIG_DIR}/users"
 readonly TRAEFIK_HTPASSWD_FILE="${TRAEFIK_USERS_DIR}/dashboard.htpasswd"
 
-CROWDSEC_BOUNCER_NAME="traefik"
-CROWDSEC_BOUNCER_KEY_FILE="${DATA_DIR}/traefik/crowdsec/BOUNCER_KEY_${CROWDSEC_BOUNCER_NAME}"
+###############################################################################
+# CrowdSec
+###############################################################################
+
+readonly CROWDSEC_BOUNCER_NAME="traefik"
+
+readonly CROWDSEC_BOUNCER_DIR="${TRAEFIK_DIR}/crowdsec"
+
+readonly CROWDSEC_BOUNCER_KEY_FILE="${CROWDSEC_BOUNCER_DIR}/BOUNCER_KEY_${CROWDSEC_BOUNCER_NAME}"
