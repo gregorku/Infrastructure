@@ -114,12 +114,15 @@ providers:
 # Experimental
 ###############################################################################
 
-#
-# Reserved for future plugins
-# (CrowdSec, etc.)
-#
+experimental:
 
-experimental: {}
+  plugins:
+
+    crowdsec:
+
+      moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
+
+      version: v1.4.5
 
 ###############################################################################
 # Logging
