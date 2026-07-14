@@ -46,4 +46,17 @@ deploy_sync_stack()
     for item in "${DEPLOY_ITEMS[@]}"; do
         deploy_sync_item "${item}"
     done
+
+    #
+    # Create .env on first deployment.
+    #
+
+    if [[ ! -f "${STACK_DIR}/.env" ]]; then
+
+        cp \
+            "${STACK_DIR}/.env.example" \
+            "${STACK_DIR}/.env"
+
+        ok ".env created from .env.example"
+    fi
 }
