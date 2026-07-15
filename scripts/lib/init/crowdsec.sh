@@ -50,7 +50,7 @@ labels:
   type: traefik
 EOF
 
-        ok "Created acquis.yaml"
+        ok "Created CrowdSec acquis.yaml"
 
     fi
 
@@ -75,7 +75,7 @@ decisions:
 on_success: break
 EOF
 
-        ok "Created profiles.yaml"
+        ok "Created CrowdSec profiles.yaml"
 
     fi
 
