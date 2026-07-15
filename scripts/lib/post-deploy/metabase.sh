@@ -20,43 +20,49 @@ post_deploy_metabase()
     # Verify PostgreSQL container
     ###########################################################################
 
-    docker_container_running "postgres-metabase"
+    require_container_running "${POSTGRES_METABASE_SERVICE}"
 
     ok "PostgreSQL container OK."
 
-    ###########################################################################
-    # Verify Metabase container
-    ###########################################################################
-
-    docker_container_running "metabase"
-
-    ok "Metabase container OK."
-
-    ###########################################################################
+    ###############################################################################
     # Wait for PostgreSQL
-    ###########################################################################
+    ###############################################################################
 
     info "Waiting for PostgreSQL..."
 
-    until docker exec postgres-metabase \
+    local timeout=60
+
+    until docker_exec "${POSTGRES_METABASE_SERVICE}" \
         pg_isready \
         -U "${METABASE_DB_USER}" \
         -d "${METABASE_DB_NAME}" >/dev/null 2>&1
     do
+        ((timeout--))
+
+        ((timeout > 0)) \
+            || fail "PostgreSQL startup timeout."
+
         sleep 2
     done
 
     ok "PostgreSQL ready."
 
-    ###########################################################################
+    ###############################################################################
     # Wait for Metabase
-    ###########################################################################
+    ###############################################################################
 
     info "Waiting for Metabase..."
 
-    until docker exec metabase \
+    timeout=60
+
+    until docker_exec "${METABASE_SERVICE}" \
         wget -q --spider http://localhost:3000/api/health
     do
+        ((timeout--))
+
+        ((timeout > 0)) \
+            || fail "Metabase startup timeout."
+
         sleep 2
     done
 
