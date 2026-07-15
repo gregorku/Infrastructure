@@ -8,19 +8,19 @@
 #   scripts/lib/checks/compose.sh
 #
 # Description:
-#   Docker Compose helper functions.
+#   Docker Compose validation functions.
 #
 ###############################################################################
 
 ###############################################################################
-# Validate Docker Compose configuration.
+# Validate Docker Compose configuration
 ###############################################################################
 
-validate_compose()
+check_compose_configuration()
 {
     docker compose \
-        --env-file "${STACK_DIR}/.env" \
-        -f "${STACK_DIR}/compose.yml" \
+        --env-file "${ENV_FILE}" \
+        -f "${COMPOSE_FILE}" \
         config >/dev/null \
         || fail "Compose configuration is invalid."
 
