@@ -44,9 +44,8 @@ LIB_DIR="${SCRIPT_DIR}/lib"
 # Libraries
 ###############################################################################
 
-source "${LIB_DIR}/common/logging.sh"
-
-source "${LIB_DIR}/common/environment.sh"
+source "${LIB_DIR}/logging.sh"
+source "${LIB_DIR}/common.sh"
 
 source "${LIB_DIR}/deploy/update-env.sh"
 
