@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 ###############################################################################
 #
 # Infrastructure Project
@@ -10,31 +12,26 @@
 #
 ###############################################################################
 
-init_metabase() {
-
+init_metabase()
+{
     print_section "Metabase"
 
     #
     # PostgreSQL
     #
 
-    ensure_directory "${DATA_DIR}/metabase/postgres"
-
-    ensure_directory "${DATA_DIR}/metabase/postgres/data"
+    ensure_directory "${METABASE_DIR}/postgres"
+    ensure_directory "${METABASE_DIR}/postgres/data"
 
     #
     # Metabase
     #
 
-    ensure_directory "${DATA_DIR}/metabase/metabase"
+    ensure_directory "${METABASE_DIR}/metabase"
+    ensure_directory "${METABASE_DIR}/metabase/data"
+    ensure_directory "${METABASE_DIR}/metabase/plugins"
+    ensure_directory "${METABASE_DIR}/metabase/logs"
+    ensure_directory "${METABASE_DIR}/metabase/backups"
 
-    ensure_directory "${DATA_DIR}/metabase/metabase/data"
-
-    ensure_directory "${DATA_DIR}/metabase/metabase/plugins"
-
-    ensure_directory "${DATA_DIR}/metabase/metabase/logs"
-
-    ensure_directory "${DATA_DIR}/metabase/metabase/backups"
-
-    success "Metabase directories ready."
+    ok "Metabase layout ready."
 }

@@ -52,6 +52,7 @@ readonly DATA_DIR="/zfs-data/infrastructure-data"
 readonly TRAEFIK_DIR="${DATA_DIR}/traefik"
 readonly CROWDSEC_DIR="${DATA_DIR}/crowdsec"
 readonly WATCHTOWER_DIR="${DATA_DIR}/watchtower"
+readonly METABASE_DIR="${DATA_DIR}/metabase"
 
 ###############################################################################
 # Deployment
@@ -77,6 +78,8 @@ readonly DOCKGE_CONTAINER="dockge"
 readonly TRAEFIK_SERVICE="traefik"
 readonly CROWDSEC_SERVICE="crowdsec"
 readonly WATCHTOWER_SERVICE="watchtower"
+readonly METABASE_SERVICE="metabase"
+readonly POSTGRES_METABASE_SERVICE="postgres-metabase"
 
 ###############################################################################
 # Docker networks
