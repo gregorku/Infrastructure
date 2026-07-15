@@ -32,6 +32,9 @@ source "${SCRIPT_DIR}/config.sh"
 
 source "${SCRIPT_DIR}/lib/common.sh"
 source "${SCRIPT_DIR}/lib/logging.sh"
+source "${SCRIPT_DIR}/lib/filesystem.sh"
+source "${SCRIPT_DIR}/lib/docker.sh"
+source "${SCRIPT_DIR}/lib/git.sh"
 
 ###############################################################################
 # Checks library
@@ -46,6 +49,7 @@ source "${SCRIPT_DIR}/lib/checks/load.sh"
 source "${SCRIPT_DIR}/lib/init/directories.sh"
 source "${SCRIPT_DIR}/lib/init/traefik.sh"
 source "${SCRIPT_DIR}/lib/init/crowdsec.sh"
+source "${SCRIPT_DIR}/lib/init/crowdsec-hub.sh"
 source "${SCRIPT_DIR}/lib/init/metabase.sh"
 source "${SCRIPT_DIR}/lib/init/watchtower.sh"
 source "${SCRIPT_DIR}/lib/init/summary.sh"
@@ -75,6 +79,11 @@ init_traefik
 # Initialize CrowdSec.
 #
 init_crowdsec
+
+#
+# Install CrowdSec Hub collections.
+#
+init_crowdsec_hub
 
 #
 # Initialize Metabase.
