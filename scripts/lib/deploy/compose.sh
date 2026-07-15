@@ -8,7 +8,7 @@
 #   scripts/lib/deploy/compose.sh
 #
 # Description:
-#   Validate Docker Compose configuration before deployment.
+#   Docker Compose deployment checks.
 #
 ###############################################################################
 
@@ -16,5 +16,5 @@ deploy_validate_compose()
 {
     print_section "Compose validation"
 
-    validate_compose
+    check_compose_configuration
 }
