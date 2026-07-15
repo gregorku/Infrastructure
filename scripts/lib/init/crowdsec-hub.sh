@@ -37,19 +37,19 @@ init_crowdsec_hub()
 
     for collection in "${CROWDSEC_COLLECTIONS[@]}"; do
 
-        if docker exec crowdsec \
+        if docker_exec crowdsec \
             cscli collections inspect "${collection}" >/dev/null 2>&1; then
 
-            ok "Collection installed: ${collection}"
+            ok "Collection already installed: ${collection}"
 
         else
 
             info "Installing ${collection}..."
 
-            docker exec crowdsec \
+            docker_exec crowdsec \
                 cscli collections install "${collection}"
 
-            ok "Installed: ${collection}"
+            ok "Installed collection: ${collection}"
         fi
     done
 }

@@ -31,6 +31,14 @@ require_docker_daemon()
         || fail "Docker daemon is not running."
 }
 
+require_container_running()
+{
+    local container="$1"
+
+    docker_container_running "${container}" \
+        || fail "Container is not running: ${container}"
+}
+
 ###############################################################################
 # Docker environment
 ###############################################################################
