@@ -138,7 +138,5 @@ print_header() {
 
 print_footer()
 {
-    separator
-
     ok "$@"
 }
