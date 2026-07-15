@@ -14,15 +14,12 @@
 
 post_deploy_summary()
 {
-    print_section "Finished"
-
-    ok "Post deployment completed."
+    print_footer "Post deployment completed."
 
     echo
 
     info "Next step:"
-
-    echo "  ./scripts/test.sh"
+    info "  ./scripts/test.sh"
 
     echo
 }
