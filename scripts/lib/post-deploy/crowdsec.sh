@@ -20,21 +20,21 @@ post_deploy_crowdsec()
     # Verify container
     ###########################################################################
 
-    docker_container_running "${CROWDSEC_SERVICE}"
+    require_container_running "${CROWDSEC_SERVICE}"
 
     ok "CrowdSec container OK."
 
     ###########################################################################
-    # Paths
+    # Ensure bouncer directory
     ###########################################################################
 
-    local key_dir
+    ensure_directory "${CROWDSEC_BOUNCER_DIR}"
+
     local key_file
+    local output
+    local api_key
 
-    key_dir="${DATA_DIR}/traefik/crowdsec"
     key_file="${CROWDSEC_BOUNCER_KEY_FILE}"
-
-    ensure_directory "${key_dir}"
 
     ###########################################################################
     # Existing key
@@ -42,29 +42,19 @@ post_deploy_crowdsec()
 
     if [[ -f "${key_file}" ]]; then
 
-        ok "Bouncer key already exists."
-
-        return
-
-    fi
-
-        ###############################################################################
-        # Existing key
-        ###############################################################################
-
-        if [[ -f "${key_file}" ]]; then
-
-        ###########################################################################
+        #######################################################################
         # Verify bouncer
-        ###########################################################################
+        #######################################################################
 
-        if docker exec "${CROWDSEC_SERVICE}" \
+        if docker_exec "${CROWDSEC_SERVICE}" \
             cscli bouncers list \
             | awk '{print $1}' \
             | grep -qx "${CROWDSEC_BOUNCER_NAME}"
         then
 
             ok "Bouncer key already exists."
+
+            ok "CrowdSec bouncer already exists."
 
             return
 
@@ -80,15 +70,18 @@ post_deploy_crowdsec()
 
     info "Creating CrowdSec bouncer..."
 
-    local output
-    local api_key
-
     if ! output="$(
-        docker exec "${CROWDSEC_SERVICE}" \
+        docker_exec "${CROWDSEC_SERVICE}" \
             cscli bouncers add "${CROWDSEC_BOUNCER_NAME}"
     )"; then
+
         fail "Unable to create CrowdSec bouncer."
+
     fi
+
+    ###########################################################################
+    # Extract API key
+    ###########################################################################
 
     api_key="$(
         printf '%s\n' "${output}" \
@@ -106,6 +99,10 @@ post_deploy_crowdsec()
 
     [[ -n "${api_key}" ]] \
         || fail "Unable to extract CrowdSec API key."
+
+    ###########################################################################
+    # Save key
+    ###########################################################################
 
     printf '%s\n' "${api_key}" > "${key_file}"
 
