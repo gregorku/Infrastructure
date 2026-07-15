@@ -55,7 +55,7 @@ check_docker_environment()
     # Docker CLI
     #
 
-    equire_docker
+    require_docker
 
     #
     # Docker daemon
