@@ -30,7 +30,9 @@ deploy_update_env()
     [[ -f "${STACK_DIR}/.env.example" ]] \
         || die ".env.example not found."
 
-    deploy_create_env
+    if deploy_create_env; then
+        return
+    fi
 
     deploy_backup_env
 
@@ -45,7 +47,7 @@ deploy_create_env()
 {
     if [[ -f "${STACK_DIR}/.env" ]]; then
         ok ".env exists."
-        return
+        return 1
     fi
 
     cp \
@@ -53,6 +55,8 @@ deploy_create_env()
         "${STACK_DIR}/.env"
 
     ok ".env created from .env.example."
+
+    return 0
 }
 
 ###############################################################################
