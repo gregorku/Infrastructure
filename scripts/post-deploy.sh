@@ -45,7 +45,7 @@ source "${SCRIPT_DIR}/lib/checks/load.sh"
 
 source "${SCRIPT_DIR}/lib/post-deploy/crowdsec.sh"
 source "${SCRIPT_DIR}/lib/post-deploy/metabase.sh"
-source "${SCRIPT_DIR}/lib/post-deploy/watchtower.sh"
+#source "${SCRIPT_DIR}/lib/post-deploy/watchtower.sh"
 source "${SCRIPT_DIR}/lib/post-deploy/summary.sh"
 
 ###############################################################################
@@ -70,6 +70,6 @@ post_deploy_metabase
 #
 # Watchtower
 #
-post_deploy_watchtower
+#post_deploy_watchtower
 
 post_deploy_summary
