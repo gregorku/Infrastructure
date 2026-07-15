@@ -143,7 +143,7 @@ deploy_update_env_variables()
 
         ok "Added ${key}"
 
-        ((added++))
+        added=$((added + 1))
 
     done < "${ENV_EXAMPLE_FILE}"
 
