@@ -24,10 +24,7 @@
 
 deploy_update_env()
 {
-    [[ -d "${STACK_DIR}" ]] \
-        || die "Stack directory not found."
-
-    [[ -f "${STACK_DIR}/.env.example" ]] \
+    [[ -f "${ENV_EXAMPLE_FILE}" ]] \
         || die ".env.example not found."
 
     if deploy_create_env; then
@@ -36,7 +33,7 @@ deploy_update_env()
 
     deploy_backup_env
 
-    deploy_sync_env
+    deploy_update_env_variables
 }
 
 ###############################################################################
@@ -45,14 +42,14 @@ deploy_update_env()
 
 deploy_create_env()
 {
-    if [[ -f "${STACK_DIR}/.env" ]]; then
+    if [[ -f "${ENV_FILE}" ]]; then
         ok ".env exists."
         return 1
     fi
 
     cp \
-        "${STACK_DIR}/.env.example" \
-        "${STACK_DIR}/.env"
+        "${ENV_EXAMPLE_FILE}" \
+        "${ENV_FILE}"
 
     ok ".env created from .env.example."
 
@@ -67,12 +64,12 @@ deploy_backup_env()
 {
     local backup
 
-    [[ -f "${STACK_DIR}/.env" ]] || return
+    [[ -f "${ENV_FILE}" ]] || return
 
-    backup="${STACK_DIR}/.env.bak-$(date +%Y%m%d-%H%M%S)"
+    backup="${ENV_FILE}.bak-$(date +%Y%m%d-%H%M%S)"
 
     cp \
-        "${STACK_DIR}/.env" \
+        "${ENV_FILE}" \
         "${backup}"
 
     ok "Backup created: $(basename "${backup}")"
@@ -82,7 +79,7 @@ deploy_backup_env()
 # Synchronize .env
 ###############################################################################
 
-deploy_sync_env()
+deploy_update_env_variables()
 {
     local added=0
     local line
@@ -114,7 +111,7 @@ deploy_sync_env()
         # Variable already exists
         #
 
-        if grep -q "^${key}=" "${STACK_DIR}/.env"; then
+        if grep -q "^${key}=" "${ENV_FILE}"; then
             continue
         fi
 
@@ -130,7 +127,7 @@ deploy_sync_env()
                 echo "# Added automatically"
                 echo "###############################################################################"
                 echo
-            } >> "${STACK_DIR}/.env"
+            } >> "${ENV_FILE}"
 
         fi
 
@@ -138,13 +135,13 @@ deploy_sync_env()
         # Add variable
         #
 
-        echo "${line}" >> "${STACK_DIR}/.env"
+        echo "${line}" >> "${ENV_FILE}"
 
         ok "Added ${key}"
 
         ((added++))
 
-    done < "${STACK_DIR}/.env.example"
+    done < "${ENV_EXAMPLE_FILE}"
 
     if (( added == 0 )); then
         ok ".env already up to date."
