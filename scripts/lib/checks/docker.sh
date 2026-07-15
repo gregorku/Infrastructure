@@ -8,7 +8,7 @@
 #   scripts/lib/checks/docker.sh
 #
 # Description:
-#   Docker helper functions used by Infrastructure scripts.
+#   Docker validation and helper functions used by Infrastructure scripts.
 #
 ###############################################################################
 
@@ -37,9 +37,21 @@ require_docker_daemon()
 
 check_docker_environment()
 {
+    #
+    # Generic framework checks
+    #
+
     check_environment
 
-    require_docker
+    #
+    # Docker CLI
+    #
+
+    equire_docker
+
+    #
+    # Docker daemon
+    #
 
     require_docker_daemon
 
@@ -85,6 +97,7 @@ docker_network_exists()
 
 ###############################################################################
 # HTTP headers from inside container
+# Containers use internal certificates issued by Traefik.
 ###############################################################################
 
 docker_http_headers()
