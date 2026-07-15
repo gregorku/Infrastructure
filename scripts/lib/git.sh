@@ -6,9 +6,12 @@
 # File:
 #   scripts/lib/git.sh
 #
+# Description:
+#    Git helper functions.
 ###############################################################################
 
-git_is_clean() {
+git_is_clean()
+{
 
     require_git
 
@@ -20,7 +23,8 @@ git_is_clean() {
     )
 }
 
-git_current_branch() {
+git_current_branch()
+{
 
     require_git
 
@@ -30,7 +34,8 @@ git_current_branch() {
     )
 }
 
-git_current_revision() {
+git_current_revision()
+{
 
     require_git
 
