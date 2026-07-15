@@ -28,7 +28,7 @@ post_deploy_crowdsec()
     # Ensure bouncer directory
     ###########################################################################
 
-    rensure_directory "${CROWDSEC_BOUNCER_DIR}"
+    ensure_directory "${CROWDSEC_BOUNCER_DIR}"
 
     local key_file
     local output
