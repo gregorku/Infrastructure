@@ -75,6 +75,4 @@ deploy_check_env_variables()
     done < "${ENV_EXAMPLE_FILE}"
 
     (( missing == 0 )) || return 1
-
-    ok "Environment configuration OK."
 }
