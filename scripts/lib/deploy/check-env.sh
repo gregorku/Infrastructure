@@ -23,13 +23,10 @@
 
 deploy_check_env()
 {
-    [[ -d "${STACK_DIR}" ]] \
-        || die "Stack directory not found."
-
-    [[ -f "${STACK_DIR}/.env.example" ]] \
+    [[ -f "${ENV_EXAMPLE_FILE}" ]] \
         || die ".env.example not found."
 
-    [[ -f "${STACK_DIR}/.env" ]] \
+    [[ -f "${ENV_FILE}" ]] \
         || die ".env not found. Run ./scripts/update-env.sh"
 
     deploy_check_env_variables
@@ -67,15 +64,15 @@ deploy_check_env_variables()
 
         key="${line%%=*}"
 
-        if grep -q "^${key}=" "${STACK_DIR}/.env"; then
+        if grep -q "^${key}=" "${ENV_FILE}"; then
             continue
         fi
 
-        fail "Missing ${key}"
+        fail "Missing variable: ${key}"
 
         missing=1
 
-    done < "${STACK_DIR}/.env.example"
+    done < "${ENV_EXAMPLE_FILE}"
 
     (( missing == 0 )) || return 1
 

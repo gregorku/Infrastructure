@@ -28,7 +28,11 @@ deploy_update_env()
         || die ".env.example not found."
 
     if deploy_create_env; then
+
+        ok ".env initialized."
+
         return
+
     fi
 
     deploy_backup_env
@@ -76,7 +80,7 @@ deploy_backup_env()
 }
 
 ###############################################################################
-# Synchronize .env
+# Update .env variables
 ###############################################################################
 
 deploy_update_env_variables()
