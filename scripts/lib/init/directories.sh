@@ -21,4 +21,6 @@ init_directories()
 
     info "Stack directory : ${STACK_DIR}"
     info "Data directory  : ${DATA_DIR}"
+    
+    ok "Project directories ready."
 }

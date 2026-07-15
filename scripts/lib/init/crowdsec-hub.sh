@@ -44,7 +44,7 @@ init_crowdsec_hub()
 
         else
 
-            info "Installing ${collection}..."
+            info "Installed collection ${collection}..."
 
             docker_exec crowdsec \
                 cscli collections install "${collection}"
@@ -52,4 +52,5 @@ init_crowdsec_hub()
             ok "Installed collection: ${collection}"
         fi
     done
+    ok "CrowdSec Hub ready."
 }
