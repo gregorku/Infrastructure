@@ -32,6 +32,9 @@ source "${SCRIPT_DIR}/config.sh"
 
 source "${SCRIPT_DIR}/lib/common.sh"
 source "${SCRIPT_DIR}/lib/logging.sh"
+source "${SCRIPT_DIR}/lib/filesystem.sh"
+source "${SCRIPT_DIR}/lib/docker.sh"
+source "${SCRIPT_DIR}/lib/git.sh"
 
 ###############################################################################
 # Checks
@@ -40,12 +43,11 @@ source "${SCRIPT_DIR}/lib/logging.sh"
 source "${SCRIPT_DIR}/lib/checks/load.sh"
 
 ###############################################################################
-# Modules
+# Post-deployment modules
 ###############################################################################
 
 source "${SCRIPT_DIR}/lib/post-deploy/crowdsec.sh"
 source "${SCRIPT_DIR}/lib/post-deploy/metabase.sh"
-#source "${SCRIPT_DIR}/lib/post-deploy/watchtower.sh"
 source "${SCRIPT_DIR}/lib/post-deploy/summary.sh"
 
 ###############################################################################
@@ -54,22 +56,27 @@ source "${SCRIPT_DIR}/lib/post-deploy/summary.sh"
 
 print_header "Infrastructure post deployment"
 
+#
+# Verify environment.
+#
 check_environment
+
+#
+# Verify Docker.
+#
 check_docker_environment
 
 #
-# CrowdSec
+# Configure CrowdSec.
 #
 post_deploy_crowdsec
 
 #
-# Metabase
+# Configure Metabase.
 #
 post_deploy_metabase
 
 #
-# Watchtower
+# Print summary.
 #
-#post_deploy_watchtower
-
 post_deploy_summary
