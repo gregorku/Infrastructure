@@ -103,3 +103,31 @@ remove_directory() {
         ok "Removed directory: ${directory}"
     fi
 }
+
+###############################################################################
+# Backup file
+#
+# Arguments:
+#   $1 - Source file
+#   $2 - Backup prefix
+#
+# Example:
+#   backup_file "/etc/test.conf" "/etc/test.conf.bak"
+#
+###############################################################################
+
+backup_file()
+{
+    local source="$1"
+    local prefix="$2"
+
+    [[ -f "${source}" ]] || return
+
+    local backup
+
+    backup="${prefix}-$(date +%Y%m%d-%H%M%S)"
+
+    cp "${source}" "${backup}"
+
+    ok "Backup created: $(basename "${backup}")"
+}
