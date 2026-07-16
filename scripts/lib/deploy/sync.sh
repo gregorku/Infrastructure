@@ -8,12 +8,16 @@
 #   scripts/lib/deploy/sync.sh
 #
 # Description:
-#   Synchronize Infrastructure repository to Docker stack directory.
+#   Synchronize the Infrastructure repository to the Docker stack directory.
 #
 ###############################################################################
 
 ###############################################################################
 # Synchronize one file or directory
+#
+# Arguments:
+#   $1 - File or directory relative to GIT_DIR
+#
 ###############################################################################
 
 deploy_sync_item()
@@ -23,12 +27,12 @@ deploy_sync_item()
     require_file_or_directory "${GIT_DIR}/${item}"
 
     rsync \
-        -a \
+        --archive \
         --delete \
         "${GIT_DIR}/${item}" \
         "${STACK_DIR}/"
 
-    ok "Synced ${item}"
+    ok "Synchronized: ${item}"
 }
 
 ###############################################################################
@@ -39,17 +43,17 @@ deploy_sync_stack()
 {
     print_section "Synchronizing stack"
 
-    local item
-
     require_directory "${STACK_DIR}"
+
+    local item
 
     for item in "${DEPLOY_ITEMS[@]}"; do
         deploy_sync_item "${item}"
     done
 
-    #
-    # Create .env on first deployment.
-    #
+    ###########################################################################
+    # Create .env on first deployment
+    ###########################################################################
 
     if [[ ! -f "${STACK_DIR}/.env" ]]; then
 
@@ -59,4 +63,6 @@ deploy_sync_stack()
 
         ok ".env created from .env.example"
     fi
+
+    ok "Stack synchronized."
 }
