@@ -32,7 +32,6 @@ source "${SCRIPT_DIR}/config.sh"
 
 source "${SCRIPT_DIR}/lib/common.sh"
 source "${SCRIPT_DIR}/lib/logging.sh"
-source "${SCRIPT_DIR}/lib/paths.sh"
 
 ###############################################################################
 # Checks library
