@@ -22,7 +22,7 @@
 # Update environment
 ###############################################################################
 
-env_update()
+env_sync()
 {
     declare -A ENV_CURRENT
     declare -A ENV_EXAMPLE
