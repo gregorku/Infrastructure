@@ -8,29 +8,11 @@
 #   scripts/update-env.sh
 #
 # Description:
-#   Updates the stack .env file from .env.example.
-#
-#   The script:
-#
-#     • Creates .env if it does not exist.
-#
-#     • Creates a timestamped backup of the current .env.
-#
-#     • Adds all missing variables from .env.example.
-#
-#     • Never overwrites existing values.
-#
-#     • Never removes obsolete variables.
-#
-#   Existing configuration is always preserved.
-#
-# Usage:
-#
-#   ./scripts/update-env.sh
+#   Synchronize .env with .env.example.
 #
 ###############################################################################
 
-set -euo pipefail
+set -Eeuo pipefail
 
 ###############################################################################
 # Directories
@@ -38,19 +20,24 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-LIB_DIR="${SCRIPT_DIR}/lib"
-
 ###############################################################################
-# Libraries
+# Configuration
 ###############################################################################
 
-source "${LIB_DIR}/paths.sh"
+source "${SCRIPT_DIR}/config.sh"
 
-source "${LIB_DIR}/logging.sh"
+###############################################################################
+# Core libraries
+###############################################################################
 
-source "${LIB_DIR}/common.sh"
+source "${SCRIPT_DIR}/lib/common.sh"
+source "${SCRIPT_DIR}/lib/logging.sh"
 
-source "${LIB_DIR}/deploy/update-env.sh"
+###############################################################################
+# Environment library
+###############################################################################
+
+source "${SCRIPT_DIR}/lib/env/load.sh"
 
 ###############################################################################
 # Main
@@ -60,6 +47,6 @@ print_header "Updating .env"
 
 check_environment
 
-deploy_update_env
+env_update
 
-print_footer ".env updated."
+print_footer ".env synchronized."
