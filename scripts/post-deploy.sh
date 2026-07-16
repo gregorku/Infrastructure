@@ -42,11 +42,6 @@ source "${SCRIPT_DIR}/lib/git.sh"
 
 source "${SCRIPT_DIR}/lib/checks/load.sh"
 
-###############################################################################
-# Environment library
-###############################################################################
-
-source "${SCRIPT_DIR}/lib/env/load.sh"
 
 ###############################################################################
 # Post-deployment modules
@@ -71,11 +66,6 @@ check_environment
 # Verify Docker.
 #
 check_docker_environment
-
-#
-# Load stack environment (.env).
-#
-env_load
 
 #
 # Configure CrowdSec.
