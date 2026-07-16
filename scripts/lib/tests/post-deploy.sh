@@ -20,13 +20,13 @@ test_post_deploy()
 {
     print_section "Post Deployment"
 
-    ###########################################################################
+    ###############################################################################
     # CrowdSec bouncer key
-    ###########################################################################
+    ###############################################################################
 
     ensure_file "${CROWDSEC_BOUNCER_KEY_FILE}"
 
-    ensure_permissions 600 "${CROWDSEC_BOUNCER_KEY_FILE}"
+    ensure_file_mode 600 "${CROWDSEC_BOUNCER_KEY_FILE}"
 
     ok "CrowdSec bouncer key OK."
 
