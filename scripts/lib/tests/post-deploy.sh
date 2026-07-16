@@ -26,7 +26,7 @@ test_post_deploy()
 
     ensure_file "${CROWDSEC_BOUNCER_KEY_FILE}"
 
-    ensure_file_mode 600 "${CROWDSEC_BOUNCER_KEY_FILE}"
+    ensure_file_mode "${CROWDSEC_BOUNCER_KEY_FILE}" 600
 
     ok "CrowdSec bouncer key OK."
 
