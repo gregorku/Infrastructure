@@ -116,6 +116,4 @@ env_sync()
     done < "${ENV_EXAMPLE_FILE}"
 
     env_write_file <<< "${output}"
-
-    ok ".env synchronized."
 }
