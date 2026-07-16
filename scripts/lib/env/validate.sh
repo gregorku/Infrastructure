@@ -26,9 +26,22 @@ env_validate()
 
     for variable in "${!ENV_POLICY[@]}"
     do
-        [[ -v ENV["$variable"] ]] \
-            || fail "Missing variable: ${variable}"
-    done
+        case "$(env_variable_policy "${variable}")" in
+
+            generated)
+
+                #
+                # Generated variables are optional.
+                #
+                continue
+                ;;
+
+        esac
+
+    [[ -v ENV["$variable"] ]] \
+        || fail "Missing variable: ${variable}"
+
+done
 
     ok "Environment configuration OK."
 }
