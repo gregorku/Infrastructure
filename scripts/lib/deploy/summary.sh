@@ -12,11 +12,13 @@
 #
 ###############################################################################
 
+###############################################################################
+# Print deployment summary
+###############################################################################
+
 deploy_summary()
 {
     print_section "Deployment completed"
-
-    ok "Stack synchronized."
 
     info "Repository : ${GIT_DIR}"
     info "Stack      : ${STACK_DIR}"
@@ -24,5 +26,8 @@ deploy_summary()
     echo
 
     info "Next step:"
-    info "Open Dockge and click Redeploy."
+    info "1. Open Dockge."
+    info "2. Click Redeploy."
+
+    ok "Deployment summary completed."
 }
