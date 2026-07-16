@@ -72,7 +72,7 @@ env_read_current()
 # Load environment
 #
 # Description:
-#   Load .env into the current shell environment.
+#   Load variables from .env into the current shell.
 #
 ###############################################################################
 
@@ -87,6 +87,4 @@ env_load()
     source "${ENV_FILE}"
 
     set +a
-
-    ok "Environment loaded."
 }
