@@ -47,6 +47,6 @@ print_header "Updating .env"
 
 check_environment
 
-env_update
+env_sync
 
 print_footer ".env synchronized."
