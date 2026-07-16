@@ -12,6 +12,10 @@
 #
 ###############################################################################
 
+###############################################################################
+# Test Metabase
+###############################################################################
+
 test_metabase()
 {
     print_section "Metabase"
@@ -20,7 +24,7 @@ test_metabase()
     # PostgreSQL
     ###########################################################################
 
-    docker_container_running "postgres-metabase"
+    require_container_running "${POSTGRES_METABASE_SERVICE}"
 
     ok "PostgreSQL container OK."
 
@@ -28,7 +32,7 @@ test_metabase()
     # Metabase
     ###########################################################################
 
-    docker_container_running "metabase"
+    require_container_running "${METABASE_SERVICE}"
 
     ok "Metabase container OK."
 
@@ -36,23 +40,23 @@ test_metabase()
     # Directories
     ###########################################################################
 
-    directory_exists "${DATA_DIR}/metabase/postgres/data"
+    ensure_directory "${DATA_DIR}/metabase/postgres/data"
 
     ok "PostgreSQL data directory OK."
 
-    directory_exists "${DATA_DIR}/metabase/metabase/data"
+    ensure_directory "${DATA_DIR}/metabase/metabase/data"
 
     ok "Metabase data directory OK."
 
-    directory_exists "${DATA_DIR}/metabase/metabase/plugins"
+    ensure_directory "${DATA_DIR}/metabase/metabase/plugins"
 
     ok "Plugins directory OK."
 
-    directory_exists "${DATA_DIR}/metabase/metabase/logs"
+    ensure_directory "${DATA_DIR}/metabase/metabase/logs"
 
     ok "Logs directory OK."
 
-    directory_exists "${DATA_DIR}/metabase/metabase/backups"
+    ensure_directory "${DATA_DIR}/metabase/metabase/backups"
 
     ok "Backups directory OK."
 }
