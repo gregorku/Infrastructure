@@ -24,6 +24,6 @@ source "${SCRIPT_DIR}/lib/env/policy.sh"
 
 source "${SCRIPT_DIR}/lib/env/writer.sh"
 
-source "${SCRIPT_DIR}/lib/env/update.sh"
+source "${SCRIPT_DIR}/lib/env/sync.sh"
 
 source "${SCRIPT_DIR}/lib/env/validate.sh"
