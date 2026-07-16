@@ -8,26 +8,11 @@
 #   scripts/check-env.sh
 #
 # Description:
-#   Verifies the stack .env file.
-#
-#   The script:
-#
-#     • Verifies that .env.example exists.
-#
-#     • Verifies that .env exists.
-#
-#     • Verifies that all variables from .env.example
-#       exist in .env.
-#
-#     • Does not modify any files.
-#
-# Usage:
-#
-#   ./scripts/check-env.sh
+#   Validate Infrastructure environment configuration.
 #
 ###############################################################################
 
-set -euo pipefail
+set -Eeuo pipefail
 
 ###############################################################################
 # Directories
@@ -35,19 +20,24 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-LIB_DIR="${SCRIPT_DIR}/lib"
-
 ###############################################################################
-# Libraries
+# Configuration
 ###############################################################################
 
-source "${LIB_DIR}/paths.sh"
+source "${SCRIPT_DIR}/config.sh"
 
-source "${LIB_DIR}/logging.sh"
+###############################################################################
+# Core libraries
+###############################################################################
 
-source "${LIB_DIR}/common.sh"
+source "${SCRIPT_DIR}/lib/common.sh"
+source "${SCRIPT_DIR}/lib/logging.sh"
 
-source "${LIB_DIR}/deploy/check-env.sh"
+###############################################################################
+# Environment library
+###############################################################################
+
+source "${SCRIPT_DIR}/lib/env/load.sh"
 
 ###############################################################################
 # Main
@@ -59,6 +49,6 @@ check_environment
 
 print_section "Checking .env"
 
-deploy_check_env
+env_validate
 
 print_footer "Environment configuration OK."
