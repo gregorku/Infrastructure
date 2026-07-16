@@ -37,7 +37,7 @@ compose_cmd() {
     require_compose
 
     (
-        cd "${STACK_DIR}"
+        cd "${STACK_DIR}" || exit
 
         docker compose \
             --env-file .env \
