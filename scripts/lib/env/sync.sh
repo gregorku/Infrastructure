@@ -5,21 +5,21 @@
 # Infrastructure Project
 #
 # File:
-#   scripts/lib/env/update.sh
+#   scripts/lib/env/sync.sh
 #
 # Description:
 #   Synchronize .env with .env.example.
 #
 # Responsibilities:
-#   - Preserve file layout
 #   - Preserve comments
 #   - Preserve blank lines
-#   - Synchronize variables according to policy
+#   - Preserve variable order
+#   - Apply environment policy
 #
 ###############################################################################
 
 ###############################################################################
-# Update environment
+# Synchronize environment
 ###############################################################################
 
 env_sync()
@@ -30,42 +30,43 @@ env_sync()
     env_read_current ENV_CURRENT
     env_read_example ENV_EXAMPLE
 
-    env_backup
-
-    env_writer_begin
-
+    local output=""
     local line
     local key
     local example_value
     local current_value
-    local policy
     local value
+    local policy
 
     while IFS= read -r line || [[ -n "${line}" ]]
     do
         #######################################################################
-        # Empty line
+        # Preserve blank lines
         #######################################################################
 
         if [[ -z "${line}" ]]; then
-            env_writer_blank
+            output+=$'\n'
             continue
         fi
 
         #######################################################################
-        # Comment
+        # Preserve comments
         #######################################################################
 
         if [[ "${line}" =~ ^[[:space:]]*# ]]; then
-            env_writer_comment "${line}"
+            output+="${line}"$'\n'
             continue
         fi
 
         #######################################################################
-        # Invalid line
+        # Ignore invalid lines
         #######################################################################
 
         [[ "${line}" == *=* ]] || continue
+
+        #######################################################################
+        # Parse variable
+        #######################################################################
 
         key="${line%%=*}"
         example_value="${line#*=}"
@@ -73,6 +74,10 @@ env_sync()
         policy="$(env_variable_policy "${key}")"
 
         current_value="${ENV_CURRENT[$key]-}"
+
+        #######################################################################
+        # Select value according to policy
+        #######################################################################
 
         case "${policy}" in
 
@@ -106,11 +111,11 @@ env_sync()
 
         esac
 
-        env_writer_variable "${key}" "${value}"
+        output+="${key}=${value}"$'\n'
 
     done < "${ENV_EXAMPLE_FILE}"
 
-    env_writer_finish
+    env_write_file <<< "${output}"
 
     ok ".env synchronized."
 }
