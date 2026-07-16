@@ -59,5 +59,5 @@ env_write_file()
 
     mv "${ENV_TMP_FILE}" "${ENV_FILE}"
 
-    ok ".env synchronized."
+    ok ".env written."
 }
