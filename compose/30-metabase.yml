@@ -57,7 +57,8 @@ services:
 
     networks:
 
-      - traefik
+      bridge-moje:
+        ipv4_address: ${IP_POSTGRES_METABASE}
 
 ###############################################################################
 # Metabase
