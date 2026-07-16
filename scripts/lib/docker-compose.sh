@@ -157,3 +157,14 @@ compose_config() {
 
     compose_cmd config
 }
+
+###############################################################################
+# Compose reload
+###############################################################################
+compose_reload()
+{
+    compose_cmd up \
+        -d \
+        --force-recreate \
+        --remove-orphans
+}
