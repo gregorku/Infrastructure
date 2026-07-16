@@ -12,6 +12,10 @@
 #
 ###############################################################################
 
+###############################################################################
+# Test post deployment
+###############################################################################
+
 test_post_deploy()
 {
     print_section "Post Deployment"
@@ -20,9 +24,11 @@ test_post_deploy()
     # CrowdSec bouncer key
     ###########################################################################
 
-    file_exists "${CROWDSEC_BOUNCER_KEY_FILE}"
+    ensure_file "${CROWDSEC_BOUNCER_KEY_FILE}"
 
-    permissions_are 600 "${CROWDSEC_BOUNCER_KEY_FILE}"
+    ensure_permissions 600 "${CROWDSEC_BOUNCER_KEY_FILE}"
+
+    ok "CrowdSec bouncer key OK."
 
     ###########################################################################
     # CrowdSec bouncer
@@ -33,7 +39,7 @@ test_post_deploy()
         | awk '{print $1}' \
         | grep -qx "${CROWDSEC_BOUNCER_NAME}"
     then
-        ok "CrowdSec bouncer exists."
+        ok "CrowdSec bouncer OK."
     else
         fail "CrowdSec bouncer missing."
     fi
