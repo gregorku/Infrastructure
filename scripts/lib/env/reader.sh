@@ -67,3 +67,26 @@ env_read_current()
         "${STACK_DIR}/.env" \
         "${array_name}"
 }
+
+###############################################################################
+# Load environment
+#
+# Description:
+#   Load .env into the current shell environment.
+#
+###############################################################################
+
+env_load()
+{
+    [[ -f "${ENV_FILE}" ]] \
+        || fail ".env not found."
+
+    set -a
+
+    # shellcheck disable=SC1090
+    source "${ENV_FILE}"
+
+    set +a
+
+    ok "Environment loaded."
+}
