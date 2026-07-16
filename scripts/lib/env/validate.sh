@@ -42,6 +42,4 @@ env_validate()
         || fail "Missing variable: ${variable}"
 
 done
-
-    ok "Environment configuration OK."
 }
