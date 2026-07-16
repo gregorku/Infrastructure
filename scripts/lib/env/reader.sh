@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+###############################################################################
+#
+# Infrastructure Project
+#
+# File:
+#   scripts/lib/env/reader.sh
+#
+# Description:
+#   Read environment configuration files.
+#
+# Responsibilities:
+#   - Read .env.example
+#   - Read .env
+#   - Read arbitrary environment file
+#
+###############################################################################
+
+###############################################################################
+# Read environment file
+#
+# Arguments:
+#   $1 - Environment file
+#   $2 - Name of associative array
+#
+###############################################################################
+
+env_read_file()
+{
+    local file="$1"
+    local array_name="$2"
+
+    env_parse_file "${file}" "${array_name}"
+}
+
+###############################################################################
+# Read .env.example
+#
+# Arguments:
+#   $1 - Name of associative array
+#
+###############################################################################
+
+env_read_example()
+{
+    local array_name="$1"
+
+    env_read_file \
+        "${STACK_DIR}/.env.example" \
+        "${array_name}"
+}
+
+###############################################################################
+# Read .env
+#
+# Arguments:
+#   $1 - Name of associative array
+#
+###############################################################################
+
+env_read_current()
+{
+    local array_name="$1"
+
+    env_read_file \
+        "${STACK_DIR}/.env" \
+        "${array_name}"
+}
