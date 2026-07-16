@@ -53,6 +53,8 @@ backup_file()
 
 env_write_file()
 {
+    backup_file "${ENV_FILE}" "${ENV_BACKUP_PREFIX}"
+
     cat > "${ENV_TMP_FILE}"
 
     mv "${ENV_TMP_FILE}" "${ENV_FILE}"
