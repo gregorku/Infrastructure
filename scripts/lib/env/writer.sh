@@ -19,18 +19,26 @@
 ###############################################################################
 
 ###############################################################################
-# Backup environment
+# Backup file
+#
+# Arguments:
+#   $1 - Source file
+#   $2 - Backup prefix
+#
 ###############################################################################
 
-env_backup()
+backup_file()
 {
-    [[ -f "${ENV_FILE}" ]] || return
+    local source="$1"
+    local prefix="$2"
+
+    [[ -f "${source}" ]] || return
 
     local backup
 
-    backup="${ENV_BACKUP_PREFIX}-$(date +%Y%m%d-%H%M%S)"
+    backup="${prefix}-$(date +%Y%m%d-%H%M%S)"
 
-    cp "${ENV_FILE}" "${backup}"
+    cp "${source}" "${backup}"
 
     ok "Backup created: $(basename "${backup}")"
 }
