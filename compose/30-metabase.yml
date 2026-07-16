@@ -132,4 +132,7 @@ services:
 
     networks:
 
-      - traefik
+      bridge-moje:
+        ipv4_address: ${IP_METABASE}
+
+      traefik-moje:
