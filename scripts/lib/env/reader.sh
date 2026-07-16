@@ -88,3 +88,29 @@ env_load()
 
     set +a
 }
+
+###############################################################################
+# Get environment variable
+#
+# Arguments:
+#   $1 - Variable name
+#
+# Returns:
+#   Variable value from .env
+#
+###############################################################################
+
+env_get()
+{
+    local key="$1"
+
+    [[ -f "${ENV_FILE}" ]] \
+        || fail ".env not found."
+
+    awk -F= -v key="${key}" '
+        $1 == key {
+            print substr($0, index($0, "=") + 1)
+            exit
+        }
+    ' "${ENV_FILE}"
+}
