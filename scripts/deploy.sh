@@ -8,7 +8,7 @@
 #   scripts/deploy.sh
 #
 # Description:
-#   Synchronize the Infrastructure repository to the Docker stack directory.
+#   Deploy the Infrastructure stack to the Docker environment.
 #
 ###############################################################################
 
@@ -30,9 +30,9 @@ source "${SCRIPT_DIR}/config.sh"
 # Core libraries
 ###############################################################################
 
-source "${SCRIPT_DIR}/lib/paths.sh"
-source "${SCRIPT_DIR}/lib/logging.sh"
 source "${SCRIPT_DIR}/lib/common.sh"
+source "${SCRIPT_DIR}/lib/logging.sh"
+source "${SCRIPT_DIR}/lib/paths.sh"
 
 ###############################################################################
 # Checks library
@@ -41,14 +41,14 @@ source "${SCRIPT_DIR}/lib/common.sh"
 source "${SCRIPT_DIR}/lib/checks/load.sh"
 
 ###############################################################################
-# Deploy modules
+# Deploy library
 ###############################################################################
 
 source "${SCRIPT_DIR}/lib/deploy/verify.sh"
 source "${SCRIPT_DIR}/lib/deploy/sync.sh"
+source "${SCRIPT_DIR}/lib/deploy/check-env.sh"
 source "${SCRIPT_DIR}/lib/deploy/compose.sh"
 source "${SCRIPT_DIR}/lib/deploy/summary.sh"
-source "${SCRIPT_DIR}/lib/deploy/check-env.sh"
 
 ###############################################################################
 # Main
@@ -72,9 +72,13 @@ check_docker_environment
 deploy_verify_project
 
 #
-# Synchronize stack.
+# Synchronize repository to stack directory.
 #
 deploy_sync_stack
+
+#
+# Verify synchronized environment.
+#
 deploy_check_env
 
 #
@@ -86,4 +90,5 @@ deploy_validate_compose
 # Print deployment summary.
 #
 deploy_summary
+
 print_footer "Deployment finished."
