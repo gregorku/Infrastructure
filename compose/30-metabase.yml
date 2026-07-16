@@ -98,7 +98,7 @@ services:
 
       MB_SITE_URL: ${PUBLIC_ADMIN_URL}/metabase/
 
-      #MB_JETTY_CONTEXT_PATH: /metabase
+      MB_JETTY_CONTEXT_PATH: /metabase
 
       MB_PLUGINS_DIR: /plugins
 
