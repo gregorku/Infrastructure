@@ -204,7 +204,9 @@ deploy_check_user_variables()
 
     done
 
-    if (( differences == 1 )); then
+    if (( differences == 0 )); then
+        ok "No user variable differences found."
+    elif (( differences == 1 )); then
         info "1 user variable differs from .env.example."
     else
         info "${differences} user variables differ from .env.example."
