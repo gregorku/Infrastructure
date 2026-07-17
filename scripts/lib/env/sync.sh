@@ -37,6 +37,9 @@ env_sync()
     local current_value
     local value
     local policy
+    local differences=0
+
+    info "Checking user variables..."
 
     while IFS= read -r line || [[ -n "${line}" ]]
     do
@@ -111,9 +114,35 @@ env_sync()
 
         esac
 
+        #######################################################################
+        # Report user variable differences
+        #######################################################################
+
+        if [[ "${policy}" == "user" ]] \
+            && [[ -n "${current_value}" ]] \
+            && [[ "${current_value}" != "${example_value}" ]]; then
+
+            info "${key} differs"
+
+            printf "       .env         : %s\n" "${current_value}"
+            printf "       .env.example : %s\n" "${example_value}"
+            printf "       Keeping user value.\n\n"
+
+            differences=$((differences + 1))
+
+        fi
+
         output+="${key}=${value}"$'\n'
 
     done < "${ENV_EXAMPLE_FILE}"
 
     env_write_file <<< "${output}"
+
+    if (( differences == 0 )); then
+        ok "No user variable differences found."
+    elif (( differences == 1 )); then
+        info "1 user variable differs from .env.example."
+    else
+        info "${differences} user variables differ from .env.example."
+    fi
 }
