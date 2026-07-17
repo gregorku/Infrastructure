@@ -39,6 +39,7 @@ deploy_update_env()
     deploy_backup_env
 
     deploy_update_env_variables
+    deploy_check_user_variables
 }
 
 ###############################################################################
@@ -150,5 +151,62 @@ deploy_update_env_variables()
 
     if (( added == 0 )); then
         ok ".env already up to date."
+    fi
+}
+
+deploy_check_user_variables()
+{
+    local variable
+    local env_value
+    local example_value
+    local differences=0
+
+    info "Checking user variables..."
+
+    for variable in "${!ENV_POLICY[@]}"; do
+
+        #
+        # Only user variables
+        #
+
+        [[ "${ENV_POLICY[$variable]}" != "user" ]] && continue
+
+        #
+        # Read values
+        #
+
+        env_value=$(grep -E "^${variable}=" "${ENV_FILE}" \
+            | head -n1 | cut -d= -f2-)
+
+        example_value=$(grep -E "^${variable}=" "${ENV_EXAMPLE_FILE}" \
+            | head -n1 | cut -d= -f2-)
+
+        #
+        # Missing variable
+        #
+
+        [[ -z "${env_value}" ]] && continue
+        [[ -z "${example_value}" ]] && continue
+
+        #
+        # Same value
+        #
+
+        [[ "${env_value}" == "${example_value}" ]] && continue
+
+        info "${variable} differs"
+
+        printf "       .env         : %s\n" "${env_value}"
+        printf "       .env.example : %s\n" "${example_value}"
+        printf "       Keeping user value.\n\n"
+
+        differences=$((differences + 1))
+
+    done
+
+    if (( differences == 1 )); then
+        info "1 user variable differs from .env.example."
+    else
+        info "${differences} user variables differ from .env.example."
     fi
 }
