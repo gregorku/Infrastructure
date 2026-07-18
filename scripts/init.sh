@@ -81,11 +81,6 @@ init_traefik
 init_crowdsec
 
 #
-# Install CrowdSec Hub collections.
-#
-init_crowdsec_hub
-
-#
 # Initialize Metabase.
 #
 init_metabase
