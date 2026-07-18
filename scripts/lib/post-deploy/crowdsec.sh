@@ -54,11 +54,15 @@ post_deploy_crowdsec()
 
     if docker exec "${CROWDSEC_SERVICE}" \
         cscli bouncers list \
-        | awk '{print $1}' \
-        | grep -qx "${CROWDSEC_BOUNCER_NAME}"
+        | awk 'NR > 3 { print $1 }' \
+        | grep -Fxq "${CROWDSEC_BOUNCER_NAME}"
     then
 
-        fail "CrowdSec bouncer exists but API key file is missing."
+        warn "CrowdSec bouncer '${CROWDSEC_BOUNCER_NAME}' already exists."
+        warn "API key file is missing."
+        warn "Delete and recreate the bouncer or restore the key file."
+
+        return
 
     fi
 
@@ -74,7 +78,7 @@ post_deploy_crowdsec()
     output="$(
         docker exec "${CROWDSEC_SERVICE}" \
             cscli bouncers add "${CROWDSEC_BOUNCER_NAME}"
-    )"
+    )" || fail "Unable to create CrowdSec bouncer."
 
     api_key="$(
         printf '%s\n' "${output}" |
