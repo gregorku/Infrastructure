@@ -99,9 +99,11 @@ post_deploy_crowdsec()
 
         warn "CrowdSec bouncer '${CROWDSEC_BOUNCER_NAME}' already exists."
         warn "API key file is missing."
-        warn "Delete and recreate the bouncer or restore the key file."
+        warn "Recreating CrowdSec bouncer..."
 
-        return
+        docker exec "${CROWDSEC_SERVICE}" \
+            cscli bouncers delete "${CROWDSEC_BOUNCER_NAME}" >/dev/null \
+            || fail "Unable to delete existing CrowdSec bouncer."
 
     fi
 
