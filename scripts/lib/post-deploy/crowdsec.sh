@@ -12,6 +12,7 @@
 #
 # Responsibilities:
 #   - Verify CrowdSec container
+#   - Install required collections
 #   - Create Traefik bouncer if missing
 #   - Save API key
 #   - Set correct permissions
@@ -29,6 +30,31 @@ post_deploy_crowdsec()
     docker_container_running "${CROWDSEC_SERVICE}"
 
     ok "CrowdSec container OK."
+
+    ###########################################################################
+    # Install required collections
+    ###########################################################################
+
+    info "Installing CrowdSec collections..."
+
+    local collections=(
+        crowdsecurity/linux
+        crowdsecurity/sshd
+        crowdsecurity/traefik
+    )
+
+    local collection
+
+    for collection in "${collections[@]}"; do
+
+        info "  ${collection}"
+
+        docker exec "${CROWDSEC_SERVICE}" \
+            cscli collections install "${collection}" >/dev/null
+
+    done
+
+    ok "CrowdSec collections OK."
 
     ###########################################################################
     # Prepare directory
