@@ -33,7 +33,7 @@ test_crowdsec()
     fi
 
     #
-    # Parser
+    # Traefik parser
     #
 
     if docker exec crowdsec cscli parsers list \
@@ -45,11 +45,11 @@ test_crowdsec()
     fi
 
     #
-    # Bouncer
+    # Traefik bouncer
     #
 
     if docker exec crowdsec cscli bouncers list \
-        | grep -q traefik
+        | grep -q "^traefik[[:space:]]"
     then
         ok "Traefik bouncer OK."
     else
@@ -57,18 +57,30 @@ test_crowdsec()
     fi
 
     #
-    # Acquisition
-    #
-
-    #
-    # Traefik traffic parsing
+    # Access log acquisition
     #
 
     if docker exec crowdsec cscli metrics \
-        | grep -Eq "crowdsecurity/(traefik-logs|http-logs)"
+        | grep -q "file:/logs/access.log"
     then
-      ok "CrowdSec traffic parsing OK."
+        ok "Access log acquisition OK."
     else
-      fail "CrowdSec is not parsing Traefik logs."
+        fail "Access log acquisition missing."
+    fi
+
+    #
+    # Verify parser on a real Traefik log
+    #
+
+    if docker exec crowdsec \
+        cscli explain \
+        --file /logs/access.log \
+        --type traefik \
+        --only-successful-parsers 2>/dev/null \
+        | grep -q "crowdsecurity/traefik-logs"
+    then
+        ok "Traefik log parsing OK."
+    else
+        fail "Traefik log parsing failed."
     fi
 }
