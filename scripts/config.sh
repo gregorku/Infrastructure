@@ -36,9 +36,15 @@ readonly BASE_DIR="/docker-data"
 # Infrastructure data
 readonly DATA_DIR="${BASE_DIR}/infrastructure"
 
+###############################################################################
 # Dockge
+###############################################################################
+
 readonly DOCKGE_DIR="${BASE_DIR}/dockge"
 readonly DOCKGE_DATA_DIR="${DOCKGE_DIR}/data"
+
+readonly DOCKGE_COMPOSE_FILE="${DOCKGE_DIR}/compose.yml"
+readonly DOCKGE_ENV_FILE="${DOCKGE_DIR}/.env"
 
 # Docker Compose stacks
 readonly STACKS_DIR="${BASE_DIR}/stacks"
