@@ -121,7 +121,7 @@ post_deploy_crowdsec()
 
     api_key="$(
         printf '%s\n' "${output}" |
-        grep -E '^[[:space:]]*[A-Za-z0-9]{20,}[[:space:]]*$' |
+        grep -E '^[[:space:]]*[A-Za-z0-9+/=]{20,}[[:space:]]*$' |
         tr -d '[:space:]'
     )"
 
