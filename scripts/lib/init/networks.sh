@@ -78,4 +78,5 @@ init_networks() {
         "${NETWORK_TRAEFIK}" \
         "${NETWORK_TRAEFIK_SUBNET}" \
         "${NETWORK_TRAEFIK_GATEWAY}"
+    log_success "Docker networks ready."
 }
