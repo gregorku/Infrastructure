@@ -41,6 +41,14 @@ readonly BASE_DIR="/docker-data"
 readonly DATA_DIR="${BASE_DIR}/infrastructure"
 
 ###############################################################################
+# Dockge
+###############################################################################
+
+readonly DOCKGE_DIR="${BASE_DIR}/dockge"
+readonly DOCKGE_DATA_DIR="${DOCKGE_DIR}/data"
+readonly DOCKGE_CONTAINER="dockge"
+
+###############################################################################
 # Docker Compose stacks
 ###############################################################################
 
@@ -67,12 +75,6 @@ readonly DEPLOY_ITEMS=(
 )
 
 ###############################################################################
-# Containers
-###############################################################################
-
-readonly DOCKGE_CONTAINER="dockge"
-
-###############################################################################
 # Compose services
 ###############################################################################
 
@@ -90,9 +92,6 @@ readonly TRAEFIK_DIR="${DATA_DIR}/traefik"
 readonly CROWDSEC_DIR="${DATA_DIR}/crowdsec"
 readonly WATCHTOWER_DIR="${DATA_DIR}/watchtower"
 readonly METABASE_DIR="${DATA_DIR}/metabase"
-
-readonly DOCKGE_DATA_DIR="${DOCKGE_DIR}/data"
-readonly DOCKGE_DIR="${BASE_DIR}/dockge"
 
 ###############################################################################
 # Docker networks
