@@ -70,7 +70,20 @@ post_deploy_crowdsec()
 
         ok "CrowdSec bouncer key already exists."
 
-        return
+        if docker exec "${CROWDSEC_SERVICE}" \
+            cscli bouncers list \
+            | awk 'NR > 3 { print $1 }' \
+            | grep -Fxq "${CROWDSEC_BOUNCER_NAME}"
+        then
+
+            ok "CrowdSec bouncer already registered."
+
+            return
+
+        fi
+
+        warn "Key exists but bouncer is missing."
+        warn "Recreating CrowdSec bouncer..."
 
     fi
 
