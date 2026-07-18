@@ -41,21 +41,23 @@ readonly BASE_DIR="/docker-data"
 readonly DATA_DIR="${BASE_DIR}/infrastructure"
 
 ###############################################################################
-# Dockge
-###############################################################################
-
-readonly DOCKGE_DIR="${BASE_DIR}/dockge"
-
-
-###############################################################################
 # Docker Compose stacks
 ###############################################################################
 
 readonly STACKS_DIR="${BASE_DIR}/stacks"
 readonly STACK_DIR="${STACKS_DIR}/${STACK_NAME}"
 
+###############################################################################
+# Stack files
+###############################################################################
+
 readonly COMPOSE_FILE="${STACK_DIR}/compose.yml"
 readonly ENV_FILE="${STACK_DIR}/.env"
+readonly ENV_EXAMPLE_FILE="${STACK_DIR}/.env.example"
+
+###############################################################################
+# Files copied during initialization
+###############################################################################
 
 readonly DEPLOY_ITEMS=(
     compose.yml
