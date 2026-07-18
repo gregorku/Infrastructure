@@ -71,6 +71,11 @@ check_environment
 init_directories
 
 #
+# Create project networks.
+#
+init_networks
+
+#
 # Initialize Traefik.
 #
 init_traefik
