@@ -47,7 +47,6 @@ readonly DATA_DIR="${BASE_DIR}/infrastructure"
 readonly DOCKGE_DIR="${BASE_DIR}/dockge"
 
 
-
 ###############################################################################
 # Docker Compose stacks
 ###############################################################################
