@@ -36,11 +36,6 @@ init_stack()
     ensure_directory "${STACK_DIR}"
 
     #
-    # Compose directory
-    #
-    ensure_directory "${STACK_DIR}/compose"
-
-    #
     # Copy compose.yml
     #
     copy_stack_file \
