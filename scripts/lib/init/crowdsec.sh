@@ -81,20 +81,3 @@ EOF
 
     ok "CrowdSec layout ready."
 }
-
-###############################################################################
-# CrowdSec Collections
-###############################################################################
-
-CROWDSEC_COLLECTIONS=(
-    crowdsecurity/linux
-    crowdsecurity/sshd
-    crowdsecurity/traefik
-)
-
-for collection in "${CROWDSEC_COLLECTIONS[@]}"; do
-    log_info "Installing CrowdSec collection: ${collection}"
-
-    docker exec crowdsec \
-        cscli collections install "${collection}"
-done
