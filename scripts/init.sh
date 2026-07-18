@@ -8,7 +8,14 @@
 #   scripts/init.sh
 #
 # Description:
-#   Initialize Infrastructure directory structure.
+#   Initialize Infrastructure project.
+#
+# Responsibilities:
+#   - Verify environment
+#   - Prepare project directories
+#   - Prepare project stack
+#   - Create Docker networks
+#   - Prepare service layouts
 #
 ###############################################################################
 
@@ -37,7 +44,7 @@ source "${SCRIPT_DIR}/lib/docker.sh"
 source "${SCRIPT_DIR}/lib/git.sh"
 
 ###############################################################################
-# Checks library
+# Checks
 ###############################################################################
 
 source "${SCRIPT_DIR}/lib/checks/load.sh"
@@ -47,6 +54,7 @@ source "${SCRIPT_DIR}/lib/checks/load.sh"
 ###############################################################################
 
 source "${SCRIPT_DIR}/lib/init/directories.sh"
+source "${SCRIPT_DIR}/lib/init/stack.sh"
 source "${SCRIPT_DIR}/lib/init/networks.sh"
 source "${SCRIPT_DIR}/lib/init/traefik.sh"
 source "${SCRIPT_DIR}/lib/init/crowdsec.sh"
@@ -66,36 +74,41 @@ print_header "Infrastructure initialization"
 check_environment
 
 #
-# Create project directories.
+# Prepare project directories.
 #
 init_directories
 
 #
-# Create project networks.
+# Prepare project stack.
+#
+init_stack
+
+#
+# Create Docker networks.
 #
 init_networks
 
 #
-# Initialize Traefik.
+# Prepare Traefik layout.
 #
 init_traefik
 
 #
-# Initialize CrowdSec.
+# Prepare CrowdSec layout.
 #
 init_crowdsec
 
 #
-# Initialize Metabase.
+# Prepare Metabase layout.
 #
 init_metabase
 
 #
-# Initialize Watchtower.
+# Prepare Watchtower layout.
 #
 init_watchtower
 
 #
-# Print initialization summary.
+# Print summary.
 #
 init_summary
