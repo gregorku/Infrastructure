@@ -8,11 +8,17 @@
 #   scripts/deploy.sh
 #
 # Description:
-#   Deploy the Infrastructure stack to the Docker environment.
+#   Deploy Infrastructure services.
+#
+# Responsibilities:
+#   - Verify deployment environment
+#   - Deploy Dockge
+#   - Deploy Infrastructure Docker Compose stack
+#   - Print deployment summary
 #
 ###############################################################################
 
-set -euo pipefail
+set -Eeuo pipefail
 
 ###############################################################################
 # Directories
@@ -34,24 +40,25 @@ source "${SCRIPT_DIR}/lib/common.sh"
 source "${SCRIPT_DIR}/lib/logging.sh"
 
 ###############################################################################
-# Checks library
+# Checks
 ###############################################################################
 
 source "${SCRIPT_DIR}/lib/checks/load.sh"
 
 ###############################################################################
-# Environment library
+# Environment
 ###############################################################################
 
 source "${SCRIPT_DIR}/lib/env/load.sh"
 
 ###############################################################################
-# Deploy library
+# Deployment modules
 ###############################################################################
 
 source "${SCRIPT_DIR}/lib/deploy/verify.sh"
-source "${SCRIPT_DIR}/lib/deploy/sync.sh"
 source "${SCRIPT_DIR}/lib/deploy/check-env.sh"
+source "${SCRIPT_DIR}/lib/deploy/dockge.sh"
+source "${SCRIPT_DIR}/lib/deploy/wait.sh"
 source "${SCRIPT_DIR}/lib/deploy/compose.sh"
 source "${SCRIPT_DIR}/lib/deploy/summary.sh"
 
@@ -77,14 +84,19 @@ check_docker_environment
 deploy_verify_project
 
 #
-# Synchronize repository to stack directory.
-#
-deploy_sync_stack
-
-#
-# Verify synchronized environment.
+# Verify .env.
 #
 deploy_check_env
+
+#
+# Deploy Dockge.
+#
+deploy_dockge
+
+#
+# Wait until Dockge is ready.
+#
+deploy_wait_dockge
 
 #
 # Validate Docker Compose configuration.
@@ -92,8 +104,13 @@ deploy_check_env
 deploy_validate_compose
 
 #
+# Deploy Infrastructure stack.
+#
+deploy_compose
+
+#
 # Print deployment summary.
 #
 deploy_summary
 
-print_footer "Deployment finished."
+print_footer "Deployment completed."

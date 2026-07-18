@@ -38,6 +38,7 @@ readonly DATA_DIR="${BASE_DIR}/infrastructure"
 
 # Dockge
 readonly DOCKGE_DIR="${BASE_DIR}/dockge"
+readonly DOCKGE_DATA_DIR="${DOCKGE_DIR}/data"
 
 # Docker Compose stacks
 readonly STACKS_DIR="${BASE_DIR}/stacks"
