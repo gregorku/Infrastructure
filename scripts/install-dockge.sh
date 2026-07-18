@@ -8,15 +8,13 @@
 #   scripts/install-dockge.sh
 #
 # Description:
-#   Installs (or reinstalls) Dockge.
+#   Creates a fresh Dockge container.
 #
-#   The script:
-#     - stops and removes an existing Dockge container
-#     - creates required directories
-#     - starts Dockge
-#
-# Configuration:
-#   scripts/config.sh
+# Notes:
+#   - Uses configuration from scripts/config.sh.
+#   - Stores Dockge data in ${DOCKGE_DATA_DIR}.
+#   - Uses ${STACKS_DIR} as the Dockge stacks directory.
+#   - Existing Dockge container is removed before installation.
 #
 ###############################################################################
 
@@ -28,21 +26,21 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/config.sh"
 
 ###############################################################################
-# Stop previous container
+# Remove existing container
 ###############################################################################
 
 docker stop "${DOCKGE_CONTAINER}" >/dev/null 2>&1 || true
 docker rm   "${DOCKGE_CONTAINER}" >/dev/null 2>&1 || true
 
 ###############################################################################
-# Prepare directories
+# Create required directories
 ###############################################################################
 
 mkdir -p "${DOCKGE_DATA_DIR}"
 mkdir -p "${STACKS_DIR}"
 
 ###############################################################################
-# Install Dockge
+# Start Dockge
 ###############################################################################
 
 docker run -d \
@@ -56,9 +54,17 @@ docker run -d \
     "${DOCKGE_IMAGE}"
 
 ###############################################################################
-# Done
+# Summary
 ###############################################################################
 
 echo
-echo "Dockge installed."
-echo "URL: http://<server>:${DOCKGE_PORT}"
+echo "Dockge installed successfully."
+echo
+echo "Container : ${DOCKGE_CONTAINER}"
+echo "Image     : ${DOCKGE_IMAGE}"
+echo "Port      : ${DOCKGE_PORT}"
+echo "Data dir  : ${DOCKGE_DATA_DIR}"
+echo "Stacks    : ${STACKS_DIR}"
+echo
+echo "Open:"
+echo "  http://<server>:${DOCKGE_PORT}"
