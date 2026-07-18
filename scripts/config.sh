@@ -92,6 +92,7 @@ readonly WATCHTOWER_DIR="${DATA_DIR}/watchtower"
 readonly METABASE_DIR="${DATA_DIR}/metabase"
 
 readonly DOCKGE_DATA_DIR="${DOCKGE_DIR}/data"
+readonly DOCKGE_DIR="${BASE_DIR}/dockge"
 
 ###############################################################################
 # Docker networks
