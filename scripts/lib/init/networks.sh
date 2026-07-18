@@ -67,7 +67,7 @@ create_docker_network() {
 
 init_networks() {
 
-    log_header "Initializing Docker networks"
+    log_step "Docker networks"
 
     create_docker_network \
         "${NETWORK_INTERNAL}" \
