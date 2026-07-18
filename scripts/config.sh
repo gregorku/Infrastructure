@@ -28,23 +28,26 @@ readonly PROJECT_NAME="Infrastructure"
 readonly STACK_NAME="infrastructure"
 
 ###############################################################################
+# Directories
+###############################################################################
+
+readonly BASE_DIR="/docker-data"
+
+# Infrastructure data
+readonly DATA_DIR="${BASE_DIR}/infrastructure"
+
+# Dockge
+readonly DOCKGE_DIR="${BASE_DIR}/dockge"
+
+# Docker Compose stacks
+readonly STACKS_DIR="${BASE_DIR}/stacks"
+readonly STACK_DIR="${STACKS_DIR}/${STACK_NAME}"
+
+###############################################################################
 # Repository
 ###############################################################################
 
 readonly GIT_DIR="/incus-dir/git/${PROJECT_NAME}"
-
-###############################################################################
-# Docker stack
-###############################################################################
-
-readonly STACK_DIR="/zfs-data/stacks/${STACK_NAME}"
-
-###############################################################################
-# Persistent data
-###############################################################################
-
-readonly DATA_DIR="/zfs-data/infrastructure-data"
-
 ###############################################################################
 # Service directories
 ###############################################################################
@@ -86,7 +89,12 @@ readonly POSTGRES_METABASE_SERVICE="postgres-metabase"
 ###############################################################################
 
 readonly NETWORK_INTERNAL="bridge-moje"
+readonly NETWORK_INTERNAL_SUBNET="10.40.0.0/16"
+readonly NETWORK_INTERNAL_GATEWAY="10.40.0.1"
+
 readonly NETWORK_TRAEFIK="traefik-moje"
+readonly NETWORK_TRAEFIK_SUBNET="100.40.0.0/16"
+readonly NETWORK_TRAEFIK_GATEWAY="100.40.0.1"
 
 ###############################################################################
 # Docker Compose

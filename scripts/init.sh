@@ -47,6 +47,7 @@ source "${SCRIPT_DIR}/lib/checks/load.sh"
 ###############################################################################
 
 source "${SCRIPT_DIR}/lib/init/directories.sh"
+source "${SCRIPT_DIR}/lib/init/networks.sh"
 source "${SCRIPT_DIR}/lib/init/traefik.sh"
 source "${SCRIPT_DIR}/lib/init/crowdsec.sh"
 source "${SCRIPT_DIR}/lib/init/crowdsec-hub.sh"
