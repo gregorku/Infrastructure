@@ -22,18 +22,22 @@ IFS=$'\n\t'
 readonly PROJECT_NAME="Infrastructure"
 
 #
-# Docker Compose / Dockge stack name
-# (always lowercase)
+# Docker Compose stack name
 #
 readonly STACK_NAME="infrastructure"
 
 ###############################################################################
-# Directories
+# Repository
+###############################################################################
+
+readonly GIT_DIR="/incus-dir/git/${PROJECT_NAME}"
+
+###############################################################################
+# Base directories
 ###############################################################################
 
 readonly BASE_DIR="/docker-data"
 
-# Infrastructure data
 readonly DATA_DIR="${BASE_DIR}/infrastructure"
 
 ###############################################################################
@@ -41,7 +45,6 @@ readonly DATA_DIR="${BASE_DIR}/infrastructure"
 ###############################################################################
 
 readonly DOCKGE_DIR="${BASE_DIR}/dockge"
-readonly DOCKGE_DATA_DIR="${DOCKGE_DIR}/data"
 
 readonly DOCKGE_COMPOSE_FILE="${DOCKGE_DIR}/compose.yml"
 readonly DOCKGE_ENV_FILE="${DOCKGE_DIR}/.env"
@@ -69,31 +72,6 @@ readonly STACK_ITEMS=(
 )
 
 ###############################################################################
-# Repository
-###############################################################################
-
-readonly GIT_DIR="/incus-dir/git/${PROJECT_NAME}"
-###############################################################################
-# Service directories
-###############################################################################
-
-readonly TRAEFIK_DIR="${DATA_DIR}/traefik"
-readonly CROWDSEC_DIR="${DATA_DIR}/crowdsec"
-readonly WATCHTOWER_DIR="${DATA_DIR}/watchtower"
-readonly METABASE_DIR="${DATA_DIR}/metabase"
-
-###############################################################################
-# Deployment
-###############################################################################
-
-readonly DEPLOY_ITEMS=(
-    compose.yml
-    compose
-    configs
-    .env.example
-)
-
-###############################################################################
 # Containers
 ###############################################################################
 
@@ -110,6 +88,17 @@ readonly METABASE_SERVICE="metabase"
 readonly POSTGRES_METABASE_SERVICE="postgres-metabase"
 
 ###############################################################################
+# Infrastructure data
+###############################################################################
+
+readonly TRAEFIK_DIR="${DATA_DIR}/traefik"
+readonly CROWDSEC_DIR="${DATA_DIR}/crowdsec"
+readonly WATCHTOWER_DIR="${DATA_DIR}/watchtower"
+readonly METABASE_DIR="${DATA_DIR}/metabase"
+
+readonly DOCKGE_DATA_DIR="${DOCKGE_DIR}/data"
+
+###############################################################################
 # Docker networks
 ###############################################################################
 
@@ -122,12 +111,6 @@ readonly NETWORK_TRAEFIK_SUBNET="100.40.0.0/16"
 readonly NETWORK_TRAEFIK_GATEWAY="100.40.0.1"
 
 ###############################################################################
-# Docker Compose
-###############################################################################
-
-readonly COMPOSE_FILE="${STACK_DIR}/compose.yml"
-
-###############################################################################
 # Colors
 ###############################################################################
 
@@ -138,12 +121,13 @@ readonly COLOR_BLUE="\033[0;34m"
 readonly COLOR_RESET="\033[0m"
 
 ###############################################################################
-# Traefik configuration
+# Traefik
 ###############################################################################
 
 readonly TRAEFIK_CONFIG_DIR="${GIT_DIR}/configs/traefik"
 readonly TRAEFIK_DYNAMIC_DIR="${TRAEFIK_CONFIG_DIR}/dynamic"
 readonly TRAEFIK_USERS_DIR="${TRAEFIK_CONFIG_DIR}/users"
+
 readonly TRAEFIK_HTPASSWD_FILE="${TRAEFIK_USERS_DIR}/dashboard.htpasswd"
 
 ###############################################################################
