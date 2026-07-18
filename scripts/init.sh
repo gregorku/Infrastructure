@@ -81,7 +81,7 @@ init_directories
 #
 # Prepare project stack.
 #
-init_stack
+init_prepare_stack
 
 #
 # Create Docker networks.
