@@ -51,7 +51,8 @@ create_docker_network() {
         --driver bridge \
         --subnet "${subnet}" \
         --gateway "${gateway}" \
-        "${network_name}"
+        "${network_name}" \
+        >/dev/null 2>&1
 
     if [[ $? -eq 0 ]]; then
         log_success "Docker network '${network_name}' created."
