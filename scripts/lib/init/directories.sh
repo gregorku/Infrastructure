@@ -8,19 +8,38 @@
 #   scripts/lib/init/directories.sh
 #
 # Description:
-#   Initialize Infrastructure project directories.
+#   Prepare common Infrastructure directories.
 #
+# Responsibilities:
+#   - Create shared data directory
+#   - Create service data directories
+#
+# Notes:
+#   Docker Compose stack files are prepared by:
+#       scripts/lib/init/stack.sh
+#
+###############################################################################
+
+###############################################################################
+# Initialize project directories
 ###############################################################################
 
 init_directories()
 {
-    print_section "Project directories"
+    log_step "Project directories"
 
-    ensure_directory "${STACK_DIR}"
+    #
+    # Common data directory
+    #
     ensure_directory "${DATA_DIR}"
 
-    info "Stack directory : ${STACK_DIR}"
-    info "Data directory  : ${DATA_DIR}"
-    
-    ok "Project directories ready."
+    #
+    # Service directories
+    #
+    ensure_directory "${TRAEFIK_DIR}"
+    ensure_directory "${CROWDSEC_DIR}"
+    ensure_directory "${WATCHTOWER_DIR}"
+    ensure_directory "${METABASE_DIR}"
+
+    log_success "Project directories ready."
 }
