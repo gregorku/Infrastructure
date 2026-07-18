@@ -2,13 +2,25 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Infrastructure
 #
 # File:
 #   scripts/update-env.sh
 #
 # Description:
-#   Synchronize .env with .env.example.
+#   Create or synchronize the project .env file.
+#
+# Workflow:
+#   - Check environment.
+#   - If .env does not exist:
+#       * create it from .env.example
+#       * inform the user
+#       * finish successfully
+#   - If .env exists:
+#       * synchronize it with .env.example
+#       * preserve existing values
+#       * add new variables
+#       * remove obsolete variables
 #
 ###############################################################################
 
@@ -49,4 +61,4 @@ check_environment
 
 env_sync
 
-print_footer ".env synchronized."
+print_footer ".env ready."
