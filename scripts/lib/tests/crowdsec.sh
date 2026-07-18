@@ -49,7 +49,7 @@ test_crowdsec()
     #
 
     if docker exec crowdsec cscli bouncers list \
-        | grep -q "^traefik[[:space:]]"
+        | grep -qw "traefik"
     then
         ok "Traefik bouncer OK."
     else
