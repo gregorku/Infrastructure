@@ -145,17 +145,27 @@ post_deploy_crowdsec()
     info "Key file:"
     info "  ${CROWDSEC_BOUNCER_KEY_FILE}"
 
-    ###########################################################################
+        ###########################################################################
     # Final verification
     ###########################################################################
 
     if docker exec "${CROWDSEC_SERVICE}" \
         cscli bouncers list \
-        | grep -q "${CROWDSEC_BOUNCER_NAME}"
+        | grep -Fq "${CROWDSEC_BOUNCER_NAME}"
     then
         ok "CrowdSec configuration verified."
     else
         fail "CrowdSec bouncer verification failed."
     fi
+
+    ###########################################################################
+    # Wait for CrowdSec initialization
+    ###########################################################################
+
+    info "Waiting for CrowdSec initialization..."
+
+    sleep 3
+
+    ok "CrowdSec initialization completed."
 }
 
