@@ -68,6 +68,7 @@ source "${SCRIPT_DIR}/lib/deploy/dockge.sh"
 source "${SCRIPT_DIR}/lib/deploy/wait.sh"
 source "${SCRIPT_DIR}/lib/deploy/compose.sh"
 source "${SCRIPT_DIR}/lib/deploy/summary.sh"
+source "${SCRIPT_DIR}/lib/deploy/restart.sh"
 
 ###############################################################################
 # Main
@@ -106,11 +107,6 @@ deploy_check_env
 deploy_dockge
 
 #
-# Wait until Dockge is ready.
-#
-deploy_wait_dockge
-
-#
 # Validate Docker Compose configuration.
 #
 deploy_validate_compose
@@ -119,6 +115,13 @@ deploy_validate_compose
 # Deploy Infrastructure stack.
 #
 deploy_compose
+
+deploy_restart_services
+
+#
+# Wait until Dockge is ready.
+#
+deploy_wait_dockge
 
 #
 # Print deployment summary.
