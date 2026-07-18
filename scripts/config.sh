@@ -46,9 +46,27 @@ readonly DOCKGE_DATA_DIR="${DOCKGE_DIR}/data"
 readonly DOCKGE_COMPOSE_FILE="${DOCKGE_DIR}/compose.yml"
 readonly DOCKGE_ENV_FILE="${DOCKGE_DIR}/.env"
 
+readonly DOCKGE_ITEMS=(
+    compose.yml
+    .env.example
+)
+
+###############################################################################
 # Docker Compose stacks
+###############################################################################
+
 readonly STACKS_DIR="${BASE_DIR}/stacks"
 readonly STACK_DIR="${STACKS_DIR}/${STACK_NAME}"
+
+readonly COMPOSE_FILE="${STACK_DIR}/compose.yml"
+readonly ENV_FILE="${STACK_DIR}/.env"
+
+readonly STACK_ITEMS=(
+    compose.yml
+    compose
+    configs
+    .env.example
+)
 
 ###############################################################################
 # Repository
