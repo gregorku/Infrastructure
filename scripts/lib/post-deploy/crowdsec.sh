@@ -10,6 +10,12 @@
 # Description:
 #   Configure CrowdSec after deployment.
 #
+# Responsibilities:
+#   - Verify CrowdSec container
+#   - Create Traefik bouncer if missing
+#   - Save API key
+#   - Set correct permissions
+#
 ###############################################################################
 
 post_deploy_crowdsec()
@@ -17,50 +23,42 @@ post_deploy_crowdsec()
     print_section "CrowdSec"
 
     ###########################################################################
-    # Verify container
+    # Verify CrowdSec
     ###########################################################################
 
-    require_container_running "${CROWDSEC_SERVICE}"
+    docker_container_running "${CROWDSEC_SERVICE}"
 
     ok "CrowdSec container OK."
 
     ###########################################################################
-    # Ensure bouncer directory
+    # Prepare directory
     ###########################################################################
 
     ensure_directory "${CROWDSEC_BOUNCER_DIR}"
-
-    local key_file
-    local output
-    local api_key
-
-    key_file="${CROWDSEC_BOUNCER_KEY_FILE}"
 
     ###########################################################################
     # Existing key
     ###########################################################################
 
-    if [[ -f "${key_file}" ]]; then
+    if [[ -f "${CROWDSEC_BOUNCER_KEY_FILE}" ]]; then
 
-        #######################################################################
-        # Verify bouncer
-        #######################################################################
+        ok "CrowdSec bouncer key already exists."
 
-        if docker_exec "${CROWDSEC_SERVICE}" \
-            cscli bouncers list \
-            | awk '{print $1}' \
-            | grep -qx "${CROWDSEC_BOUNCER_NAME}"
-        then
+        return
 
-            ok "Bouncer key already exists."
+    fi
 
-            ok "CrowdSec bouncer already exists."
+    ###########################################################################
+    # Existing bouncer
+    ###########################################################################
 
-            return
+    if docker exec "${CROWDSEC_SERVICE}" \
+        cscli bouncers list \
+        | awk '{print $1}' \
+        | grep -qx "${CROWDSEC_BOUNCER_NAME}"
+    then
 
-        fi
-
-        fail "Bouncer key exists but CrowdSec bouncer '${CROWDSEC_BOUNCER_NAME}' is missing."
+        fail "CrowdSec bouncer exists but API key file is missing."
 
     fi
 
@@ -70,31 +68,18 @@ post_deploy_crowdsec()
 
     info "Creating CrowdSec bouncer..."
 
-    if ! output="$(
-        docker_exec "${CROWDSEC_SERVICE}" \
+    local output
+    local api_key
+
+    output="$(
+        docker exec "${CROWDSEC_SERVICE}" \
             cscli bouncers add "${CROWDSEC_BOUNCER_NAME}"
-    )"; then
-
-        fail "Unable to create CrowdSec bouncer."
-
-    fi
-
-    ###########################################################################
-    # Extract API key
-    ###########################################################################
+    )"
 
     api_key="$(
-        printf '%s\n' "${output}" \
-        | awk '
-            NF {
-                count++
-                if (count == 2) {
-                    gsub(/[[:space:]]/, "")
-                    print
-                    exit
-                }
-            }
-        '
+        printf '%s\n' "${output}" |
+        grep -E '^[[:space:]]*[A-Za-z0-9]{20,}[[:space:]]*$' |
+        tr -d '[:space:]'
     )"
 
     [[ -n "${api_key}" ]] \
@@ -104,13 +89,16 @@ post_deploy_crowdsec()
     # Save key
     ###########################################################################
 
-    printf '%s\n' "${api_key}" > "${key_file}"
+    printf '%s\n' "${api_key}" > "${CROWDSEC_BOUNCER_KEY_FILE}"
 
-    chmod 600 "${key_file}"
+    chmod 600 "${CROWDSEC_BOUNCER_KEY_FILE}"
 
     ok "CrowdSec bouncer created."
 
-    ok "Bouncer key saved."
+    ok "API key saved."
 
-    ok "Permissions 600: ${key_file}"
+    ok "Permissions set to 600."
+
+    info "Key file:"
+    info "  ${CROWDSEC_BOUNCER_KEY_FILE}"
 }
