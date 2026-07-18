@@ -61,6 +61,7 @@ source "${SCRIPT_DIR}/lib/env/load.sh"
 # Deployment modules
 ###############################################################################
 
+source "${SCRIPT_DIR}/lib/deploy/stack.sh"
 source "${SCRIPT_DIR}/lib/deploy/verify.sh"
 source "${SCRIPT_DIR}/lib/deploy/check-env.sh"
 source "${SCRIPT_DIR}/lib/deploy/dockge.sh"
@@ -84,6 +85,11 @@ check_environment
 #
 check_docker_environment
 
+#
+# Sync project structure.
+#
+
+deploy_sync_stack
 #
 # Verify project structure.
 #
