@@ -60,11 +60,15 @@ test_crowdsec()
     # Acquisition
     #
 
+    #
+    # Traefik traffic parsing
+    #
+
     if docker exec crowdsec cscli metrics \
-        | grep -q "file:/logs/access.log"
+        | grep -Eq "crowdsecurity/(traefik-logs|http-logs)"
     then
-        ok "Access log acquisition OK."
+      ok "CrowdSec traffic parsing OK."
     else
-        fail "Access log acquisition missing."
+      fail "CrowdSec is not parsing Traefik logs."
     fi
 }
