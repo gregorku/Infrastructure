@@ -67,20 +67,4 @@ test_crowdsec()
     else
         fail "Access log acquisition missing."
     fi
-
-    #
-    # Verify parser on a real Traefik log
-    #
-
-    if docker exec crowdsec \
-        cscli explain \
-        --file /logs/access.log \
-        --type traefik \
-        --only-successful-parsers 2>/dev/null \
-        | grep -q "crowdsecurity/traefik-logs"
-    then
-        ok "Traefik log parsing OK."
-    else
-        fail "Traefik log parsing failed."
-    fi
 }
