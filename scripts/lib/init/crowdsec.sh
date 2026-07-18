@@ -21,15 +21,15 @@ init_crowdsec()
     #
 
     ensure_directory "${CROWDSEC_DIR}"
-
     ensure_directory "${CROWDSEC_DIR}/config"
-
     ensure_directory "${CROWDSEC_DIR}/data"
-
     ensure_directory "${CROWDSEC_DIR}/db"
 
     #
-    # Default configuration
+    # We intentionally do NOT create config.yaml.
+    #
+    # CrowdSec provides and maintains config.yaml inside the container.
+    # The framework manages only the files intended for user customization.
     #
 
     if [[ ! -f "${CROWDSEC_DIR}/config/acquis.yaml" ]]; then

@@ -5,79 +5,104 @@
 # Infrastructure Project
 #
 # File:
-#   scripts/lib/init/crowdsec.sh
+#   scripts/lib/post-deploy/crowdsec.sh
 #
 # Description:
-#   Initialize CrowdSec directory structure.
+#   Configure CrowdSec after deployment.
+#
+# Responsibilities:
+#   - Verify CrowdSec container
+#   - Create Traefik bouncer if missing
+#   - Save API key
+#   - Set correct permissions
 #
 ###############################################################################
 
-init_crowdsec()
+post_deploy_crowdsec()
 {
     print_section "CrowdSec"
 
-    #
-    # Directories
-    #
+    ###########################################################################
+    # Verify CrowdSec
+    ###########################################################################
 
-    ensure_directory "${CROWDSEC_DIR}"
-    ensure_directory "${CROWDSEC_DIR}/config"
-    ensure_directory "${CROWDSEC_DIR}/data"
-    ensure_directory "${CROWDSEC_DIR}/db"
+    docker_container_running "${CROWDSEC_SERVICE}"
 
-    #
-    # We intentionally do NOT create config.yaml.
-    #
-    # CrowdSec provides and maintains config.yaml inside the container.
-    # The framework manages only the files intended for user customization.
-    #
+    ok "CrowdSec container OK."
 
-    if [[ ! -f "${CROWDSEC_DIR}/config/acquis.yaml" ]]; then
+    ###########################################################################
+    # Prepare directory
+    ###########################################################################
 
-        cat > "${CROWDSEC_DIR}/config/acquis.yaml" <<'EOF'
-###############################################################################
-#
-# CrowdSec acquisition
-#
-###############################################################################
+    ensure_directory "${CROWDSEC_BOUNCER_DIR}"
 
-filenames:
+    ###########################################################################
+    # Existing key
+    ###########################################################################
 
-  - /logs/access.log
+    if [[ -f "${CROWDSEC_BOUNCER_KEY_FILE}" ]]; then
 
-labels:
+        ok "CrowdSec bouncer key already exists."
 
-  type: traefik
-EOF
-
-        ok "Created CrowdSec acquis.yaml"
+        return
 
     fi
 
-    if [[ ! -f "${CROWDSEC_DIR}/config/profiles.yaml" ]]; then
+    ###########################################################################
+    # Existing bouncer
+    ###########################################################################
 
-        cat > "${CROWDSEC_DIR}/config/profiles.yaml" <<'EOF'
-###############################################################################
-#
-# CrowdSec profiles
-#
-###############################################################################
+    if docker exec "${CROWDSEC_SERVICE}" \
+        cscli bouncers list \
+        | awk 'NR > 3 { print $1 }' \
+        | grep -Fxq "${CROWDSEC_BOUNCER_NAME}"
+    then
 
-name: default_ip_remediation
+        warn "CrowdSec bouncer '${CROWDSEC_BOUNCER_NAME}' already exists."
+        warn "API key file is missing."
+        warn "Delete and recreate the bouncer or restore the key file."
 
-filters:
-  - Alert.Remediation == true
-
-decisions:
-  - type: ban
-    duration: 4h
-
-on_success: break
-EOF
-
-        ok "Created CrowdSec profiles.yaml"
+        return
 
     fi
 
-    ok "CrowdSec layout ready."
+    ###########################################################################
+    # Create bouncer
+    ###########################################################################
+
+    info "Creating CrowdSec bouncer..."
+
+    local output
+    local api_key
+
+    output="$(
+        docker exec "${CROWDSEC_SERVICE}" \
+            cscli bouncers add "${CROWDSEC_BOUNCER_NAME}"
+    )" || fail "Unable to create CrowdSec bouncer."
+
+    api_key="$(
+        printf '%s\n' "${output}" |
+        grep -E '^[[:space:]]*[A-Za-z0-9]{20,}[[:space:]]*$' |
+        tr -d '[:space:]'
+    )"
+
+    [[ -n "${api_key}" ]] \
+        || fail "Unable to extract CrowdSec API key."
+
+    ###########################################################################
+    # Save key
+    ###########################################################################
+
+    printf '%s\n' "${api_key}" > "${CROWDSEC_BOUNCER_KEY_FILE}"
+
+    chmod 600 "${CROWDSEC_BOUNCER_KEY_FILE}"
+
+    ok "CrowdSec bouncer created."
+
+    ok "API key saved."
+
+    ok "Permissions set to 600."
+
+    info "Key file:"
+    info "  ${CROWDSEC_BOUNCER_KEY_FILE}"
 }
