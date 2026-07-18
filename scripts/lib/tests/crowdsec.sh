@@ -19,4 +19,52 @@ test_crowdsec()
     docker_container_running "${CROWDSEC_SERVICE}"
 
     ok "CrowdSec container OK."
+
+    #
+    # Traefik collection
+    #
+
+    if docker exec crowdsec cscli collections list \
+        | grep -q "crowdsecurity/traefik.*enabled"
+    then
+        ok "Traefik collection OK."
+    else
+        fail "Traefik collection missing."
+    fi
+
+    #
+    # Parser
+    #
+
+    if docker exec crowdsec cscli parsers list \
+        | grep -q "crowdsecurity/traefik-logs.*enabled"
+    then
+        ok "Traefik parser OK."
+    else
+        fail "Traefik parser missing."
+    fi
+
+    #
+    # Bouncer
+    #
+
+    if docker exec crowdsec cscli bouncers list \
+        | grep -q traefik
+    then
+        ok "Traefik bouncer OK."
+    else
+        fail "Traefik bouncer missing."
+    fi
+
+    #
+    # Acquisition
+    #
+
+    if docker exec crowdsec cscli metrics \
+        | grep -q "file:/logs/access.log"
+    then
+        ok "Access log acquisition OK."
+    else
+        fail "Access log acquisition missing."
+    fi
 }
