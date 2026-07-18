@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 ###############################################################################
 #
 # Infrastructure Project
@@ -26,8 +27,8 @@ test_dockge()
             printenv DOCKGE_STACKS_DIR
     )"
 
-    [[ "${dockge_path}" == "/zfs-data/stacks" ]] \
-        || fail "Dockge stack path is '${dockge_path}'."
+    [[ "${dockge_path}" == "${STACKS_DIR}" ]] \
+        || fail "Dockge stack path is '${dockge_path}', expected '${STACKS_DIR}'."
 
     ok "Dockge stack path OK."
 }
