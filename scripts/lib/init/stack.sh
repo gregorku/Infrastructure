@@ -8,94 +8,56 @@
 #   scripts/lib/init/stack.sh
 #
 # Description:
-#   Prepare Infrastructure Docker Compose stack.
-#
-# Responsibilities:
-#   - Create stack directory structure
-#   - Copy compose.yml
-#   - Copy .env.example
-#   - Copy compose/ directory
-#
-# Notes:
-#   This module prepares everything required before running update-env.sh
-#   and deploy.sh.
+#   Prepare Docker Compose stacks.
 #
 ###############################################################################
 
 ###############################################################################
-# Initialize project stack
+# Prepare Dockge
 ###############################################################################
 
-init_stack()
+init_prepare_dockge()
 {
-    log_step "Project stack"
+    log_info "Preparing Dockge..."
 
-    #
-    # Stack directory
-    #
-    ensure_directory "${STACK_DIR}"
+    mkdir -p "${DOCKGE_DIR}"
 
-    #
-    # Copy compose.yml
-    #
-    copy_stack_file \
-        "compose.yml"
+    for item in "${DOCKGE_ITEMS[@]}"; do
+        cp -a \
+            "${GIT_DIR}/dockge/${item}" \
+            "${DOCKGE_DIR}/"
+    done
 
-    #
-    # Copy .env.example
-    #
-    copy_stack_file \
-        ".env.example"
-
-    #
-    # Copy compose directory
-    #
-    copy_stack_directory \
-        "compose"
-
-    log_success "Project stack ready."
+    log_success "Dockge prepared."
 }
 
 ###############################################################################
-# Copy one stack file
+# Prepare Infrastructure stack
 ###############################################################################
 
-copy_stack_file()
+init_prepare_infrastructure_stack()
 {
-    local file="$1"
+    log_info "Preparing Infrastructure stack..."
 
-    local source="${GIT_DIR}/${file}"
-    local destination="${STACK_DIR}/${file}"
+    mkdir -p "${STACK_DIR}"
 
-    if [[ ! -f "${source}" ]]; then
-        log_error "Missing project file: ${source}"
-        return 1
-    fi
+    for item in "${STACK_ITEMS[@]}"; do
+        cp -a \
+            "${GIT_DIR}/${item}" \
+            "${STACK_DIR}/"
+    done
 
-    install -m 644 "${source}" "${destination}"
-
-    log_success "File ready: ${destination}"
+    log_success "Infrastructure stack prepared."
 }
 
 ###############################################################################
-# Copy stack directory
+# Prepare project stacks
 ###############################################################################
 
-copy_stack_directory()
+init_prepare_stack()
 {
-    local directory="$1"
+    print_section "Project stack"
 
-    local source="${GIT_DIR}/${directory}"
-    local destination="${STACK_DIR}/${directory}"
-
-    if [[ ! -d "${source}" ]]; then
-        log_error "Missing project directory: ${source}"
-        return 1
-    fi
-
-    mkdir -p "${destination}"
-
-    cp -a "${source}/." "${destination}/"
-
-    log_success "Directory ready: ${destination}"
+    init_prepare_dockge
+    init_prepare_infrastructure_stack
 }
