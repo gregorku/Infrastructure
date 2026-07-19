@@ -44,13 +44,13 @@ services:
     # Volumes
     ###########################################################################
 
-    volumes:
+        volumes:
 
       #
       # Configuration
       #
 
-      - ${DATA_DIR}/crowdsec/config:/etc/crowdsec
+      - ${STACK_DIR}/configs/crowdsec:/etc/crowdsec:ro
 
       #
       # Database
