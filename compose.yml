@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   compose.yml
@@ -9,14 +9,14 @@
 #   Main Docker Compose entry point.
 #
 # Repository:
-#   https://github.com/gregorku/Infrastructure
+#   https://github.com/gregorku/Monitoring-Grafana
 #
 # Requirements:
 #   Docker Compose v2.20+
 #
 ###############################################################################
 
-name: infrastructure
+name: monitoring-grafana
 
 include:
 

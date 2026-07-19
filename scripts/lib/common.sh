@@ -2,13 +2,13 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/lib/common.sh
 #
 # Description:
-#   Common helper functions used by all Infrastructure scripts.
+#   Common helper functions used by all Monitoring-Grafana scripts.
 #
 ###############################################################################
 
@@ -97,7 +97,7 @@ require_file_or_directory() {
 ###############################################################################
 # Environment
 #
-# Generic environment required by all Infrastructure scripts.
+# Generic environment required by all Monitoring-Grafana scripts.
 ###############################################################################
 
 check_environment() {

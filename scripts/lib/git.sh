@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/lib/git.sh

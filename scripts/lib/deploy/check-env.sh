@@ -2,7 +2,7 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/lib/deploy/check-env.sh

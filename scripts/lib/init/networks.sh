@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 #
 # ==============================================================================
-# Infrastructure
+# Monitoring-Grafana
 # Docker Network Initialization
 # ==============================================================================
 #
 # Purpose:
-#   Create all required Docker bridge networks for the Infrastructure project.
+#   Create all required Docker bridge networks for the Monitoring-Grafana project.
 #
 # Description:
 #   - Creates Docker networks only if they do not already exist.

@@ -4,10 +4,10 @@ deploy_validate_compose() {
     check_compose_configuration
 }
 deploy_compose() {
-    print_section "Infrastructure"
+    print_section "Monitoring-Grafana"
     log_info "Pulling images..."
     compose_pull
     log_info "Starting stack..."
     compose_up
-    log_success "Infrastructure deployed."
+    log_success "Monitoring-Grafana deployed."
 }

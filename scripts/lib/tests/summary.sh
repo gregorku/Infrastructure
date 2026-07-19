@@ -2,13 +2,13 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/lib/tests/summary.sh
 #
 # Description:
-#   Print Infrastructure test summary.
+#   Print Monitoring-Grafana test summary.
 #
 ###############################################################################
 
@@ -20,7 +20,7 @@ test_summary()
 {
     print_section "Finished"
 
-    ok "Infrastructure tests completed."
+    ok "Monitoring-Grafana tests completed."
 
     echo
 

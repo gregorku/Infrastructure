@@ -2,7 +2,7 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/lib/tests/compose.sh

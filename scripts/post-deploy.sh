@@ -2,7 +2,7 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/post-deploy.sh
@@ -60,7 +60,7 @@ source "${SCRIPT_DIR}/lib/post-deploy/summary.sh"
 # Main
 ###############################################################################
 
-print_header "Infrastructure post deployment"
+print_header "Monitoring-Grafana post deployment"
 
 #
 # Verify environment.

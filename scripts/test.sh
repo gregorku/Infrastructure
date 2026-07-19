@@ -2,13 +2,13 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/test.sh
 #
 # Description:
-#   Run Infrastructure framework tests.
+#   Run Monitoring-Grafana framework tests.
 #
 ###############################################################################
 
@@ -75,7 +75,7 @@ source "${SCRIPT_DIR}/lib/tests/summary.sh"
 # Main
 ###############################################################################
 
-print_header "Infrastructure test"
+print_header "Monitoring-Grafana test"
 
 check_environment
 check_docker_environment

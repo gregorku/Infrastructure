@@ -2,7 +2,7 @@
 
 ###############################################################################
 #
-# Infrastructure
+# Monitoring-Grafana
 #
 # File:
 #   scripts/update-env.sh

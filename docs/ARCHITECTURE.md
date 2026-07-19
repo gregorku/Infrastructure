@@ -1,7 +1,7 @@
                 Internet
                     │
                     ▼
-              Infrastructure
+              Monitoring-Grafana
            ┌─────────────────┐
            │ Traefik          │
            │ CrowdSec         │

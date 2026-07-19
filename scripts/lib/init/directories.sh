@@ -2,13 +2,13 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/lib/init/directories.sh
 #
 # Description:
-#   Prepare common Infrastructure directories.
+#   Prepare common Monitoring-Grafana directories.
 #
 # Responsibilities:
 #   - Create shared data directory

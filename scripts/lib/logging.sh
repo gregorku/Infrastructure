@@ -2,13 +2,13 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/lib/logging.sh
 #
 # Description:
-#   Common logging functions used by all Infrastructure scripts.
+#   Common logging functions used by all Monitoring-Grafana scripts.
 #
 ###############################################################################
 # Internal logging functions

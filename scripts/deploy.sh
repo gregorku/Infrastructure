@@ -2,18 +2,18 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/deploy.sh
 #
 # Description:
-#   Deploy Infrastructure services.
+#   Deploy Monitoring-Grafana services.
 #
 # Responsibilities:
 #   - Verify deployment environment
 #   - Deploy Dockge
-#   - Deploy Infrastructure Docker Compose stack
+#   - Deploy Monitoring-Grafana Docker Compose stack
 #   - Print deployment summary
 #
 ###############################################################################
@@ -74,7 +74,7 @@ source "${SCRIPT_DIR}/lib/deploy/restart.sh"
 # Main
 ###############################################################################
 
-print_header "Infrastructure deployment"
+print_header "Monitoring-Grafana deployment"
 
 #
 # Verify environment.
@@ -112,7 +112,7 @@ deploy_dockge
 deploy_validate_compose
 
 #
-# Deploy Infrastructure stack.
+# Deploy Monitoring-Grafana stack.
 #
 deploy_compose
 

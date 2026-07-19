@@ -2,13 +2,13 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/reload.sh
 #
 # Description:
-#   Reload Infrastructure containers.
+#   Reload Monitoring-Grafana containers.
 #
 ###############################################################################
 
@@ -41,7 +41,7 @@ source "${SCRIPT_DIR}/lib/docker-compose.sh"
 show_help()
 {
 cat <<EOF
-Infrastructure Project
+Monitoring-Grafana Project
 
 Usage:
 
@@ -57,7 +57,7 @@ Options:
 
 Description:
 
-    Reload the Infrastructure Docker stack.
+    Reload the Monitoring-Grafana Docker stack.
 
 EOF
 }
@@ -83,7 +83,7 @@ case "${1:-}" in
         ;;
 esac
 
-print_header "Infrastructure reload"
+print_header "Monitoring-Grafana reload"
 
 ###############################################################################
 # Deploy

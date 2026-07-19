@@ -2,13 +2,13 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/lib/checks/docker.sh
 #
 # Description:
-#   Docker validation and helper functions used by Infrastructure scripts.
+#   Docker validation and helper functions used by Monitoring-Grafana scripts.
 #
 ###############################################################################
 

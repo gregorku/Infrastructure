@@ -2,13 +2,13 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/lib/deploy/verify.sh
 #
 # Description:
-#   Verify Infrastructure project before deployment.
+#   Verify Monitoring-Grafana project before deployment.
 #
 ###############################################################################
 

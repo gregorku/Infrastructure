@@ -2,13 +2,13 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/lib/checks/load.sh
 #
 # Description:
-#   Load all common Infrastructure check libraries.
+#   Load all common Monitoring-Grafana check libraries.
 #
 ###############################################################################
 

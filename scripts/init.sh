@@ -2,13 +2,13 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/init.sh
 #
 # Description:
-#   Initialize Infrastructure project.
+#   Initialize Monitoring-Grafana project.
 #
 # Responsibilities:
 #   - Verify environment
@@ -66,7 +66,7 @@ source "${SCRIPT_DIR}/lib/init/summary.sh"
 # Main
 ###############################################################################
 
-print_header "Infrastructure initialization"
+print_header "Monitoring-Grafana initialization"
 
 #
 # Verify environment.

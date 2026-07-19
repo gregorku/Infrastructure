@@ -2,13 +2,13 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/check-env.sh
 #
 # Description:
-#   Validate Infrastructure environment configuration.
+#   Validate Monitoring-Grafana environment configuration.
 #
 ###############################################################################
 
@@ -43,7 +43,7 @@ source "${SCRIPT_DIR}/lib/env/load.sh"
 # Main
 ###############################################################################
 
-print_header "Infrastructure Environment Check"
+print_header "Monitoring-Grafana Environment Check"
 
 check_environment
 

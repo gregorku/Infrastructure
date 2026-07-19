@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   configs/traefik/dynamic/auth-basic.yml
@@ -18,6 +18,6 @@ http:
 
       basicAuth:
 
-        realm: "Infrastructure"
+        realm: "Monitoring-Grafana"
 
         usersFile: "/etc/traefik/users/dashboard.htpasswd"

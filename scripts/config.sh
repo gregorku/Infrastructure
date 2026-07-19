@@ -2,13 +2,13 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/config.sh
 #
 # Description:
-#   Common configuration shared by all Infrastructure scripts.
+#   Common configuration shared by all Monitoring-Grafana scripts.
 #
 ###############################################################################
 
@@ -19,12 +19,12 @@ IFS=$'\n\t'
 # Project
 ###############################################################################
 
-readonly PROJECT_NAME="Infrastructure"
+readonly PROJECT_NAME="Monitoring-Grafana"
 
 #
 # Docker Compose stack name
 #
-readonly STACK_NAME="infrastructure"
+readonly STACK_NAME="monitoring-grafana"
 
 ###############################################################################
 # Repository
@@ -38,7 +38,7 @@ readonly GIT_DIR="/incus-dir/git/${PROJECT_NAME}"
 
 readonly BASE_DIR="/docker-data"
 
-readonly DATA_DIR="${BASE_DIR}/infrastructure"
+readonly DATA_DIR="${BASE_DIR}/monitoring-grafana"
 
 ###############################################################################
 # Dockge
@@ -88,7 +88,7 @@ readonly METABASE_SERVICE="metabase"
 readonly POSTGRES_METABASE_SERVICE="postgres-metabase"
 
 ###############################################################################
-# Infrastructure data
+# Monitoring-Grafana data
 ###############################################################################
 
 readonly TRAEFIK_DIR="${DATA_DIR}/traefik"

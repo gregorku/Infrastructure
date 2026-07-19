@@ -2,13 +2,13 @@
 
 ###############################################################################
 #
-# Infrastructure Project
+# Monitoring-Grafana Project
 #
 # File:
 #   scripts/lib/deploy/sync.sh
 #
 # Description:
-#   Synchronize the Infrastructure repository to the Docker stack directory.
+#   Synchronize the Monitoring-Grafana repository to the Docker stack directory.
 #
 ###############################################################################
 
