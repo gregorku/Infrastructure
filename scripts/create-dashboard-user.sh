@@ -34,8 +34,8 @@ source "${SCRIPT_DIR}/lib/filesystem.sh"
 # Configuration
 ###############################################################################
 
-"${TRAEFIK_USERS_DIR}"
-"${TRAEFIK_HTPASSWD_FILE}"
+readonly USERS_DIR="${TRAEFIK_USERS_DIR}"
+readonly HTPASSWD_FILE="${TRAEFIK_HTPASSWD_FILE}"
 
 ###############################################################################
 # Main
