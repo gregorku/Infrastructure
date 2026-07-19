@@ -34,7 +34,7 @@ source "${SCRIPT_DIR}/lib/filesystem.sh"
 # Configuration
 ###############################################################################
 
-readonly USERS_DIR="${STACK_DIR}/configs/traefik/users"
+readonly USERS_DIR="${DATA_DIR}/traefik/users"
 readonly HTPASSWD_FILE="${USERS_DIR}/dashboard.htpasswd"
 
 ###############################################################################
