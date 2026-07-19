@@ -34,8 +34,8 @@ source "${SCRIPT_DIR}/lib/filesystem.sh"
 # Configuration
 ###############################################################################
 
-readonly USERS_DIR="${GIT_DIR}/configs/traefik/users"
-readonly HTPASSWD_FILE="${USERS_DIR}/dashboard.htpasswd"
+"${TRAEFIK_USERS_DIR}"
+"${TRAEFIK_HTPASSWD_FILE}"
 
 ###############################################################################
 # Main
