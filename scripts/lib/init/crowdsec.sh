@@ -26,57 +26,28 @@ init_crowdsec()
     ensure_directory "${CROWDSEC_DIR}/db"
 
     #
-    # We intentionally do NOT create config.yaml.
+    # Configuration
     #
-    # CrowdSec provides and maintains config.yaml inside the container.
-    # The framework manages only the files intended for user customization.
+    # All CrowdSec configuration is stored in Git and copied during deploy.
     #
 
-    if [[ ! -f "${CROWDSEC_DIR}/config/acquis.yaml" ]]; then
+    local required_files=(
+        "config.yaml"
+        "acquis.yaml"
+        "profiles.yaml"
+    )
 
-        cat > "${CROWDSEC_DIR}/config/acquis.yaml" <<'EOF'
-###############################################################################
-#
-# CrowdSec acquisition
-#
-###############################################################################
+    local missing=0
 
-filenames:
+    for file in "${required_files[@]}"; do
+        if [[ ! -f "${CROWDSEC_DIR}/config/${file}" ]]; then
+            warn "Missing CrowdSec configuration: ${file}"
+            missing=1
+        fi
+    done
 
-  - /logs/access.log
-
-labels:
-
-  type: traefik
-EOF
-
-        ok "Created CrowdSec acquis.yaml"
-
-    fi
-
-    if [[ ! -f "${CROWDSEC_DIR}/config/profiles.yaml" ]]; then
-
-        cat > "${CROWDSEC_DIR}/config/profiles.yaml" <<'EOF'
-###############################################################################
-#
-# CrowdSec profiles
-#
-###############################################################################
-
-name: default_ip_remediation
-
-filters:
-  - Alert.Remediation == true
-
-decisions:
-  - type: ban
-    duration: 4h
-
-on_success: break
-EOF
-
-        ok "Created CrowdSec profiles.yaml"
-
+    if (( missing )); then
+        die "CrowdSec configuration is incomplete. Run deploy or restore the configuration from Git."
     fi
 
     ok "CrowdSec layout ready."
