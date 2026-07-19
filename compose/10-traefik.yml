@@ -106,7 +106,7 @@ services:
       # Dashboard BasicAuth users
       #
 
-      - ../configs/traefik/users:/etc/traefik/users:ro
+      - ${DATA_DIR}/traefik/users:/etc/traefik/users:ro
 
       #
       # Persistent data
