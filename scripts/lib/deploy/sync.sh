@@ -57,12 +57,26 @@ deploy_sync_stack()
 
     if [[ ! -f "${STACK_DIR}/.env" ]]; then
 
+        require_file "${STACK_DIR}/.env.example"
+
         cp \
             "${STACK_DIR}/.env.example" \
             "${STACK_DIR}/.env"
 
         ok ".env created from .env.example"
+
     fi
+
+    ###########################################################################
+    # Verify synchronized stack
+    ###########################################################################
+
+    require_file "${STACK_DIR}/compose.yml"
+
+    require_directory "${STACK_DIR}/compose"
+    require_directory "${STACK_DIR}/configs"
+
+    require_file "${STACK_DIR}/.env.example"
 
     ok "Stack synchronized."
 }
