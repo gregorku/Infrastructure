@@ -16,7 +16,10 @@ test_dashboard_security()
 {
     print_section "Dashboard authentication"
 
-    require_file "${TRAEFIK_USERS_DIR}/dashboard.htpasswd"
+    require_directory "${STACK_DIR}/configs/traefik/users"
+
+    require_file \
+        "${STACK_DIR}/configs/traefik/users/dashboard.htpasswd"
 
     ok "Dashboard credentials OK."
 }
