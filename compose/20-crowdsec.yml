@@ -37,8 +37,8 @@ services:
       # User configuration
       #
 
-      - ./configs/crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml:ro
-      - ./configs/crowdsec/profiles.yaml:/etc/crowdsec/profiles.yaml:ro
+      - ../configs/crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml:ro
+      - ../configs/crowdsec/profiles.yaml:/etc/crowdsec/profiles.yaml:ro
 
       #
       # Runtime
