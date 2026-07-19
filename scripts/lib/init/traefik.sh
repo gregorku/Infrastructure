@@ -19,14 +19,13 @@ init_traefik()
     ensure_directory "${TRAEFIK_DIR}"
 
     ensure_directory "${TRAEFIK_DIR}/acme"
-
     ensure_directory "${TRAEFIK_DIR}/logs"
+    ensure_directory "${TRAEFIK_DIR}/users"
+    ensure_directory "${TRAEFIK_DIR}/crowdsec"
 
     ensure_file_mode \
         "${TRAEFIK_DIR}/acme/acme.json" \
         600
-    
-    ensure_directory "${TRAEFIK_DIR}/crowdsec"
 
     ok "Traefik layout ready."
 }
